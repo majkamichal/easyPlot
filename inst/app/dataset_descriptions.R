@@ -1,0 +1,15 @@
+descriptions <- reactive({
+
+  switch(input$Data,
+
+         "faithful" = "Waiting time between eruptions and the duration of the eruption for the Old Faithful geyser in Yellowstone National Park, Wyoming, USA.<br><br>1) eruptions Eruption time in mins<br>2) waiting Waiting time to next eruption (in mins)<br><br>Source:<br>W. Haerdle.",
+
+         "iris" = "This famous (Fisher's or Anderson's) iris data set gives the measurements in centimeters of the variables sepal length and width and petal length and width, respectively, for 50 flowers from each of 3 species of iris.<br>The species are Iris setosa, versicolor, and virginica.<br><br>Source:<br><br>Fisher, R. A. (1936) The use of multiple measurements in taxonomic problems. Annals of Eugenics, 7, Part II, 179 &#45 188.",
+
+         "mtcars" = "Motor Trend Car Road Tests<br><br>The data was extracted from the 1974 Motor Trend US magazine, and comprises fuel consumption and 10 aspects of automobile design and performance for 32 automobiles (1973 &#45 74 models).<br><br>A data frame with 32 observations on 11 variables.<br><br>Note: some variables are changed into factors.<br><br>1) mpg	Miles/(US) gallon<br>2) cyl	Number of cylinders<br>3) disp	Displacement (cu.in.)<br>4) hp	Gross horsepower<br>5) drat	Rear axle ratio<br>6) wt	Weight (lb/1000)<br>7) qsec	1/4 mile time<br>8) vs	V/S<br>9) am Transmission (0 = automatic, 1 = manual)<br>10) gear Number of forward gears<br>11) carb Number of carburetors<br><br>Source:<br><br>Henderson and Velleman (1981), Building multiple regression models interactively. Biometrics, 37, 391 &#45 411.",
+
+         "attitude" = "From a survey of the clerical employees of a large financial organization, the data are aggregated from the questionnaires of the approximately 35 employees for each of 30 (randomly selected) departments. The numbers give the percent proportion of favourable responses to seven questions in each department. <br><br>1) Y rating numeric	Overall rating<br>2) complaints numeric	Handling of employee complaints<br>3) privileges numeric	Does not allow special privileges<br>4) learning numeric	Opportunity to learn<br>5) raises	numeric	Raises based on performance<br>6) critical	numeric	Too critical<br>7) advancel	numeric	Advancement",
+
+         "diamonds" = "Prices of 50,000 round cut diamonds<br><br>A dataset containing the prices and other attributes of almost 54,000 diamonds. The variables are as follows<br><br>1) price price in US dollars ($326 &#45 $18,823)<br><br>2) carat weight of the diamond (0.2 &#45 5.01)<br><br>3) cut quality of the cut (Fair, Good, Very Good, Premium, Ideal)<br><br>4) colour diamond colour, from J (worst) to D (best)<br><br>5) clarity a measurement of how clear the diamond is (I1 (worst), SI1, SI2, VS1, VS2, VVS1, VVS2, IF (best))<br><br>6) x length in mm (0 &#45 10.74)<br><br>7) y. width in mm (0 &#45 58.9)<br><br>8) z depth in mm (0 &#45 31.8)<br><br>9) depth total depth percentage = z / mean(x, y) = 2 * z / (x + y) (43 &#45 79)<br><br>10) table width of top of diamond relative to widest point (43 &#45 95)"
+    )
+  })

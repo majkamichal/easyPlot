@@ -1,0 +1,52 @@
+#loader {
+    position: absolute;
+    padding: 250px 0 0 0;
+    background: #000000;
+    opacity: 0.975;
+    z-index: 100;
+    left: 0;
+    right: 0;
+    height: 100%;
+    text-align: center;
+    color: #6CACFA;
+}
+
+.navbar-default .navbar-nav>li>a:hover, .navbar-default .navbar-nav>li>a:focus {
+    color: #86f3ff;
+}
+
+
+#Scatterplot:hover, #Histogram:hover, #Boxplot:hover, #Barchart:hover {
+    box-shadow: 0 0 4px 4px #EDF1FA !important;
+    position:relative;
+    z-index:1;
+}
+
+
+#click_info_sc2 {
+    background-color: rgba(140,135,130,0.05);
+    border-color: rgba(25,5,2,0.005);
+    border-radius: 5px;
+}
+
+.modal-title {
+    margin-left: 200px;
+}
+
+.modal-body {
+    margin-left: 125px;
+}
+
+#download_plot_sc, #download_plot_hi {
+    margin-left: 90px;
+}
+
+
+#brush_info_sc {
+    background-color: rgba(140,135,130,0.05);
+    border-color: rgba(25,5,2,0.5);
+    padding: 12px;
+    border-radius: 5px; 
+}
+
+

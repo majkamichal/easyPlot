@@ -1,0 +1,35 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, echo = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "README-"
+)
+```
+
+# easyPlot
+
+## Overview
+
+easyPlot is a simple graphical user interface for ggplot2 which allows the user to create four kind of plots (scatterplots, histograms, boxplots and bar charts) and dynamically generates a reproducible code.
+
+
+## Installation
+
+```{r, eval = FALSE}
+devtools::install_github("majkamichal/easyPlot")
+```
+
+## Usage
+
+
+```{r eval=FALSE }
+easyPlot::easyPlot()
+
+easyPlot::easyPlot("iris")
+```
