@@ -33,3 +33,5 @@ easyPlot::easyPlot()
 
 easyPlot::easyPlot("iris")
 ```
+
+![](easyPlot-pic.png)

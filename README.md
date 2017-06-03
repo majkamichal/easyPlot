@@ -1,5 +1,8 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
+easyPlot
+========
+
 Overview
 --------
 
@@ -20,3 +23,5 @@ easyPlot::easyPlot()
 
 easyPlot::easyPlot("iris")
 ```
+
+![](easyPlot-pic.png)
