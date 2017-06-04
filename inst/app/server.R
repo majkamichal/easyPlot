@@ -11,8 +11,8 @@ shinyServer(function(input, output, session){
   hide(id = "loader", anim = TRUE, animType = "fade")
 
   session$onSessionEnded(function() {
-      rm(name, envir = easyPlotEnv)
-      rm(easyPlotEnv, envir = .GlobalEnv)
+      # rm(name, envir = easyPlotEnv)
+      # rm(easyPlotEnv, envir = .GlobalEnv)
   })
 
   # ----------------------------- DATA SECTION ---------------------------------
