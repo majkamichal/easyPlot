@@ -412,7 +412,7 @@ shinyUI(
       )),
 
     br(),
-    aceEditor(outputId = "print_code_sc", value = "", mode = "r", theme = "texmate", readOnly = TRUE),
+    aceEditor(outputId = "print_code_sc", value = "", mode = "r", theme = "texmate", readOnly = FALSE),
     br(),
     br(),
     br(),
