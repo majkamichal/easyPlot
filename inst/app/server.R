@@ -17,10 +17,14 @@ shinyServer(function(input, output, session){
 
   # ----------------------------- DATA SECTION ---------------------------------
 
-  name <- get("name", envir = .easyPlotEnv)
-  data <- NULL
-  if (name != "FALSE") {
-    data <- get(name, envir = .easyPlotEnv)
+  if (exists(".easyPlotEnv")) {
+    name <- get("name", envir = .easyPlotEnv)
+    data <- NULL
+    if (name != "FALSE") {
+      data <- get(name, envir = .easyPlotEnv)
+    }
+  } else {
+    data <- NULL
   }
 
   observe({
