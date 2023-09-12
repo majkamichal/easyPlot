@@ -2,20 +2,21 @@
 % Please edit documentation in R/easyPlot.R
 \name{easyPlot}
 \alias{easyPlot}
-\title{Launch easyPlot interactive User Interface}
+\title{Start an interactive User Interface easyPlot}
 \usage{
 easyPlot(data = "FALSE")
 }
 \arguments{
-\item{data}{an optional data frame with at least two columns passed as a character string}
+\item{data}{(character) an optional data frame with at least two columns passed as a character string}
 }
 \description{
-Launch easyPlot interactive User Interface
+Start an interactive User Interface easyPlot
 }
-\details{
-easyPlot()
+\examples{
+# easyPlot()
 
-data(iris)
-
-easyPlot(data = "iris")
+# easyPlot(data = "iris")
+}
+\author{
+Michal Majka
 }
