@@ -424,7 +424,7 @@ shinyUI(
 
     # ----------------------------- HISTOGRAM SECTION --------------------------
 
-    tabPanel(title = "Histogram", icon = icon("bar-chart"),
+    tabPanel(title = "Histogram", icon = icon("chart-column"),
 
              bsAlert(anchorId = "dataAlert3"),
              bsAlert(anchorId = "alert_hi"),
@@ -681,7 +681,7 @@ shinyUI(
 
     ),
     # ----------------------------- BOXPLOT SECTION -------------------------------
-    tabPanel(title = "Boxplot", icon = icon("sliders fa-rotate-90"),
+    tabPanel(title = "Boxplot", icon = icon("sliders", class = "fa-rotate-90"),
              bsAlert("dataAlert4"),
              bsAlert("alert_box1"),
              bsAlert("alert_box2"),
@@ -910,7 +910,7 @@ shinyUI(
              br()
              ),
     # ----------------------------- BAR GRAPH SECTION ------------------------------
-    tabPanel(title = "Bar graph", icon = icon("align-left fa-rotate-270"),
+    tabPanel(title = "Bar graph", icon = icon("align-left", class = "fa-rotate-270"),
              bsAlert(anchorId = "dataAlert5"),
              bsAlert(anchorId = "alert_ba"),
              fluidRow(
