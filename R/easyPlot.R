@@ -52,8 +52,12 @@ easyPlot <- function(data = "FALSE") {
   # assign(".easyPlotEnv", new.env(), envir = .GlobalEnv)
   # assign("name", data, envir = .easyPlotEnv)
 
-  pos <- 1
-  .easyPlotEnv <- as.environment(pos)
+  # pos <- 1
+  # .easyPlotEnv <- as.environment(pos)
+  # assign("name", data, envir = .easyPlotEnv)
+
+  .easyPlotEnv <- as.environment(1)
+  assign(".easyPlotEnv", new.env(), envir = .easyPlotEnv)
   assign("name", data, envir = .easyPlotEnv)
 
   shiny::runApp(appDir,
