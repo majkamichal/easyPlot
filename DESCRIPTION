@@ -12,7 +12,8 @@ URL: http://github.com/majkamichal/easyPlot
 BugReports: http://github.com/majkamichal/easyPlot/issues
 Depends:
     R (>= 3.1.0),
-imports: shiny (>= 0.12.2)
+    shiny (>= 0.12.2)
+imports: 
     ggplot2,
     shinyjs (>= 0.9),
     shinyAce,
@@ -20,6 +21,7 @@ imports: shiny (>= 0.12.2)
     shinythemes,
     Cairo,
     DT,
-    colourpicker
+    colourpicker,
+    utils
 License: GPL-2
-RoxygenNote: 6.0.1
+RoxygenNote: 7.2.3
