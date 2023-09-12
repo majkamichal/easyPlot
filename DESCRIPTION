@@ -4,7 +4,7 @@ Title: easyPlot
 Description: easyPlot is a simple graphical user interface for ggplot2 which
     allows the user to create four kind of plots (scatterplots, histograms, boxplots
     and bar charts) and dynamically generates a reproducible code.
-Version: 0.9
+Version: 0.9.1
 Date: 2016-02-20
 Author: Michal Majka <michalmajka@hotmail.com>
 Maintainer: Michal Majka <michalmajka@hotmail.com>
