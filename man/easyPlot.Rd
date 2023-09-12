@@ -4,10 +4,10 @@
 \alias{easyPlot}
 \title{Start an interactive User Interface easyPlot}
 \usage{
-easyPlot(data = "FALSE")
+easyPlot(data = NULL)
 }
 \arguments{
-\item{data}{(character) an optional data frame with at least two columns passed as a character string}
+\item{data}{(data.frame) an optional data frame with at least two columns passed as a character string}
 }
 \description{
 Start an interactive User Interface easyPlot
@@ -15,7 +15,7 @@ Start an interactive User Interface easyPlot
 \examples{
 # easyPlot()
 
-# easyPlot(data = "iris")
+# easyPlot(iris)
 }
 \author{
 Michal Majka

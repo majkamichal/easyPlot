@@ -10,22 +10,12 @@ shinyServer(function(input, output, session){
   Sys.sleep(0.75)
   hide(id = "loader", anim = TRUE, animType = "fade")
 
-  session$onSessionEnded(function() {
-      # rm(name, envir = easyPlotEnv)
-      # rm(easyPlotEnv, envir = .GlobalEnv)
-  })
+  session$onSessionEnded(function() { })
 
   # ----------------------------- DATA SECTION ---------------------------------
 
-  if (exists(".easyPlotEnv")) {
-    name <- get("name", envir = .easyPlotEnv)
-    data <- NULL
-    if (name != "FALSE") {
-      data <- get(name, envir = .easyPlotEnv)
-    }
-  } else {
-    data <- NULL
-  }
+  data <- options()$easyPlot.shiny.data
+  name <- options()$easyPlot.shiny.name
 
   observe({
     if (input$navbar == "quit") {

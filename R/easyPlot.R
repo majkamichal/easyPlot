@@ -1,6 +1,6 @@
 #' Start an interactive User Interface easyPlot
 #'
-#' @param data (character) an optional data frame with at least two columns passed as a character string
+#' @param data (data.frame) an optional data frame with at least two columns passed as a character string
 #'
 #' @author Michal Majka
 #'
@@ -11,14 +11,15 @@
 #' @examples
 #' # easyPlot()
 #'
-#' # easyPlot(data = "iris")
+#' # easyPlot(iris)
 
-easyPlot <- function(data = "FALSE") {
+easyPlot <- function(data = NULL) {
 
   appDir <- system.file("app", package = "easyPlot")
 
-  if (appDir == "")
-    stop("Could not find directory. Try re-installing 'easyPlot'.", call. = FALSE)
+  if (appDir == "") {
+      stop("easyPlot(): ", "Could not find the easyPlot directory. Try re-installing 'easyPlot'.", call. = FALSE)
+  }
 
   # Makes sure all dependencies are available
   dependencies <- c("ggplot2", "shinyjs", "shinyAce", "shinyBS",
@@ -39,26 +40,12 @@ easyPlot <- function(data = "FALSE") {
            ifelse(n_missing_packages > 1, "\"))", "\")"))
   }
 
-  if (!is.character(data))
-    stop("easyPlot(): ", "Input has to be a character string with the name of a data frame", call. = FALSE)
-
-  if (data != "FALSE") {
-
-    if (!is.data.frame(get(data)) | length(get(data)) < 2)
+  if (!is.null(data) && (!is.data.frame(data) | length(data) < 2)) {
       stop("easyPlot(): ", "Please provide the name of a data frame with at least two columns", call. = FALSE)
   }
 
-  # # After closing the app these variables will be automatically removed
-  # assign(".easyPlotEnv", new.env(), envir = .GlobalEnv)
-  # assign("name", data, envir = .easyPlotEnv)
-
-  # pos <- 1
-  # .easyPlotEnv <- as.environment(pos)
-  # assign("name", data, envir = .easyPlotEnv)
-
-  .easyPlotEnv <- as.environment(1)
-  assign(".easyPlotEnv", new.env(), envir = .easyPlotEnv)
-  assign("name", data, envir = .easyPlotEnv)
+  options("easyPlot.shiny.data" = data)
+  options("easyPlot.shiny.name" = deparse(substitute(data)))
 
   shiny::runApp(appDir,
                 display.mode = "normal",
