@@ -48,13 +48,16 @@ easyPlot <- function(data = "FALSE") {
       stop("easyPlot(): ", "Please provide the name of a data frame with at least two columns", call. = FALSE)
   }
 
-  # After closing the app these variables will be automatically removed
-  assign(".easyPlotEnv", new.env(), envir = .GlobalEnv)
+  # # After closing the app these variables will be automatically removed
+  # assign(".easyPlotEnv", new.env(), envir = .GlobalEnv)
+  # assign("name", data, envir = .easyPlotEnv)
+
+  pos <- 1
+  .easyPlotEnv <- as.environment(pos)
   assign("name", data, envir = .easyPlotEnv)
 
   shiny::runApp(appDir,
                 display.mode = "normal",
                 launch.browser = TRUE)
-
 }
 
