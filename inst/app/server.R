@@ -185,7 +185,7 @@ shinyServer(function(input, output, session){
 
   plotData <- reactive ({
 
-    if (length(filtered_data() ) > 1) {
+    if (is.data.frame(filtered_data()) & length(filtered_data() ) > 1) {
 
         ready <- input$readyButton
         exampleDat <- input$exampleData
