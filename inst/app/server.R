@@ -1368,6 +1368,7 @@ shinyServer(function(input, output, session){
 
       if (!is.null( plotData() ) & !is.null( input$scatter_brush) ) {
         if (is.numeric(plotData()[ ,X] )) {
+          N <- length(brushedPoints(dataScatter(),inS, xvar = X, yvar = Y)[ ,X])
           mX <- round(mean(brushedPoints(dataScatter(),inS, xvar = X, yvar = Y)[ ,X]),4)
           sX <- round(sd(brushedPoints(dataScatter(),inS, xvar = X, yvar = Y)[ ,X]),4)
         }
@@ -1380,6 +1381,8 @@ shinyServer(function(input, output, session){
       if (mX == "NaN" & mY == "NaN" | is.na(mX) & is.na(mY)) return()
 
       list(
+        tags$div( HTML("N:"), paste("  ", N)),
+        br(),
         tags$div( HTML("X&#772;:"), paste("  ", mX)),
         tags$div( HTML("&sigma;<sub>x</sub>:"), paste(sX)),
         br(),
