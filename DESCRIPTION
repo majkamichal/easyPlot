@@ -23,5 +23,6 @@ imports:
     DT,
     colourpicker,
     utils
-License: GPL-2
+License: GPL-3 + file LICENSE
+Encoding: UTF-8
 RoxygenNote: 7.2.3
