@@ -154,7 +154,6 @@ shinyServer(function(input, output, session){
 })
 
 
-
   output$table <- DT::renderDataTable(
 
     dataForTable(),
@@ -164,28 +163,35 @@ shinyServer(function(input, output, session){
     #extensions = "TableTools",
     extensions = "Buttons",
     options = list(
-      lengthMenu = list(c(25, 50, 100,  -1), c("25", "50", "100", "All")),
+      lengthMenu = list(c(25, 50, 100,  -1),
+                        c("25", "50", "100", "All")),
       searchHighlight = TRUE,
       search = list(regex = TRUE)#,
       # dom = 'T<"clear">lfrtip',
       # dom = 'Bfrtip',
       #   tableTools = list(sSwfPath = DT::copySWF("www", pdf = TRUE),
       #                     aButtons = list("copy", "pdf"))
-      # )
-      # buttons = c("copy", "pdf")
-    )
+      # )x
+      # buttons = c("copy", "csv", "excel", "pdf", "print")
+
+    ), filter = "top"
   )
+
+
+  filtered_data <- reactive({
+      dataForTable()[input$table_rows_all, ]
+  })
 
 
   plotData <- reactive ({
 
-    if (length(dataForTable() ) > 1) {
+    if (length(filtered_data() ) > 1) {
 
         ready <- input$readyButton
         exampleDat <- input$exampleData
         my_data <- input$my_data
 
-        d <- dataForTable()
+        d <- filtered_data()
         d <- d[complete.cases(d), ]
 
         test1 <- sapply(d, is.character)
