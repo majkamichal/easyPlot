@@ -84,11 +84,19 @@ shinyUI(
                               ),
                               fluidRow(
                                 column(5,
-                                       radioButtons(inputId = "dec", label = "Decimal",
+                                       list(radioButtons(inputId = "dec", label = "Decimal",
                                                     choices = c(Dot = ".", Comma = ","),
-                                                    selected = ".")),
+                                                    selected = "."),
+                                            numericInput(inputId = "skip", label =  "Start row", value = 1, step = 1, min = 1))
+                                ),
+                                # column(5,
+                                #        checkboxInput(inputId = "header", label =  "Header", value = TRUE)),
                                 column(5,
-                                       checkboxInput(inputId = "header", label =  "Header", value = TRUE))
+                                       list(checkboxInput(inputId = "header", label =  "Header", value = TRUE),
+                                            checkboxInput(inputId = "strings_as_factor", label =  "Strings as factors", value = TRUE),
+                                            checkboxInput(inputId = "logicals_as_factor", label =  "Logicals as factors", value = TRUE)
+                                        )
+                                )
                               ),
                               tags$hr(),
                               bsButton(inputId = "readyButton", label = "   Ready", type = "toggle",

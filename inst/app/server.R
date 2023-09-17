@@ -69,6 +69,19 @@ shinyServer(function(input, output, session){
   })
 
 
+  observeEvent(input$skip, {
+      value <- as.integer(input$skip)
+      req(value)
+      if (is.na(value) || value < 1) {
+          showModal(modalDialog(
+              title = "Invalid Input",
+              "Please enter an integer between bigger than 0",
+              easyClose = TRUE
+          ))
+          updateNumericInput(session, inputId = "skip", value = 1)  # Reset input
+      }
+  })
+
 
   dataset1 <- reactive({
 
@@ -120,8 +133,27 @@ shinyServer(function(input, output, session){
       updateCheckboxInput(session, inputId = "my_data", value = FALSE)
       updateCheckboxInput(session, inputId = "exampleData", value = FALSE)
 
-      return(read.csv(upFile$datapath, header = input$header, sep = input$sep,
-                      quote = input$quote, dec = input$dec))
+      skip_rows <- as.integer(input$skip)
+
+      if (is.na(skip_rows) || skip_rows < 1) {
+          return(NULL)
+      }
+
+      x <- read.csv(upFile$datapath,
+                    header = input$header,
+                    sep = input$sep,
+                    quote = input$quote,
+                    dec = input$dec,
+                    stringsAsFactors = input$strings_as_factor,
+                    skip = skip_rows - 1)
+
+      # Re-code logical variables into factors depending on a widget
+      if (input$logicals_as_factor) {
+          ind_logical <- sapply(x, is.logical)
+          x[ind_logical] <- lapply(x[ind_logical], as.factor)
+      }
+
+      return(x)
 
     }
   })
@@ -180,9 +212,11 @@ shinyServer(function(input, output, session){
 
       dt <- dataForTable()[input$table_rows_all, ]
 
-      # Re-code logical variables into factors
-      ind_logical <- sapply(dt, is.logical)
-      dt[ind_logical] <- lapply(dt[ind_logical], as.factor)
+      # Commit: https://github.com/majkamichal/easyPlot/commit/dcf243db910aab3f3c572c612fa63f4a71581b0a
+      # # Re-code logical variables into factors
+      # ind_logical <- sapply(dt, is.logical)
+      # dt[ind_logical] <- lapply(dt[ind_logical], as.factor)
+
       dt
   })
 
