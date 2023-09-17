@@ -14,7 +14,6 @@ Start an interactive User Interface easyPlot
 }
 \examples{
 # easyPlot()
-
 # easyPlot(iris)
 }
 \author{

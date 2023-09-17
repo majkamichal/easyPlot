@@ -10,7 +10,6 @@
 #'
 #' @examples
 #' # easyPlot()
-#'
 #' # easyPlot(iris)
 
 easyPlot <- function(data = NULL) {
