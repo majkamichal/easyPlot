@@ -177,6 +177,7 @@ shinyServer(function(input, output, session){
   )
 
   filtered_data <- reactive({
+
       dt <- dataForTable()[input$table_rows_all, ]
 
       # Re-code logical variables into factors
