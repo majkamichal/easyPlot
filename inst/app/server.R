@@ -153,30 +153,28 @@ shinyServer(function(input, output, session){
     }
 })
 
-
   output$table <- DT::renderDataTable(
 
-    dataForTable(),
-    server = TRUE,
-    class = "cell-border stripe hover",
-    caption = "",
-    #extensions = "TableTools",
-    extensions = "Buttons",
-    options = list(
-      lengthMenu = list(c(25, 50, 100,  -1),
-                        c("25", "50", "100", "All")),
-      searchHighlight = TRUE,
-      search = list(regex = TRUE)#,
-      # dom = 'T<"clear">lfrtip',
-      # dom = 'Bfrtip',
-      #   tableTools = list(sSwfPath = DT::copySWF("www", pdf = TRUE),
-      #                     aButtons = list("copy", "pdf"))
-      # )x
-      # buttons = c("copy", "csv", "excel", "pdf", "print")
+      dataForTable(),
+      server = TRUE,
+      class = "cell-border stripe hover",
+      caption = "",
+      #extensions = "TableTools",
+      extensions = c("Buttons", "KeyTable"),
+      options = list(
+          keys = TRUE, # KeyTable
+          lengthMenu = list(c(25, 50, 100,  -1), c("25", "50", "100", "All")),
+          searchHighlight = TRUE,
+          search = list(regex = TRUE)#,
+          # dom = 'T<"clear">lfrtip',
+          # dom = 'Bfrtip',
+          #   tableTools = list(sSwfPath = DT::copySWF("www", pdf = TRUE),
+          #                     aButtons = list("copy", "pdf"))
+          # )x
+          # buttons = c("copy", "csv", "excel", "pdf", "print")
 
-    ), filter = "top"
+      ), filter = "top"
   )
-
 
   filtered_data <- reactive({
       dataForTable()[input$table_rows_all, ]
