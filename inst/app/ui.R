@@ -59,7 +59,7 @@ shinyUI(
                               condition = "input.upload_data",
                               fileInput(inputId = "uploaded", label = "Upload CSV file",
                                         accept = c("text/csv", ".csv",
-                                                   "text/comma-separated-values, text/plain")),
+                                                   "text/comma-separated-values", "text/plain")),
 
                               bsTooltip("uploaded",
                                         title = "If your data is ready - press ready",
