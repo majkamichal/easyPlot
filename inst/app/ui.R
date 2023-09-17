@@ -71,7 +71,7 @@ shinyUI(
                               fluidRow(
                                 column(5,
                                        radioButtons(inputId = "sep", label =  'Separator',
-                                                    choices = c(Comma = ",", Semicolon = ";", Tab = '\t'),
+                                                    choices = c(Comma = ",", Semicolon = ";", Tab = '\t', Whitespace = " "),
                                                     selected = ";")
 
                                 ),
