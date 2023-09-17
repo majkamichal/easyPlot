@@ -57,9 +57,13 @@ shinyUI(
                             ),
                             conditionalPanel(
                               condition = "input.upload_data",
-                              fileInput(inputId = "uploaded", label = "Upload CSV file",
-                                        accept = c("text/csv", ".csv",
-                                                   "text/comma-separated-values", "text/plain")),
+                              fileInput(inputId = "uploaded", label = "Upload .csv |.xlsx |.txt file",
+                                        accept = c("text/csv",
+                                                   ".csv",
+                                                   "text/comma-separated-values",
+                                                   "text/plain",
+                                                   ".xlsx",
+                                                   ".xls")),
 
                               bsTooltip("uploaded",
                                         title = "If your data is ready - press ready",

@@ -120,43 +120,94 @@ shinyServer(function(input, output, session){
   )
 
 
+  # uploadedData <- reactive({
+  #
+  #   upFile <- input$uploaded
+  #
+  #   Code_Data$upload <- substr(upFile$name, 1, nchar(upFile$name) - 4)
+  #
+  #   if (is.null( upFile ) ){
+  #     return(NULL)
+  #   } else {
+  #     updateCheckboxInput(session, inputId = "my_data", value = FALSE)
+  #     updateCheckboxInput(session, inputId = "exampleData", value = FALSE)
+  #
+  #     skip_rows <- as.integer(input$skip)
+  #
+  #     if (is.na(skip_rows) || skip_rows < 1) {
+  #         return(NULL)
+  #     }
+  #
+  #     x <- read.csv(upFile$datapath,
+  #                   header = input$header,
+  #                   sep = input$sep,
+  #                   quote = input$quote,
+  #                   dec = input$dec,
+  #                   stringsAsFactors = input$strings_as_factor,
+  #                   skip = skip_rows - 1)
+  #
+  #     # Re-code logical variables into factors depending on a widget
+  #     if (input$logicals_as_factor) {
+  #         ind_logical <- sapply(x, is.logical)
+  #         x[ind_logical] <- lapply(x[ind_logical], as.factor)
+  #     }
+  #
+  #     return(x)
+  #
+  #   }
+  # })
+
   uploadedData <- reactive({
 
-    upFile <- input$uploaded
+      upFile <- input$uploaded
 
-    Code_Data$upload <- substr(upFile$name, 1, nchar(upFile$name) - 4)
+      Code_Data$upload <- substr(upFile$name, 1, nchar(upFile$name) - 4)
 
-    if (is.null( upFile ) ){
-      return(NULL)
-    }
-    else {
-      updateCheckboxInput(session, inputId = "my_data", value = FALSE)
-      updateCheckboxInput(session, inputId = "exampleData", value = FALSE)
-
-      skip_rows <- as.integer(input$skip)
-
-      if (is.na(skip_rows) || skip_rows < 1) {
+      if (is.null( upFile ) ){
           return(NULL)
+      } else {
+          updateCheckboxInput(session, inputId = "my_data", value = FALSE)
+          updateCheckboxInput(session, inputId = "exampleData", value = FALSE)
+
+          skip_rows <- as.integer(input$skip)
+
+          if (is.na(skip_rows) || skip_rows < 1) {
+              return(NULL)
+          }
+
+          # if (upFile$type %in% c("text/csv", ".csv", "text/comma-separated-values", "text/plain")) {
+          if (any(endsWith(upFile$name, c(".csv", ".txt")))) {
+
+              x <- read.csv(upFile$datapath,
+                            header = input$header,
+                            sep = input$sep,
+                            quote = input$quote,
+                            dec = input$dec,
+                            stringsAsFactors = input$strings_as_factor,
+                            skip = skip_rows - 1)
+
+              # Re-code logical variables into factors depending on a widget
+              if (input$logicals_as_factor) {
+                  ind_logical <- sapply(x, is.logical)
+                  x[ind_logical] <- lapply(x[ind_logical], as.factor)
+              }
+              return(x)
+          }
+          print(upFile)
+          print(upFile$type)
+          print(str(upFile))
+          if (any(endsWith(upFile$name,c(".xlsx", ".xls")))) {
+
+              x <- openxlsx::read.xlsx(upFile$datapath,
+                                       sheet = 1,
+                                       startRow = as.integer(skip_rows),
+                                       detectDates = TRUE)
+              return(x)
+          }
+
       }
-
-      x <- read.csv(upFile$datapath,
-                    header = input$header,
-                    sep = input$sep,
-                    quote = input$quote,
-                    dec = input$dec,
-                    stringsAsFactors = input$strings_as_factor,
-                    skip = skip_rows - 1)
-
-      # Re-code logical variables into factors depending on a widget
-      if (input$logicals_as_factor) {
-          ind_logical <- sapply(x, is.logical)
-          x[ind_logical] <- lapply(x[ind_logical], as.factor)
-      }
-
-      return(x)
-
-    }
   })
+
 
   dataForTable <- reactive({
 
