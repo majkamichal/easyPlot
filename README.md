@@ -6,7 +6,7 @@ easyPlot
 Overview
 --------
 
-easyPlot is a simple graphical user interface for ggplot2 which allows the user to create four kind of plots (scatterplots, histograms, boxplots and bar charts) and dynamically generates a reproducible code.
+`easyPlot` is a graphical user interface for ggplot2 which allows the user to create four kind of plots (scatterplots, histograms, boxplots and bar charts) and dynamically generates a reproducible code.
 
 Installation
 ------------
@@ -21,7 +21,7 @@ Usage
 ``` r
 easyPlot::easyPlot()
 
-easyPlot::easyPlot("iris")
+easyPlot::easyPlot(iris)
 ```
 
 ![](easyPlot-pic.png)
