@@ -1820,7 +1820,7 @@ shinyServer(function(input, output, session){
 
       Alpha <- ifelse(input$opacity_hi != 1, paste0(", alpha = ", input$opacity_hi),"")
 
-      Count <- ifelse(input$change_fill_hi == "Count", ", fill = ..count..", "")
+      Count <- ifelse(input$change_fill_hi == "Count", ", fill = after_stat(count)", "")
 
       Fill_by <- ifelse(input$change_fill_hi == "Fill by", paste0(", fill = ", input$fill_by_hi), "")
 
@@ -1877,7 +1877,7 @@ shinyServer(function(input, output, session){
         }
 
         if (input$change_fill_hi == "Count") {
-          pl_hi <- pl_hi + geom_histogram(aes(fill = ..count..),
+          pl_hi <- pl_hi + geom_histogram(aes(fill = after_stat(count)),
                                           alpha = input$opacity_hi,
                                           binwidth = Bins) +
             scale_fill_gradient("Count", low = input$low_hi, high = input$high_hi)
