@@ -1828,9 +1828,9 @@ shinyServer(function(input, output, session){
 
       Colour <- ifelse(input$color_hi != '#000000', paste0(", colour = ", "'", input$color_hi,"'"), "")
 
-      Dens1 <- ifelse(input$change_density_hi2 == "Colour" & (Density == "Both" | Density == "Density"), ", y = ..density..", "")
+      Dens1 <- ifelse(input$change_density_hi2 == "Colour" & (Density == "Both" | Density == "Density"), ", y = after_stat(density)", "")
 
-      Dens2 <- ifelse(input$change_density_hi2 == "Colour by" & (Density == "Both" | Density == "Density"), ", y = ..density..", "")
+      Dens2 <- ifelse(input$change_density_hi2 == "Colour by" & (Density == "Both" | Density == "Density"), ", y = after_stat(density)", "")
 
       Weight <- ifelse(input$weight_hi != "none", paste0(", weight = ", input$weight_hi), "") # " + ylab(", "'", input$weight_hi, "'", ")")
 
@@ -1900,7 +1900,7 @@ shinyServer(function(input, output, session){
         pl_hi <- pl_hi + geom_density(color = input$dens_color_hi,
                                       fill = input$dens_fill_hi,
                                       alpha = input$dens_opacity_hi) +
-          aes(y = ..density..) +
+          aes(y = after_stat(density)) +
           ylab("density")
 
 
@@ -1921,7 +1921,7 @@ shinyServer(function(input, output, session){
         pl_hi <- pl_hi + geom_density(aes_string(fill = input$dens_fill_by_hi),
                                       alpha = input$dens_fill_by_opacity_hi,
                                       position = input$dens_position_hi) +
-          aes(y = ..density..) +
+          aes(y = after_stat(density)) +
           ylab("density")
 
 
