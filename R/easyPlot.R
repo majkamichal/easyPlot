@@ -1,4 +1,4 @@
-#' Start an interactive User Interface easyPlot
+#' Start an Interactive User Interface `easyPlot`
 #'
 #' @param data (data.frame) an optional data frame with at least two columns passed as a character string
 #'
@@ -17,7 +17,7 @@ easyPlot <- function(data = NULL) {
   appDir <- system.file("app", package = "easyPlot")
 
   if (appDir == "") {
-      stop("easyPlot(): ", "Could not find the easyPlot directory. Try re-installing 'easyPlot'.", call. = FALSE)
+      stop("easyPlot(): ", "Could not find the easyPlot directory. Try re-installing `easyPlot`.", call. = FALSE)
   }
 
   # Makes sure all dependencies are available
@@ -40,7 +40,7 @@ easyPlot <- function(data = NULL) {
   }
 
   if (!is.null(data) && (!is.data.frame(data) | length(data) < 2)) {
-      stop("easyPlot(): ", "Please provide the name of a data frame with at least two columns", call. = FALSE)
+      stop("easyPlot(): ", "Please provide a data frame with at least two columns", call. = FALSE)
   }
 
   options("easyPlot.shiny.data" = data)
