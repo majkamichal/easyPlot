@@ -195,7 +195,7 @@ shinyUI(
                                       value = "blue",
                                       allowTransparent = FALSE),
 
-                          sliderInput(inputId = "loess_size1_sc", label = "Size:",
+                          sliderInput(inputId = "loess_size1_sc", label = "Linewidth:",
                                       min = 0.1, max = 5, value = 0.5, step = 0.1),
                           sliderInput(inputId = "loess_span1_sc", label = "Span:",
                                       min = 0, max = 1, value = 0.75, step = 0.05)
@@ -216,7 +216,7 @@ shinyUI(
                                       value = "grey60",
                                       allowTransparent = FALSE),
 
-                          sliderInput(inputId = "loess_size2_sc", label = "Size:",
+                          sliderInput(inputId = "loess_size2_sc", label = "Linewidth:",
                                       min = 0.1, max = 5, value = 0.5, step = 0.1),
                           sliderInput(inputId = "loess_span2_sc", label = "Span:",
                                       min = 0, max = 1, value = 0.75, step = 0.05)
@@ -756,9 +756,9 @@ shinyUI(
                                                    value = "black",
                                                    allowTransparent = FALSE),
 
-                                       sliderInput(inputId = "colour_size_box", "Size:",
-                                                   min = 0.1, max = 2.5, value = 0.5,
-                                                   step = 0.1),
+                                       sliderInput(inputId = "colour_size_box", "Box size:",
+                                                   min = 0.1, max = 2.5,
+                                                   value = 0.5, step = 0.1),
 
                                        actionButton(inputId = "reset_colours_box", label = "Reset")
                       ),
@@ -970,7 +970,7 @@ shinyUI(
                                                    showColour = "background",
                                                    value = "black",
                                                    allowTransparent = FALSE),
-                                       sliderInput(inputId = "colour_size_ba", "Size:",
+                                       sliderInput(inputId = "colour_size_ba", "Box Linewidth:",
                                                    min = 0.1, max = 5, value = 0.5),
                                        actionButton(inputId = "reset_colours_ba", label = "Reset")
                       ),

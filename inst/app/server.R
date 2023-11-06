@@ -1167,7 +1167,7 @@ shinyServer(function(input, output, session){
         Span2 <- input$loess_span2_sc
 
         Col2_b <-  ifelse(Col2 != '#0000FF', paste0(", colour = ", "'",Col2,"'"), "")
-        Size2_b <- ifelse(Size2 != 0.5, paste0(", size = ", Size2), "")
+        Size2_b <- ifelse(Size2 != 0.5, paste0(", linewidth = ", Size2), "")
         Span2_b <- ifelse(Span2 != 0.75, paste0(", span = ", Span2),"")
         Fill2_b <- ifelse(Fill2 != '#999999', paste0(", fill = ", "'",Fill2, "'"), "")
 
@@ -1176,13 +1176,16 @@ shinyServer(function(input, output, session){
           cond <- is.factor(plotData()[ ,input$color_by_sc]) & input$change_color_sc == "Colour by"
         }
         if (cond) {
-          pl <- pl + stat_smooth( fill = Fill2, size = Size2,
-                                  span = Span2)
+          pl <- pl + stat_smooth(fill = Fill2,
+                                 linewidth = Size2,
+                                 span = Span2)
 
           Code$smooth <- paste0(" + \n  stat_smooth(", syntax(c(Fill2_b, Size2_b, Span2_b)), ")")
         }
         else {
-          pl <- pl + stat_smooth(colour = Col2, fill = Fill2, size = Size2,
+          pl <- pl + stat_smooth(colour = Col2,
+                                 fill = Fill2,
+                                 linewidth = Size2,
                                  span = Span2)
 
           Code$smooth <- paste0(" + \n  stat_smooth(", syntax(c(Fill2_b, Col2_b, Size2_b, Span2_b)), ")")
@@ -1193,7 +1196,7 @@ shinyServer(function(input, output, session){
       if (input$loess_sc == "Loess") {
 
         Col1 <-  ifelse(input$loess_col1_sc != '#0000FF', paste0(", colour = ", "'",input$loess_col1_sc,"'"), "")
-        Size1 <- ifelse(input$loess_size1_sc != 0.5, paste0(", size = ", input$loess_size1_sc), "")
+        Size1 <- ifelse(input$loess_size1_sc != 0.5, paste0(", linewidth = ", input$loess_size1_sc), "")
         Span1 <- ifelse(input$loess_span1_sc != 0.75, paste0(", span = ", input$loess_span1_sc),"")
 
         cond <- FALSE
@@ -1201,14 +1204,17 @@ shinyServer(function(input, output, session){
           cond <- is.factor(plotData()[ ,input$color_by_sc]) & input$change_color_sc == "Colour by"
         }
         if (cond) {
-          pl <- pl + stat_smooth(se = FALSE,  size = input$loess_size1_sc,
+          pl <- pl + stat_smooth(se = FALSE,
+                                 linewidth = input$loess_size1_sc,
                                  span = input$loess_span1_sc)
 
           Code$smooth <- paste0(" + \n  stat_smooth(se = FALSE", Size1, Span1, ")")
         }
         else {
-          pl <- pl + stat_smooth(se = FALSE, size = input$loess_size1_sc,
-                                 span = input$loess_span1_sc, colour = input$loess_col1_sc)
+          pl <- pl + stat_smooth(se = FALSE,
+                                 linewidth = input$loess_size1_sc,
+                                 span = input$loess_span1_sc,
+                                 colour = input$loess_col1_sc)
 
           Code$smooth <- paste0(" + \n  stat_smooth(se = FALSE", Col1, Size1, Span1, ")")
         }
@@ -2371,7 +2377,7 @@ shinyServer(function(input, output, session){
 
       Colour <- ifelse(input$color_ba != '#000000', paste0(", colour = ", "'",input$color_ba,"'") , "")
 
-      Size <- ifelse(input$colour_size_ba != 0.5, paste0(", size = ", input$colour_size_ba), "")
+      Size <- ifelse(input$colour_size_ba != 0.5, paste0(", linewidth = ", input$colour_size_ba), "")
 
       Code_ba$weight <- ifelse(input$weight_ba != "none", paste0(", weight = ", input$weight_ba), "")
 
@@ -2382,11 +2388,14 @@ shinyServer(function(input, output, session){
 
       if (input$change_fill_ba == "Colours") {
 
-        pl_ba <- pl_ba + geom_bar(position = input$position_ba,width = input$bar_width,
-                                  colour = input$color_ba, size = input$colour_size_ba,
-                                  fill = input$fill_ba, alpha = input$opacity_ba)
+          pl_ba <- pl_ba + geom_bar(position = input$position_ba,
+                                    width = input$bar_width,
+                                    colour = input$color_ba,
+                                    linewidth = input$colour_size_ba,
+                                    fill = input$fill_ba,
+                                    alpha = input$opacity_ba)
 
-        Code_ba$bar <- paste0(" + \n  geom_bar(", syntax(c(Fill, Colour, Size, Width, Opacity, Position)), ")")
+          Code_ba$bar <- paste0(" + \n  geom_bar(", syntax(c(Fill, Colour, Size, Width, Opacity, Position)), ")")
       }
 
       if (input$change_fill_ba == "Colour by") {
@@ -2402,7 +2411,7 @@ shinyServer(function(input, output, session){
       if (input$change_fill_ba == "Colour by" & input$fill_by_col_ba != "default") {
         pl_ba <- pl_ba + scale_fill_brewer(type = input$fill_by_col_ba, palette = input$palette_ba)
 
-        Code_ba$col_by <- paste0(" + \n  scale_fill_brewer(type = ", "'",input$fill_by_col_ba, "'",
+        Code_ba$col_by <- paste0(" + \n  scale_fill_brewer(type = ", "'", input$fill_by_col_ba, "'",
                                   ", palette = ", input$palette_ba, ")")
       }
 
