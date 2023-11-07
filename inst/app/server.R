@@ -938,14 +938,15 @@ shinyServer(function(input, output, session){
     if ( !is.null(dataScatter()) )  {
 
       pl <- ggplot(dataScatter(),
-                   aes_string(x = input$x_input_sc, y = input$y_input_sc))
+                   aes(x = .data[[input$x_input_sc]],
+                       y = .data[[input$y_input_sc]]))
 
 
       Size <- ifelse(input$point_size_sc != 2, paste0(", size = ", input$point_size_sc), "")
 
       Alpha <- ifelse(input$opacity_sc != 1, paste0(", alpha = ", input$opacity_sc), "")
 
-      Colour <- ifelse(input$color_sc != '#000000', paste0(", colour = ", "'",input$color_sc, "'"), "")
+      Colour <- ifelse(input$color_sc != '#000000', paste0(", colour = ", "'", input$color_sc, "'"), "")
 
       Aes_size <- NULL ; Aes_col <- NULL ; Aes_shape <- NULL
 
@@ -1023,8 +1024,9 @@ shinyServer(function(input, output, session){
 
 
         if (input$change_point_size_sc == "Size by") {
+
           if (input$change_color_sc == "Colour") {
-            pl <- pl + geom_point(aes_string(size = input$point_size_by_sc),
+            pl <- pl + geom_point(aes(size = .data[[input$point_size_by_sc]]),
                                   alpha = input$opacity_sc, color = input$color_sc,
                                   stat = Unique)
 
@@ -1034,7 +1036,7 @@ shinyServer(function(input, output, session){
           }
 
           else {
-            pl <- pl + geom_point(aes_string(size = input$point_size_by_sc),
+            pl <- pl + geom_point(aes(size = .data[[input$point_size_by_sc]]),
                                   alpha = input$opacity_sc,
                                   stat = Unique)
 
@@ -1074,8 +1076,9 @@ shinyServer(function(input, output, session){
 
 
         if (input$change_point_size_sc == "Size by") {
+
           if (input$change_color_sc == "Colour") {
-            pl <- pl + geom_jitter(aes_string(size = input$point_size_by_sc),
+            pl <- pl + geom_jitter(aes(size = .data[[input$point_size_by_sc]]),
                                    alpha = input$opacity_sc, color = input$color_sc)
 
             Code$points <- paste0(" + \n  geom_jitter(", syntax(c(Colour, Alpha)), ")")
@@ -1085,7 +1088,7 @@ shinyServer(function(input, output, session){
           }
 
           else {
-            pl <- pl + geom_jitter(aes_string(size = input$point_size_by_sc),
+            pl <- pl + geom_jitter(aes(size = .data[[input$point_size_by_sc]]),
                                    alpha = input$opacity_sc)
 
             Code$points <- paste0(" + \n  geom_jitter(", syntax(Alpha), ")")
@@ -1097,7 +1100,7 @@ shinyServer(function(input, output, session){
 
 
       if (input$shape_sc != "none") {
-        pl <- pl + aes_string(shape = input$shape_sc)
+        pl <- pl + aes(shape = .data[[input$shape_sc]])
 
         Aes_shape <- paste0(", shape = ", input$shape_sc)
       }
@@ -1110,7 +1113,7 @@ shinyServer(function(input, output, session){
 
       if (input$change_color_sc == "Colour by" & input$color_by_sc != "none") {
 
-        pl <- pl + aes_string(color = input$color_by_sc)
+        pl <- pl + aes(color = .data[[input$color_by_sc]])
 
         Aes_col <- paste0(", colour = ", input$color_by_sc)
 
@@ -1120,6 +1123,7 @@ shinyServer(function(input, output, session){
           if (!is.null(input$colour_by_type_sc)) {
 
             if (input$colour_by_type_sc != "default" ) {
+
               if(!is.null(input$palette_sc)) {
 
                 pl <- pl + scale_colour_brewer(type = input$colour_by_type_sc, palette = input$palette_sc)
@@ -1135,6 +1139,7 @@ shinyServer(function(input, output, session){
           }
         }
         if (is.numeric(dataScatter()[ ,input$color_by_sc])) {
+
           if (!is.null(input$low_sc) & !is.null(input$high_sc)) {
             pl <- pl + scale_colour_gradient(low = input$low_sc, high = input$high_sc)
 
@@ -1841,7 +1846,7 @@ shinyServer(function(input, output, session){
 
 
 
-      pl_hi <- ggplot(dataHist(), aes_string(x = input$x_input_hi))
+      pl_hi <- ggplot(dataHist(), aes(x = .data[[input$x_input_hi]]))
 
       Code_hi$gg <- paste0("ggplot(data = ", Code_Data$name, ", aes(x = ", input$x_input_hi, Code_hi$aes,"))")
 
@@ -1864,7 +1869,7 @@ shinyServer(function(input, output, session){
         if (input$change_fill_hi == "Fill by") {
 
 
-          pl_hi <- pl_hi + geom_histogram(aes_string(fill = input$fill_by_hi),
+          pl_hi <- pl_hi + geom_histogram(aes(fill = .data[[input$fill_by_hi]]),
                                           alpha = input$opacity_hi,
                                           position = input$position_hi,
                                           color = "white",
@@ -1918,7 +1923,7 @@ shinyServer(function(input, output, session){
 
         # updateTextInput(session, inputId = "label_y_hi", value = "density")
 
-        pl_hi <- pl_hi + geom_density(aes_string(fill = input$dens_fill_by_hi),
+        pl_hi <- pl_hi + geom_density(aes(fill = .data[[input$dens_fill_by_hi]]),
                                       alpha = input$dens_fill_by_opacity_hi,
                                       position = input$dens_position_hi) +
           aes(y = after_stat(density)) +
@@ -2003,7 +2008,7 @@ shinyServer(function(input, output, session){
       }
 
       if (input$weight_hi != "none") {
-        pl_hi <- pl_hi + aes_string(weight = input$weight_hi) # + ylab(input$weight_hi)
+          pl_hi <- pl_hi + aes(weight = .data[[input$weight_hi]]) # + ylab(input$weight_hi)
       }
 
 
@@ -2154,6 +2159,7 @@ shinyServer(function(input, output, session){
 
   # DYNAMIC FACTORS:
   output$dynamic_factors_ba <- renderUI({
+
     if (length(names(plotData())) > 1) {
       inX <- NULL
 
@@ -2167,18 +2173,15 @@ shinyServer(function(input, output, session){
       if (length(levelss) < 7 & length(levelss > 0)) {
         checkboxGroupInput(inputId = "x_range_ba_factor", label = "Include levels:",
                            choices = levelss, selected = levelss)
-      }
-
-      else if (is.null(levelss)) {
+      } else if (is.null(levelss)) {
         selectInput(inputId = "x_range_ba_factor", label = "Include levels:",
                     choices = ".none.", selected = ".none.")
-      }
-      else {
+      } else {
         selectInput(inputId = "x_range_ba_factor", label = "Include levels:",
                     choices = levelss, selected = levelss, multiple = TRUE)
       }
-    }
-    else {
+
+    } else {
       return(selectInput(inputId = "x_range_ba_factor", label = "Include levels:",
                          choices = ".none.", selected = ".none."))
     }
@@ -2360,12 +2363,9 @@ shinyServer(function(input, output, session){
     if (!is.null(data_ba() ) & input$x_input_ba != ".none.") {
 
 
-
       Code_ba$Fill_by <- ifelse(input$change_fill_ba == "Colour by", paste0(", fill = ", input$fill_by_ba), "")
 
-      pl_ba <- ggplot(data = data_ba(), aes_string(input$x_input_ba))
-
-
+      pl_ba <- ggplot(data = data_ba(), aes(.data[[input$x_input_ba]]))
 
       Position <- ifelse(input$position_ba != "stack", paste0(", position = ", "'",input$position_ba, "'"), "")
 
@@ -2400,7 +2400,7 @@ shinyServer(function(input, output, session){
 
       if (input$change_fill_ba == "Colour by") {
 
-        pl_ba <- pl_ba + geom_bar(aes_string(fill = input$fill_by_ba),
+        pl_ba <- pl_ba + geom_bar(aes(fill = .data[[input$fill_by_ba]]),
                                   position = input$position_ba, width = input$bar_width,
                                   alpha = input$opacity_ba)
 
@@ -2465,8 +2465,7 @@ shinyServer(function(input, output, session){
 
       if (input$weight_ba != "none") {
 
-        pl_ba <- pl_ba + aes_string(weight = input$weight_ba)
-
+          pl_ba <- pl_ba + aes(weight = .data[[input$weight_ba]])
       }
 
 
@@ -3024,22 +3023,20 @@ shinyServer(function(input, output, session){
                             ", y = ", input$y_input_box, Code_box$Fill_by_box, "))")
 
 
-      pl_box <- ggplot(data = data_box(), aes_string(x = input$x_input_box, y = input$y_input_box))
+      pl_box <- ggplot(data = data_box(), aes(x = .data[[input$x_input_box]], y = .data[[input$y_input_box]]))
 
 
 
       if (input$change_fill_box == "Colours") {
 
-        pl_box <- pl_box + geom_boxplot(
-                                        fill = input$fill_box,
+        pl_box <- pl_box + geom_boxplot(fill = input$fill_box,
                                         colour = input$color_box,
                                         width = input$box_width,
                                         size = input$colour_size_box,
                                         alpha = input$opacity_box,
                                         outlier.colour = input$out_color,
                                         outlier.size = input$out_size,
-                                        outlier.shape = as.numeric(input$out_shape)
-                                       )
+                                        outlier.shape = as.numeric(input$out_shape))
 
         Code_box$boxplot <- paste0(" + \n  geom_boxplot(",
                                    syntax(c(Fill, Colour, Width, Size, Alpha, Out_col, Out_size, Out_shape)),
@@ -3048,7 +3045,7 @@ shinyServer(function(input, output, session){
 
       if (input$change_fill_box == "Colour by") {
 
-        pl_box <- pl_box + geom_boxplot(aes_string(fill = input$fill_by_box),
+        pl_box <- pl_box + geom_boxplot(aes(fill = .data[[input$fill_by_box]]),
                                         width = input$box_width,
                                         alpha = input$opacity_box,
                                         outlier.colour = input$out_color,
