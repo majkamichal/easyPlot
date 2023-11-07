@@ -98,7 +98,7 @@ shinyServer(function(input, output, session){
            "iris" = iris,
            "mtcars" = mtcars_c,
            "attitude" = attitude,
-           "diamonds" = diamonds
+           "diamonds" = as.data.frame(diamonds)
     )
 
   })
