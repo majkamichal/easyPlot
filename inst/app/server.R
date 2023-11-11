@@ -3331,5 +3331,11 @@ shinyServer(function(input, output, session){
     }
   )
 
+
+  onStop(function() {
+      options("easyPlot.shiny.data" = NULL)
+      options("easyPlot.shiny.name" = NULL)
+  })
+
 })
 
