@@ -1426,7 +1426,7 @@ shinyServer(function(input, output, session){
       }
 
 
-      if (Size_sc == 12 & Font_sc == "sans" & Theme_sc == "Grey") {
+      if (Size_sc == 11 & Font_sc == "sans" & Theme_sc == "Grey") {
         Code$theme <- NULL
       }
 
@@ -2124,7 +2124,7 @@ shinyServer(function(input, output, session){
       }
 
 
-      if (Size_hi == 12 & Font_hi == "sans" & Theme_hi == "Grey") {
+      if (Size_hi == 11 & Font_hi == "sans" & Theme_hi == "Grey") {
         Code_hi$g <- NULL
       }
 
@@ -2602,7 +2602,7 @@ shinyServer(function(input, output, session){
       }
 
 
-      if (Size_ba == 12 & Font_ba == "sans" & Theme_ba == "Grey") {
+      if (Size_ba == 11 & Font_ba == "sans" & Theme_ba == "Grey") {
         Code_ba$theme <- NULL
       }
 
@@ -3273,7 +3273,7 @@ shinyServer(function(input, output, session){
       }
 
 
-      if (Size_box == 12 & Font_box == "sans" & Theme_box == "Grey") {
+      if (Size_box == 11 & Font_box == "sans" & Theme_box == "Grey") {
         Code_box$theme <- NULL
       }
 

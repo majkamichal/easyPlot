@@ -325,7 +325,7 @@ shinyUI(
                                          selected = "right"),
 
                             numericInput(inputId = "theme_size_sc", label = "Font size",
-                                         value = 12, min = 2, max = 50, step = 0.5),
+                                         value = 11, min = 2, max = 50, step = 0.5),
 
                             selectInput(inputId = "theme_font_sc", label = "Font",
                                         choices = c("sans", "Times", "Courier"))
@@ -644,7 +644,7 @@ shinyUI(
                                      choices = c("right", "bottom", "left"),
                                      selected = "right"),
                         numericInput(inputId = "theme_size_hi", label = "Font size:",
-                                     value = 12, min = 2, max = 50, step = 0.5),
+                                     value = 11, min = 2, max = 50, step = 0.5),
 
                         selectInput(inputId = "theme_font_hi", label = "Font:",
                                     choices = c("sans", "Times", "Courier"))
@@ -879,7 +879,7 @@ shinyUI(
                                      selected = "right"),
 
                         numericInput(inputId = "theme_size_box", label = "Font size:",
-                                     value = 12, min = 2, max = 50, step = 0.5),
+                                     value = 11, min = 2, max = 50, step = 0.5),
 
                         selectInput(inputId = "theme_font_box", label = "Font:",
                                     choices = c("sans", "Times", "Courier"))
@@ -1087,7 +1087,7 @@ shinyUI(
                                      selected = "right"),
 
                         numericInput(inputId = "theme_size_ba", label = "Font size:",
-                                     value = 12, min = 2, max = 50, step = 0.5),
+                                     value = 11, min = 2, max = 50, step = 0.5),
 
                         selectInput(inputId = "theme_font_ba", label = "Font:",
                                     choices = c("sans", "Times", "Courier"))
