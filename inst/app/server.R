@@ -282,6 +282,7 @@ shinyServer(function(input, output, session){
         ready <- input$readyButton
         exampleDat <- input$exampleData
         my_data <- input$my_data
+        upload_data <- input$upload_data
 
         d <- filtered_data()
         d <- d[complete.cases(d), ]
@@ -372,6 +373,7 @@ shinyServer(function(input, output, session){
           closeAlert(session, alertId = "alert5_upload")
       }
   })
+
 
   # ----------------------------- SCATTERPLOT SECTION --------------------------
 
