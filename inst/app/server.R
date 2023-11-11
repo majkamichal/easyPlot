@@ -1416,6 +1416,14 @@ shinyServer(function(input, output, session){
         pl <- pl + theme_classic(Size_sc, Font_sc)
         Code$theme <- paste0(" + \n  theme_classic(", Size_sc, ", ", "'",Font_sc,"'", ")")
       }
+      if (Theme_sc == "Dark") {
+          pl <- pl + theme_dark(Size_sc, Font_sc)
+          Code$theme <- paste0(" + \n  theme_dark(", Size_sc, ", ", "'",Font_sc,"'", ")")
+      }
+      if (Theme_sc == "Void") {
+          pl <- pl + theme_void(Size_sc, Font_sc)
+          Code$theme <- paste0(" + \n  theme_void(", Size_sc, ", ", "'",Font_sc,"'", ")")
+      }
 
 
       if (Size_sc == 12 & Font_sc == "sans" & Theme_sc == "Grey") {
@@ -2106,6 +2114,14 @@ shinyServer(function(input, output, session){
         pl_hi <- pl_hi + theme_classic(Size_hi, Font_hi)
         Code_hi$g <- paste0(" + \n  theme_classic(", Size_hi, ", ", "'",Font_hi,"'", ")")
       }
+      if (Theme_hi == "Dark") {
+          pl_hi <- pl_hi + theme_dark(Size_hi, Font_hi)
+          Code_hi$g <- paste0(" + \n  theme_dark(", Size_hi, ", ", "'",Font_hi,"'", ")")
+      }
+      if (Theme_hi == "Void") {
+          pl_hi <- pl_hi + theme_void(Size_hi, Font_hi)
+          Code_hi$g <- paste0(" + \n  theme_void(", Size_hi, ", ", "'",Font_hi,"'", ")")
+      }
 
 
       if (Size_hi == 12 & Font_hi == "sans" & Theme_hi == "Grey") {
@@ -2575,6 +2591,14 @@ shinyServer(function(input, output, session){
       if (Theme_ba == "Classic") {
         pl_ba <- pl_ba + theme_classic(Size_ba, Font_ba)
         Code_ba$theme <- paste0(" + \n  theme_classic(", Size_ba, ", ", "'",Font_ba,"'", ")")
+      }
+      if (Theme_ba == "Dark") {
+          pl_ba <- pl_ba + theme_dark(Size_ba, Font_ba)
+          Code_ba$theme <- paste0(" + \n  theme_dark(", Size_ba, ", ", "'",Font_ba,"'", ")")
+      }
+      if (Theme_ba == "Void") {
+          pl_ba <- pl_ba + theme_void(Size_ba, Font_ba)
+          Code_ba$theme <- paste0(" + \n  theme_void(", Size_ba, ", ", "'",Font_ba,"'", ")")
       }
 
 
@@ -3238,6 +3262,14 @@ shinyServer(function(input, output, session){
       if (Theme_box == "Classic") {
         pl_box <- pl_box + theme_classic(Size_box, Font_box)
         Code_box$theme <- paste0(" + \n  theme_classic(", Size_box, ", ", "'",Font_box,"'", ")")
+      }
+      if (Theme_box == "Dark") {
+          pl_box <- pl_box + theme_dark(Size_box, Font_box)
+          Code_box$theme <- paste0(" + \n  theme_dark(", Size_box, ", ", "'",Font_box,"'", ")")
+      }
+      if (Theme_box == "Void") {
+          pl_box <- pl_box + theme_void(Size_box, Font_box)
+          Code_box$theme <- paste0(" + \n  theme_void(", Size_box, ", ", "'",Font_box,"'", ")")
       }
 
 

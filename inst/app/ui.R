@@ -317,8 +317,8 @@ shinyUI(
                         div(id = "show_theme_widgets_sc",
 
                             radioButtons(inputId = "theme_sc", label = "Theme:",
-                                         choices = c("Grey", "White","Linedraw", "Light",
-                                                     "Minimal", "Classic")),
+                                         choices = c("Grey", "White", "Linedraw", "Light",
+                                                     "Minimal", "Classic", "Dark", "Void")),
 
                             radioButtons(inputId = "legend_sc", label = "Legend",
                                          choices = c("right", "bottom", "left", "none"),
@@ -638,7 +638,7 @@ shinyUI(
 
                         radioButtons(inputId = "theme_hi", label = "Theme:",
                                      choices = c("Grey", "White","Linedraw", "Light",
-                                                 "Minimal", "Classic")),
+                                                 "Minimal", "Classic", "Dark", "Void")),
 
                         radioButtons(inputId = "legend_hi", label = "Legend:",
                                      choices = c("right", "bottom", "left"),
@@ -872,7 +872,7 @@ shinyUI(
 
                         radioButtons(inputId = "theme_box", label = "Theme:",
                                      choices = c("Grey", "White","Linedraw", "Light",
-                                                 "Minimal", "Classic")),
+                                                 "Minimal", "Classic", "Dark", "Void")),
 
                         radioButtons(inputId = "legend_box", label = "Legend:",
                                      choices = c("right", "bottom", "left", "none"),
@@ -1080,7 +1080,7 @@ shinyUI(
 
                         radioButtons(inputId = "theme_ba", label = "Theme:",
                                      choices = c("Grey", "White","Linedraw", "Light",
-                                                 "Minimal", "Classic")),
+                                                 "Minimal", "Classic", "Dark", "Void")),
 
                         radioButtons(inputId = "legend_ba", label = "Legend:",
                                      choices = c("right", "bottom", "left", "none"),
