@@ -236,15 +236,18 @@ shinyServer(function(input, output, session){
     }
 })
 
-  output$table <- DT::renderDataTable(
-
-      dataForTable(),
+  output$table <- DT::renderDataTable({
+      req(dataForTable())
+      dataForTable()
+      },
+      colnames = paste0(colnames(dataForTable()), "\n", "(", sapply(dataForTable(), function(x) class(x)[1]), ")"),
       server = TRUE,
       class = "cell-border stripe hover",
       caption = "",
       #extensions = "TableTools",
       extensions = c("Buttons", "KeyTable"),
       options = list(
+          columnDefs = list(list(className = 'dt-center', targets = 0:ncol(dataForTable()))),
           keys = TRUE, # KeyTable
           lengthMenu = list(c(25, 50, 100,  -1), c("25", "50", "100", "All")),
           searchHighlight = TRUE,
