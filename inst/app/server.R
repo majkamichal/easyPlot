@@ -1394,7 +1394,7 @@ shinyServer(function(input, output, session){
 
       if (Theme_sc == "Grey") {
         pl <- pl + theme_gray(Size_sc, Font_sc)
-        Code$theme <- paste0(" + \n  theme_gray(", Size_sc, ", ", "'",Font_sc,"'", ")")
+        Code$theme <- paste0(" + \n  theme_grey(", Size_sc, ", ", "'",Font_sc,"'", ")")
       }
       if (Theme_sc == "White") {
         pl <- pl + theme_bw(Size_sc, Font_sc)
@@ -2092,7 +2092,7 @@ shinyServer(function(input, output, session){
 
       if (Theme_hi == "Grey") {
         pl_hi <- pl_hi + theme_gray(Size_hi, Font_hi )
-        Code_hi$h <- paste0(" + \n  theme_gray(", Size_hi, ", ", "'",Font_hi,"'", ")")
+        Code_hi$h <- paste0(" + \n  theme_grey(", Size_hi, ", ", "'",Font_hi,"'", ")")
       }
       if (Theme_hi == "White") {
         pl_hi <- pl_hi + theme_bw(Size_hi, Font_hi)
@@ -2570,7 +2570,7 @@ shinyServer(function(input, output, session){
 
       if (Theme_ba == "Grey") {
         pl_ba <- pl_ba + theme_gray(Size_ba, Font_ba)
-        Code_ba$theme <- paste0(" + \n  theme_gray(", Size_ba, ", ", "'",Font_ba,"'", ")")
+        Code_ba$theme <- paste0(" + \n  theme_grey(", Size_ba, ", ", "'",Font_ba,"'", ")")
       }
       if (Theme_ba == "White") {
         pl_ba <- pl_ba + theme_bw(Size_ba, Font_ba)
@@ -3241,7 +3241,7 @@ shinyServer(function(input, output, session){
 
       if (Theme_box == "Grey") {
         pl_box <- pl_box + theme_gray(Size_box, Font_box)
-        Code_box$theme <- paste0(" + \n  theme_gray(", Size_box, ", ", "'",Font_box,"'", ")")
+        Code_box$theme <- paste0(" + \n  theme_grey(", Size_box, ", ", "'",Font_box,"'", ")")
       }
       if (Theme_box == "White") {
         pl_box <- pl_box + theme_bw(Size_box, Font_box)
