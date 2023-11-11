@@ -358,6 +358,15 @@ shinyServer(function(input, output, session){
     }
   })
 
+  observe({
+      if (is.null(plotData())) {
+          updateAceEditor(session, editorId = "print_code_sc",  value = "")
+          updateAceEditor(session, editorId = "print_code_hi",  value = "")
+          updateAceEditor(session, editorId = "print_code_ba",  value = "")
+          updateAceEditor(session, editorId = "print_code_box", value = "")
+      }
+  })
+
 
   observe({
 
@@ -389,6 +398,7 @@ shinyServer(function(input, output, session){
               closeAlert(session, alertId = "alert5_upload")
       }
   })
+
 
 
   # ----------------------------- SCATTERPLOT SECTION --------------------------
