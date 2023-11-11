@@ -2,7 +2,7 @@
 % Please edit documentation in R/easyPlot.R
 \name{easyPlot}
 \alias{easyPlot}
-\title{Start an interactive User Interface easyPlot}
+\title{Start an Interactive User Interface `easyPlot`}
 \usage{
 easyPlot(data = NULL)
 }
@@ -10,7 +10,7 @@ easyPlot(data = NULL)
 \item{data}{(data.frame) an optional data frame with at least two columns passed as a character string}
 }
 \description{
-Start an interactive User Interface easyPlot
+Start an Interactive User Interface `easyPlot`
 }
 \examples{
 # easyPlot()
