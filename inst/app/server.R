@@ -305,40 +305,35 @@ shinyServer(function(input, output, session){
         closeAlert(session, alertId = "alert4")
         closeAlert(session, alertId = "alert5")
 
-        if (my_data & !ready & !exampleDat) {
-          Code_Data$name <- name
-          return(d)
-        }
-        if (ready & !my_data & !exampleDat) {
-          Code_Data$name <- Code_Data$upload
-          return(d)
-        }
-        if (exampleDat & !ready & !my_data) {
-          Code_Data$name <- Code_Data$example
-          return(d)
-        }
-        else {
-          Code_Data$name <- NULL
-          return( NULL )
+        if (my_data & !upload_data & !exampleDat) {
+            Code_Data$name <- name
+            return(d)
+        } else if (ready & upload_data & !my_data & !exampleDat) {
+            Code_Data$name <- Code_Data$upload
+            return(d)
+        } else if (exampleDat & !upload_data & !my_data) {
+            Code_Data$name <- Code_Data$example
+            return(d)
+        } else {
+            Code_Data$name <- NULL
+            return( NULL )
         }
 
-    }
-    else {
-
-      createAlert(session, anchorId = "dataAlert1", alertId = "alert1",
-                  title = "Please provide a data frame with at least
+    } else {
+          createAlert(session, anchorId = "dataAlert1", alertId = "alert1",
+                      title = "Please provide a data frame with at least
                   two variables", content = "")
-      createAlert(session, anchorId = "dataAlert2", alertId = "alert2",
-                  title = "Please provide a data frame with at least
+          createAlert(session, anchorId = "dataAlert2", alertId = "alert2",
+                      title = "Please provide a data frame with at least
                   two variables", content = "")
-      createAlert(session, anchorId = "dataAlert3", alertId = "alert3",
-                  title = "Please provide a data frame with at least
+          createAlert(session, anchorId = "dataAlert3", alertId = "alert3",
+                      title = "Please provide a data frame with at least
                   two variables", content = "")
-      createAlert(session, anchorId = "dataAlert4", alertId = "alert4",
-                  title = "Please provide a data frame with at least
+          createAlert(session, anchorId = "dataAlert4", alertId = "alert4",
+                      title = "Please provide a data frame with at least
                   two variables", content = "")
-      createAlert(session, anchorId = "dataAlert5", alertId = "alert5",
-                  title = "Please provide a data frame with at least
+          createAlert(session, anchorId = "dataAlert5", alertId = "alert5",
+                      title = "Please provide a data frame with at least
                   two variables", content = "")
 
       Code_Data$name <- NULL
@@ -346,6 +341,37 @@ shinyServer(function(input, output, session){
     }
   })
 
+
+  observe({
+
+      if (input$upload_data & !input$readyButton ||
+          !is.null(input$upload_data) & !input$readyButton) {
+
+          createAlert(session,
+                      anchorId = "dataAlert2_upload",
+                      alertId = "alert2_upload",
+                      title = "If your uploaded dataset is ready to visualise then press the red button in the upload section", content = "")
+          createAlert(session,
+                      anchorId = "dataAlert3_upload",
+                      alertId = "alert3_upload",
+                      title = "If your uploaded dataset is ready to visualise then press the red button in the upload section", content = "")
+          createAlert(session,
+                      anchorId = "dataAlert4_upload",
+                      alertId = "alert4_upload",
+                      title = "If your uploaded dataset is ready to visualise then press the red button in the upload section", content = "")
+          createAlert(session,
+                      anchorId = "dataAlert5_upload",
+                      alertId = "alert5_upload",
+                      title = "If your uploaded dataset is ready to visualise then press the red button in the upload section", content = "")
+
+      }
+      if (input$upload_data & input$readyButton) {
+          closeAlert(session, alertId = "alert2_upload")
+          closeAlert(session, alertId = "alert3_upload")
+          closeAlert(session, alertId = "alert4_upload")
+          closeAlert(session, alertId = "alert5_upload")
+      }
+  })
 
   # ----------------------------- SCATTERPLOT SECTION --------------------------
 

@@ -57,7 +57,8 @@ shinyUI(
                             ),
                             conditionalPanel(
                               condition = "input.upload_data",
-                              fileInput(inputId = "uploaded", label = "Upload .csv |.xlsx |.txt file",
+                              fileInput(inputId = "uploaded",
+                                        label = "Upload .csv |.xlsx |.txt file",
                                         accept = c("text/csv",
                                                    ".csv",
                                                    "text/comma-separated-values",
@@ -65,9 +66,15 @@ shinyUI(
                                                    ".xlsx",
                                                    ".xls")),
 
-                              bsTooltip("uploaded",
-                                        title = "If your data is ready - press ready",
-                                        "right", options = list(container = "body")),
+                              bsTooltip(id = "upload_data",
+                                        title = "If your data is ready to visualize - press the red button `ready`",
+                                        placement = "right",
+                                        options = list(container = "body")),
+
+                              bsTooltip(id = "readyButton",
+                                        title = "If your data is ready to visualize then press me",
+                                        placement = "right",
+                                        options = list(container = "body")),
 
                               tags$hr(),
 
@@ -125,6 +132,7 @@ shinyUI(
      tabPanel(title = "Scatterplot", icon = icon("spinner"),
 
         bsAlert("dataAlert2"),
+        bsAlert("dataAlert2_upload"),
         fluidRow(
           column(2,
                br(),
@@ -439,6 +447,7 @@ shinyUI(
     tabPanel(title = "Histogram", icon = icon("chart-column"),
 
              bsAlert(anchorId = "dataAlert3"),
+             bsAlert(anchorId = "dataAlert3_upload"),
              bsAlert(anchorId = "alert_hi"),
              fluidRow(
                column(2),
@@ -695,6 +704,7 @@ shinyUI(
     # ----------------------------- BOXPLOT SECTION -------------------------------
     tabPanel(title = "Boxplot", icon = icon("sliders", class = "fa-rotate-90"),
              bsAlert("dataAlert4"),
+             bsAlert("dataAlert4_upload"),
              bsAlert("alert_box1"),
              bsAlert("alert_box2"),
              fluidRow(
@@ -924,6 +934,7 @@ shinyUI(
     # ----------------------------- BAR GRAPH SECTION ------------------------------
     tabPanel(title = "Bar graph", icon = icon("align-left", class = "fa-rotate-270"),
              bsAlert(anchorId = "dataAlert5"),
+             bsAlert(anchorId = "dataAlert5_upload"),
              bsAlert(anchorId = "alert_ba"),
              fluidRow(
                column(2),
