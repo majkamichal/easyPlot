@@ -208,6 +208,11 @@ shinyServer(function(input, output, session){
       }
   })
 
+  observe({
+      req(input$uploaded)
+      updateButton(session, inputId = "readyButton", value = FALSE,
+                   style = "danger", icon = icon("ban"))
+  })
 
   dataForTable <- reactive({
 
@@ -230,8 +235,18 @@ shinyServer(function(input, output, session){
         return( NULL )
       }
       else {
-        closeAlert(session, "alert1")
-        return( uploadedData() )
+
+        if (!input$upload_data) {
+            createAlert(session, anchorId = "dataAlert1", alertId = "alert1",
+                        title = "Please provide a data frame with at least
+                    two variables", content = "")
+            return( NULL )
+        } else {
+            closeAlert(session, "alert1")
+            return( uploadedData() )
+        }
+
+
       }
     }
 })
@@ -296,8 +311,9 @@ shinyServer(function(input, output, session){
         if (sum(test2) > 0) {
           d[ ,test2] <- sapply(d[ ,test2], as.numeric)
         }
-        if (nrow(d) == 0){
-          return(NULL)
+        if (nrow(d) == 0) {
+          Code_Data$name <- NULL
+          return( NULL )
         }
 
         closeAlert(session, alertId = "alert1")
@@ -345,32 +361,32 @@ shinyServer(function(input, output, session){
 
   observe({
 
-      if (input$upload_data & !input$readyButton ||
-          !is.null(input$upload_data) & !input$readyButton) {
+      if (input$upload_data & !input$readyButton) {
 
-          createAlert(session,
-                      anchorId = "dataAlert2_upload",
-                      alertId = "alert2_upload",
-                      title = "If your uploaded dataset is ready to visualise then press the red button in the upload section", content = "")
-          createAlert(session,
-                      anchorId = "dataAlert3_upload",
-                      alertId = "alert3_upload",
-                      title = "If your uploaded dataset is ready to visualise then press the red button in the upload section", content = "")
-          createAlert(session,
-                      anchorId = "dataAlert4_upload",
-                      alertId = "alert4_upload",
-                      title = "If your uploaded dataset is ready to visualise then press the red button in the upload section", content = "")
-          createAlert(session,
-                      anchorId = "dataAlert5_upload",
-                      alertId = "alert5_upload",
-                      title = "If your uploaded dataset is ready to visualise then press the red button in the upload section", content = "")
+          if (!input$exampleData & !input$my_data) {
+              createAlert(session,
+                          anchorId = "dataAlert2_upload",
+                          alertId = "alert2_upload",
+                          title = "If your uploaded dataset is ready to visualise then press the red button in the upload section", content = "")
+              createAlert(session,
+                          anchorId = "dataAlert3_upload",
+                          alertId = "alert3_upload",
+                          title = "If your uploaded dataset is ready to visualise then press the red button in the upload section", content = "")
+              createAlert(session,
+                          anchorId = "dataAlert4_upload",
+                          alertId = "alert4_upload",
+                          title = "If your uploaded dataset is ready to visualise then press the red button in the upload section", content = "")
+              createAlert(session,
+                          anchorId = "dataAlert5_upload",
+                          alertId = "alert5_upload",
+                          title = "If your uploaded dataset is ready to visualise then press the red button in the upload section", content = "")
+          }
 
-      }
-      if (input$upload_data & input$readyButton) {
-          closeAlert(session, alertId = "alert2_upload")
-          closeAlert(session, alertId = "alert3_upload")
-          closeAlert(session, alertId = "alert4_upload")
-          closeAlert(session, alertId = "alert5_upload")
+      } else {
+              closeAlert(session, alertId = "alert2_upload")
+              closeAlert(session, alertId = "alert3_upload")
+              closeAlert(session, alertId = "alert4_upload")
+              closeAlert(session, alertId = "alert5_upload")
       }
   })
 
