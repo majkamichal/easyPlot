@@ -7,7 +7,7 @@ syntax <- function(a = NULL) {
 
 shinyServer(function(input, output, session){
 
-  Sys.sleep(0.5)
+  Sys.sleep(0.25)
   hide(id = "loader", anim = TRUE, animType = "fade")
 
   session$onSessionEnded(function() { })
