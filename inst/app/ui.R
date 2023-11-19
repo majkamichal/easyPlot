@@ -58,7 +58,7 @@ shinyUI(
                             conditionalPanel(
                               condition = "input.upload_data",
                               fileInput(inputId = "uploaded",
-                                        label = "Upload .csv |.xlsx |.txt file",
+                                        label = "Upload file (.csv/.xlsx/.txt)",
                                         accept = c("text/csv",
                                                    ".csv",
                                                    "text/comma-separated-values",
@@ -67,54 +67,43 @@ shinyUI(
                                                    ".xls")),
 
                               bsTooltip(id = "upload_data",
-                                        title = "If your data is ready to visualize - press the red button `ready`",
+                                        title = "If your data is uploaded and ready to visualize - press the red button `ready`",
                                         placement = "right",
                                         options = list(container = "body")),
 
                               bsTooltip(id = "readyButton",
-                                        title = "If your data is ready to visualize then press me",
+                                        title = "If your data is uploaded and ready to visualize then press me",
                                         placement = "right",
                                         options = list(container = "body")),
 
                               tags$hr(),
 
-
-                              fluidRow(
-                                column(5,
-                                       radioButtons(inputId = "sep", label =  'Separator',
-                                                    choices = c(Comma = ",", Semicolon = ";", Tab = '\t', Whitespace = " "),
-                                                    selected = ";")
-
-                                ),
-                                column(5,
-                                       radioButtons(inputId = "quote", label = "Quote",
-                                                    choices = c(None = '','Double Quote'='"',
-                                                                'Single Quote'="'"),
-                                                    selected = '"')
-                                )
+                              # Dynamic UI for CSV datasets
+                              conditionalPanel(
+                                  condition = "input.upload_data == true && output.data_format == 'csvtxt'",
+                                  source("UI_widgets_csvtxt.R", local = TRUE)$value
                               ),
-                              fluidRow(
-                                column(5,
-                                       list(radioButtons(inputId = "dec", label = "Decimal",
-                                                    choices = c(Dot = ".", Comma = ","),
-                                                    selected = "."),
-                                            numericInput(inputId = "skip", label =  "Start row", value = 1, step = 1, min = 1))
-                                ),
-                                # column(5,
-                                #        checkboxInput(inputId = "header", label =  "Header", value = TRUE)),
-                                column(5,
-                                       list(checkboxInput(inputId = "header", label =  "Header", value = TRUE),
-                                            checkboxInput(inputId = "strings_as_factor", label =  "Strings as factors", value = TRUE),
-                                            checkboxInput(inputId = "logicals_as_factor", label =  "Logicals as factors", value = TRUE)
-                                        )
-                                )
-                              ),
-                              tags$hr(),
-                              bsButton(inputId = "readyButton", label = "   Ready", type = "toggle",
-                                       value = FALSE)
-                            )
-                          ),
 
+
+                              # Dynamic UI for XLSX datasets
+                              conditionalPanel(
+                                condition = "input.upload_data == true && output.data_format == 'xlsx'",
+                                source("UI_widgets_xlsx.R", local = TRUE)$value
+                              ),
+
+                              # Recoding of variables
+
+                              # Data Ready button
+                              conditionalPanel(
+                                condition = "input.upload_data == true && (output.data_format == 'csvtxt' || output.data_format == 'xlsx')",
+                                tags$hr(),
+                                bsButton(inputId = "readyButton",
+                                         label = "   Ready",
+                                         type = "toggle",
+                                         value = FALSE)
+                              )
+                            ) # end conditionalPanel("uploaded")
+                          ), # end sidebarPanel
                           mainPanel(
                             bsAlert("dataAlert1"),
                             DT::dataTableOutput(outputId = "table")

@@ -116,46 +116,7 @@ shinyServer(function(input, output, session){
     }
     else updateButton(session, inputId = "readyButton", style = "danger",
                       icon = icon("ban"))
-  })
-  )
-
-
-  # uploadedData <- reactive({
-  #
-  #   upFile <- input$uploaded
-  #
-  #   Code_Data$upload <- substr(upFile$name, 1, nchar(upFile$name) - 4)
-  #
-  #   if (is.null( upFile ) ){
-  #     return(NULL)
-  #   } else {
-  #     updateCheckboxInput(session, inputId = "my_data", value = FALSE)
-  #     updateCheckboxInput(session, inputId = "exampleData", value = FALSE)
-  #
-  #     skip_rows <- as.integer(input$skip)
-  #
-  #     if (is.na(skip_rows) || skip_rows < 1) {
-  #         return(NULL)
-  #     }
-  #
-  #     x <- read.csv(upFile$datapath,
-  #                   header = input$header,
-  #                   sep = input$sep,
-  #                   quote = input$quote,
-  #                   dec = input$dec,
-  #                   stringsAsFactors = input$strings_as_factor,
-  #                   skip = skip_rows - 1)
-  #
-  #     # Re-code logical variables into factors depending on a widget
-  #     if (input$logicals_as_factor) {
-  #         ind_logical <- sapply(x, is.logical)
-  #         x[ind_logical] <- lapply(x[ind_logical], as.factor)
-  #     }
-  #
-  #     return(x)
-  #
-  #   }
-  # })
+  }))
 
   uploadedData <- reactive({
 
@@ -163,9 +124,12 @@ shinyServer(function(input, output, session){
 
       Code_Data$upload <- substr(upFile$name, 1, nchar(upFile$name) - 4)
 
-      if (is.null( upFile ) ){
+      if (is.null(upFile)) {
+
           return(NULL)
+
       } else {
+
           updateCheckboxInput(session, inputId = "my_data", value = FALSE)
           updateCheckboxInput(session, inputId = "exampleData", value = FALSE)
 
@@ -175,8 +139,10 @@ shinyServer(function(input, output, session){
               return(NULL)
           }
 
-          # if (upFile$type %in% c("text/csv", ".csv", "text/comma-separated-values", "text/plain")) {
           if (any(endsWith(upFile$name, c(".csv", ".txt")))) {
+
+              output$data_format <- renderText("csvtxt")
+              outputOptions(output, "data_format", suspendWhenHidden = FALSE)
 
               x <- read.csv(upFile$datapath,
                             header = input$header,
@@ -193,19 +159,66 @@ shinyServer(function(input, output, session){
               }
               return(x)
           }
-          print(upFile)
-          print(upFile$type)
-          print(str(upFile))
-          if (any(endsWith(upFile$name,c(".xlsx", ".xls")))) {
 
-              x <- openxlsx::read.xlsx(upFile$datapath,
-                                       sheet = 1,
-                                       startRow = as.integer(skip_rows),
-                                       detectDates = TRUE)
+          if (any(endsWith(upFile$name, c(".xlsx", ".xls")))) {
+
+              output$data_format <- renderText("xlsx")
+              outputOptions(output, "data_format", suspendWhenHidden = FALSE)
+
+              skip_rows_xlsx <- input$skip_xlsx
+
+              req(data_xlsx_wb())
+              req(input$select_xlsx_sheet)
+
+              select_xlsx_named_region <- input$select_xlsx_named_region
+              select_xlsx_named_region <- if (select_xlsx_named_region == "None") NULL else select_xlsx_named_region
+
+              x <- tryCatch({
+                openxlsx::readWorkbook(data_xlsx_wb(),
+                                       sheet = input$select_xlsx_sheet,
+                                       detectDates = TRUE,
+                                       startRow = as.integer(skip_rows_xlsx),
+                                       namedRegion = select_xlsx_named_region) # named_regions_xlsx[2]) # NULL)
+              }, error = function(e) NULL)
+
+              if (input$logicals_as_factor_xlsx) {
+                ind_logical <- sapply(x, is.logical)
+                x[ind_logical] <- lapply(x[ind_logical], as.factor)
+              }
+
+              if (input$strings_as_factor_xlsx) {
+                ind_logical <- sapply(x, is.character)
+                x[ind_logical] <- lapply(x[ind_logical], as.factor)
+              }
+
               return(x)
           }
-
       }
+  })
+
+  data_xlsx_wb <- reactive({
+
+    upFile <- input$uploaded
+
+    if (any(endsWith(upFile$name, c(".xlsx", ".xls")))) {
+
+      wb <- openxlsx::loadWorkbook(upFile$datapath)
+
+      # Sheets
+      sheets_xlsx <- openxlsx::sheets(wb)
+      updateSelectInput(session,
+                        inputId = "select_xlsx_sheet",
+                        choices = sheets_xlsx)
+
+      # Named regions
+      named_regions_xlsx <- c("None", openxlsx::getNamedRegions(wb))
+      updateSelectInput(session,
+                        inputId = "select_xlsx_named_region",
+                        choices = named_regions_xlsx)
+
+      return(wb)
+    }
+    return(NULL)
   })
 
   observe({
