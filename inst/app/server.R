@@ -4,6 +4,18 @@ syntax <- function(a = NULL) {
   substring(res, 3)
 }
 
+is.numeric_logical <- function(x) {
+  all(x %in% c(0, 1))
+}
+
+is.datetime <- function(x) {
+  inherits(x, "POSIXct")
+}
+
+is.date <- function(x) {
+  inherits(x, "Date")
+}
+
 
 shinyServer(function(input, output, session){
 
@@ -432,47 +444,54 @@ shinyServer(function(input, output, session){
 
   output$dynamic_range_x <- renderUI({
 
-    if (!is.null( plotData() )) {
+    if (!is.null(plotData())) {
 
       inX <- input$x_input_sc
+      var_x <- plotData()[ ,inX]
 
-      if (is.numeric( plotData()[ , inX ]) ) {
+      if (is.numeric(var_x) | inherits(var_x, "Date") | inherits(var_x, "POSIXct")) {
 
-        min_x = min(plotData()[ , inX ])
-        max_x = max(plotData()[ , inX ])
+        min_x <- min(var_x)
+        max_x <- max(var_x)
 
         return(sliderInput(inputId = "x_range_sc",
                     label = paste0("Range of '", input$x_input_sc,"':"),
-                    min = min_x, max = max_x, value = c(min_x, max_x),
+                    min = min_x,
+                    max = max_x,
+                    value = c(min_x, max_x),
                     step = (max_x - min_x) / 100))
       }
-      if (is.factor( plotData()[ ,inX] )) {
 
-        lev <- levels(plotData()[ ,inX])
+      if (is.factor(var_x)) {
+
+        lev <- levels(var_x)
 
         if (length(lev) < 7) {
-          return(checkboxGroupInput(inputId = "x_range_sc_factor", label = "Levels:",
-                             choices = lev, selected = lev))
-        }
-        else {
-          return(selectInput(inputId = "x_range_sc_factor", label = "Levels:",
-                      choices = lev, selected = lev, multiple = TRUE))
+          return(checkboxGroupInput(inputId = "x_range_sc_factor",
+                                    label = "Levels:",
+                                    choices = lev,
+                                    selected = lev))
+        } else {
+          return(selectInput(inputId = "x_range_sc_factor",
+                             label = "Levels:",
+                             choices = lev,
+                             selected = lev,
+                             multiple = TRUE))
         }
       }
-    }
-    else {
+    } else {
       return(NULL)
     }
   })
 
 
   observe({
-    if (!is.null( plotData() )){
+    plotData <- plotData()
+    if (!is.null(plotData)) {
       updateSelectInput(session, inputId = "y_input_sc",
-                        choices =  names( plotData() ),
-                        selected = names( plotData())[2] )
-    }
-    else {
+                        choices =  names(plotData),
+                        selected = names(plotData)[2])
+    } else {
       updateSelectInput(session, inputId = "y_input_sc",
                         choices =  "none",
                         selected = "none")
@@ -482,35 +501,42 @@ shinyServer(function(input, output, session){
 
   output$dynamic_range_y <- renderUI({
 
-    if (!is.null( plotData() )) {
+    if (!is.null(plotData())) {
 
       inY <- input$y_input_sc
+      var_y <- plotData()[ ,inY]
 
-      if (is.numeric( plotData()[ , inY ]) ) {
+      if (is.numeric(var_y) | inherits(var_y, "Date") | inherits(var_y, "POSIXct")) {
 
-        min_y = min(plotData()[ , inY ])
-        max_y = max(plotData()[ , inY ])
+        min_y <- min(var_y)
+        max_y <- max(var_y)
 
         return(sliderInput(inputId = "y_range_sc",
                            label = paste0("Range of '", input$y_input_sc,"':"),
-                           min = min_y, max = max_y, value = c(min_y, max_y),
+                           min = min_y,
+                           max = max_y,
+                           value = c(min_y, max_y),
                            step = (max_y - min_y) / 100))
       }
-      if (is.factor( plotData()[ ,inY] )) {
 
-        lev <- levels(plotData()[ ,inY])
+      if (is.factor(var_y)) {
+
+        lev <- levels(var_y)
 
         if (length(lev) < 7) {
-          return(checkboxGroupInput(inputId = "y_range_sc_factor", label = "Levels:",
-                                    choices = lev, selected = lev))
-        }
-        else {
-          return(selectInput(inputId = "y_range_sc_factor", label = "Levels:",
-                             choices = lev, selected = lev, multiple = TRUE))
+          return(checkboxGroupInput(inputId = "y_range_sc_factor",
+                                    label = "Levels:",
+                                    choices = lev,
+                                    selected = lev))
+        } else {
+          return(selectInput(inputId = "y_range_sc_factor",
+                             label = "Levels:",
+                             choices = lev,
+                             selected = lev,
+                             multiple = TRUE))
         }
       }
-    }
-    else {
+    } else {
       return(NULL)
     }
   })
@@ -548,12 +574,10 @@ shinyServer(function(input, output, session){
                              choices = c("Default" = "default", "Qualitative" = "qual",
                                          "Sequential" = "seq", "Diverging" = "div")))
         }
-      }
-      else {
+      } else {
         return()
       }
-    }
-    else {
+    } else {
       return()
     }
   })
@@ -670,31 +694,32 @@ shinyServer(function(input, output, session){
     }
   })
 
-  # LOG X
-  output$dyn_x_log_sc <- renderUI({
-
-    validate(
-      need(is.numeric(dataScatter()[ ,input$x_input_sc]),
-           "'log' is not meaningful for factors
-           "))
-    checkboxInput(inputId = "x_log_sc", label = "X-log:",
-                  value = FALSE)
-  })
-
-  output$dyn_y_log_sc <- renderUI({
-
-    validate(
-      need(is.numeric(dataScatter()[ ,input$y_input_sc]),
-           "'log' is not meaningful for factors
-           ")
-      )
-    checkboxInput(inputId = "y_log_sc", label = "Y-log:",
-                  value = FALSE)
-  })
+  # # LOG X
+  # output$dyn_x_log_sc <- renderUI({
+  #
+  #   validate(
+  #     need(is.numeric(dataScatter()[ ,input$x_input_sc]),
+  #          "'log' is not meaningful for factors/dates/datetimes/logicals
+  #          "))
+  #   checkboxInput(inputId = "x_log_sc", label = "X-log:",
+  #                 value = FALSE)
+  # })
+  #
+  # output$dyn_y_log_sc <- renderUI({
+  #
+  #   validate(
+  #     need(is.numeric(dataScatter()[ ,input$y_input_sc]),
+  #          "'log' is not meaningful for factors/dates/datetimes/logicals
+  #          ")
+  #     )
+  #   checkboxInput(inputId = "y_log_sc", label = "Y-log:",
+  #                 value = FALSE)
+  # })
 
   # ERRORBARS DYNAMIC SECTION
 
   output$errbar_out_sc <- renderUI({
+
     if (!is.null(plotData() )) {
 
       if (is.factor(plotData()[ ,input$x_input_sc]) & !is.factor(plotData()[ ,input$y_input_sc]) ){
@@ -703,15 +728,13 @@ shinyServer(function(input, output, session){
                      label = "Errorbars:",
                      choices = c("none" = "none", "Mean +- SE" = "SE", "95% CI" = "95" ),
                      selected = "none"))
-      }
-      else {
+      } else {
         return(radioButtons(inputId = "errbar_sc",
                      label = "Errorbars:",
                      choices = c("none"),
                      selected = "none"))
       }
-    }
-    else {
+    } else {
       return(radioButtons(inputId = "errbar_sc",
                           label = "Errorbars:",
                           choices = c("none"),
@@ -785,6 +808,7 @@ shinyServer(function(input, output, session){
   Subset <- reactiveValues()
 
   dataScatter <- reactive({
+
     if (!is.null(plotData() )) {
 
         if (input$show_range_sc) {
@@ -793,44 +817,76 @@ shinyServer(function(input, output, session){
 
           inX <- input$x_input_sc
           inY <- input$y_input_sc
+          var_x <- data_sc[ ,inX]
+          var_y <- data_sc[ ,inY]
 
-          if ( is.numeric(data_sc[ ,inY])) {
-            min_y <- min(data_sc[ ,inY])
-            max_y <- max(data_sc[ ,inY])
+          if ( is.numeric(var_y)) {
+            min_y <- min(var_y)
+            max_y <- max(var_y)
           }
 
-          len1 <- length(levels(data_sc[ ,inX]))
-          len2 <- length(levels(data_sc[ ,inY]))
+          len1 <- length(levels(var_x))
+          len2 <- length(levels(var_y))
 
+          is_date_x <- is.date(var_x)
+          is_datetime_x <- is.datetime(var_x)
+          is_numeric_logical_x <- is.numeric_logical(var_x)
 
-          if (is.numeric(data_sc[ ,inX])) {
+          is_date_y <- is.date(var_y)
+          is_datetime_y <- is.datetime(var_y)
+          is_numeric_logical_y <- is.numeric_logical(var_y)
+
+          if (is.numeric(var_x) | is_date_x | is_datetime_x) {
+
             rangeX <- input$x_range_sc
             Subset$x <- NULL
 
             if (!is.null(rangeX[1]) & !is.null(rangeX[2])) {
 
-              if (!input$x_log_sc) {
+              # Don't allow taking a log of a Date/Datetime
+              if (!input$x_log_sc | (input$x_log_sc & (is_date_x | is_datetime_x | is_numeric_logical_x))) {
+
                 Subset$logx <- NULL
                 Code$range_xfac <- NULL
 
-                if (rangeX[1] != min(data_sc[ ,inX]) | rangeX[2] != max(data_sc[ ,inX])) {
+                if (rangeX[1] != min(var_x) | rangeX[2] != max(var_x)) {
+
                   Code$logx <- NULL
-                  Subset$x <- paste0(input$x_input_sc, " >= ", rangeX[1], " & ",
-                                     input$x_input_sc, " <= ", rangeX[2])
-                  Code$range1 <- paste0(" + \n  scale_x_continuous(limits = c(", rangeX[1], ", ", rangeX[2], "))")
-                }
-                else {
+
+                  # if Date
+                  if (is_date_x) {
+
+                    Subset$x <- paste0(input$x_input_sc, " >= '", rangeX[1], "' & ",
+                                       input$x_input_sc, " <= '", rangeX[2], "'")
+                    Code$range1 <- paste0(" + \n  scale_x_date(limits = as.Date(c('", rangeX[1], "', '", rangeX[2], "')))")
+
+                  } else if (is_datetime_x) {
+
+                      Subset$x <- paste0(input$x_input_sc, " >= '", rangeX[1], "' & ",
+                                         input$x_input_sc, " <= '", rangeX[2], "'")
+                      Code$range1 <- paste0(" + \n  scale_x_datetime(limits = as.POSIXct(c('", rangeX[1], "', '", rangeX[2], "')))")
+
+                  # if numeric
+                  } else {
+                    Subset$x <- paste0(input$x_input_sc, " >= ", rangeX[1], " & ",
+                                       input$x_input_sc, " <= ", rangeX[2])
+                    Code$range1 <- paste0(" + \n  scale_x_continuous(limits = c(", rangeX[1], ", ", rangeX[2], "))")
+                  }
+
+                } else {
+
                   Code$logx <- NULL
                   Code$range_xfac <- NULL
                   Code$range1 <- NULL
 
                 }
-              }
-              if (input$x_log_sc) {
+
+              } else { # taking a log
+
                 Subset$logx <- paste0(" + \n  scale_x_log10(breaks = trans_breaks('log10', function(x) 10^x)",
                                        ", labels = trans_format('log10', math_format(10^.x)))")
 
-                if (rangeX[1] != min(data_sc[ ,inX]) | rangeX[2] != max(data_sc[ ,inX])) {
+                if (rangeX[1] != min(var_x) | rangeX[2] != max(var_x)) {
 
                   Subset$x <- paste0(input$x_input_sc, " >= ", rangeX[1], " & ",
                                      input$x_input_sc, " <= ", rangeX[2])
@@ -841,8 +897,7 @@ shinyServer(function(input, output, session){
                                          ", breaks = trans_breaks('log10', function(x) 10^x),\n",
                                          "                     ",
                                          "labels = trans_format('log10', math_format(10^.x))) ")
-                }
-                else {
+                } else {
                   Subset$x <- NULL
                   Code$range_xfac <- NULL
                   Code$range1 <- NULL
@@ -852,34 +907,60 @@ shinyServer(function(input, output, session){
                 }
               }
             }
-            data_sc <- data_sc[data_sc[ ,inX] >= rangeX[1] & data_sc[ ,inX] <= rangeX[2], ]
+            data_sc <- data_sc[var_x >= rangeX[1] & var_x <= rangeX[2], ]
           }
 
-          if (is.numeric(data_sc[ ,inY]) & nrow(data_sc) > 1) {
+
+
+          if ((is.numeric(var_y) | is_date_y | is_datetime_y | is_numeric_logical_y) & nrow(data_sc) > 1) {
+
             rangeY <- input$y_range_sc
             Subset$y <- NULL
 
 
              if (!is.null(rangeY[1]) & !is.null(rangeY[2])) {
 
-              if (!input$y_log_sc) {
+
+              # Don't allow taking a log of a Date/Datetime
+              if (!input$y_log_sc | (input$y_log_sc & (is_date_y | is_datetime_y | is_numeric_logical_y))) {
+
                 Subset$logy <- NULL
                 Code$range_yfac <- NULL
 
                 if (rangeY[1] != min_y | rangeY[2] != max_y) {
+
                   Code$logy <- NULL
-                  Subset$y <- paste0(input$y_input_sc, " >= ", rangeY[1], " & ",
-                                     input$y_input_sc, " <= ", rangeY[2])
-                  Code$range2 <- paste0(" + \n  scale_y_continuous(limits = c(", rangeY[1], ", ", rangeY[2], "))")
-                }
-                else {
+
+                  # if Date
+                  if (is_date_y) {
+
+                      Subset$y <- paste0(input$y_input_sc, " >= '", rangeY[1], "' & ",
+                                         input$y_input_sc, " <= '", rangeY[2], "'")
+                      Code$range2 <- paste0(" + \n  scale_y_date(limits = as.Date(c('", rangeY[1], "', '", rangeY[2], "')))")
+
+                    } else if (is_datetime_x) {
+
+                      Subset$y <- paste0(input$y_input_sc, " >= '", rangeY[1], "' & ",
+                                         input$y_input_sc, " <= '", rangeY[2], "'")
+                      Code$range2 <- paste0(" + \n  scale_y_datetime(limits = as.POSIXct(c('", rangeY[1], "', '", rangeY[2], "')))")
+
+                    # if numeric
+                    } else {
+                      Subset$y <- paste0(input$y_input_sc, " >= ", rangeY[1], " & ",
+                                         input$y_input_sc, " <= ", rangeY[2])
+                      Code$range2 <- paste0(" + \n  scale_y_continuous(limits = c(", rangeY[1], ", ", rangeY[2], "))")
+                    }
+
+                } else {
+
                   Subset$y <- NULL
                   Code$range_yfac <- NULL
                   Code$range2 <- NULL
                   Code$logy <- NULL
                 }
-              }
-              if (input$y_log_sc) {
+
+              } else {
+
                 Subset$logy <- paste0(" + \n  scale_y_log10(breaks = trans_breaks('log10', function(x) 10^x)",
                                        ", labels = trans_format('log10', math_format(10^.x)))")
                 if (rangeY[1] != min_y | rangeY[2] != max_y) {
@@ -903,11 +984,11 @@ shinyServer(function(input, output, session){
                 }
               }
             }
-            data_sc <- data_sc[data_sc[ ,inY] >= rangeY[1] & data_sc[ ,inY] <= rangeY[2], ]
+            data_sc <- data_sc[var_y >= rangeY[1] & var_y <= rangeY[2], ]
           }
 
 
-          if (is.factor(data_sc[ ,inX])) {
+          if (is.factor(var_x)) {
             Code$logx <- NULL
             Subset$logx <- NULL
             lev_x <- input$x_range_sc_factor
@@ -933,10 +1014,10 @@ shinyServer(function(input, output, session){
               Code$range_xfac <- NULL
               Subset$x <-NULL
             }
-            data_sc <- data_sc[data_sc[ ,inX] %in% lev_x, ]
+            data_sc <- data_sc[var_x %in% lev_x, ]
           }
 
-          if (is.factor(data_sc[ ,inY])) {
+          if (is.factor(var_y)) {
             Code$logy <-NULL
             Subset$logy <- NULL
             lev_y <- input$y_range_sc_factor
@@ -961,13 +1042,13 @@ shinyServer(function(input, output, session){
               Code$range_yfac <- NULL
               Subset$y <- NULL
             }
-            data_sc <- data_sc[data_sc[ ,inY] %in% lev_y, ]
+            data_sc <- data_sc[var_y %in% lev_y, ]
           }
 
           return(data_sc)
-        }
 
-        else {
+        } else {
+
           Subset$x <- NULL  ; Code$range1 <- NULL
           Subset$y <- NULL  ; Code$range2 <- NULL
 
@@ -975,11 +1056,24 @@ shinyServer(function(input, output, session){
 
           Code$logx <- NULL ; Code$logy <- NULL
 
-          if (input$x_log_sc & !is.factor(plotData()[ ,input$x_input_sc])) {
+
+          data_sc <- plotData()
+          var_x <- data_sc[ ,input$x_input_sc]
+          var_y <- data_sc[ ,input$y_input_sc]
+
+          if (input$x_log_sc & !any(c(is.factor(var_x),
+                                      is.date(var_x),
+                                      is.datettime(var_x),
+                                      is.numeric_logical(var_x)))) {
+
             Code$logx <- paste0(" + \n  scale_x_log10(breaks = trans_breaks('log10', function(x) 10^x)",
                                  ", labels = trans_format('log10', math_format(10^.x)))")
           }
-          if (input$y_log_sc & !is.factor(plotData()[ ,input$y_input_sc])) {
+          if (input$y_log_sc & !any(c(is.factor(var_y),
+                                      is.date(var_y),
+                                      is.datettime(var_y),
+                                      is.numeric_logical(var_y)))) {
+
             Code$logy <- paste0(" + \n  scale_y_log10(breaks = trans_breaks('log10', function(x) 10^x)",
                                  ", labels = trans_format('log10', math_format(10^.x)))")
           }
@@ -1005,9 +1099,11 @@ shinyServer(function(input, output, session){
 
   output$Scatterplot <- renderPlot({
 
-    if ( !is.null(dataScatter()) )  {
+    dataScatter <- dataScatter()
 
-      pl <- ggplot(dataScatter(),
+    if (!is.null(dataScatter))  {
+
+      pl <- ggplot(dataScatter,
                    aes(x = .data[[input$x_input_sc]],
                        y = .data[[input$y_input_sc]]))
 
@@ -1188,7 +1284,7 @@ shinyServer(function(input, output, session){
         Aes_col <- paste0(", colour = ", input$color_by_sc)
 
 
-        if (is.factor(dataScatter()[ ,input$color_by_sc])) {
+        if (is.factor(dataScatter[ ,input$color_by_sc])) {
 
           if (!is.null(input$colour_by_type_sc)) {
 
@@ -1208,7 +1304,7 @@ shinyServer(function(input, output, session){
             }
           }
         }
-        if (is.numeric(dataScatter()[ ,input$color_by_sc])) {
+        if (is.numeric(dataScatter[ ,input$color_by_sc])) {
 
           if (!is.null(input$low_sc) & !is.null(input$high_sc)) {
             pl <- pl + scale_colour_gradient(low = input$low_sc, high = input$high_sc)
@@ -1222,10 +1318,23 @@ shinyServer(function(input, output, session){
 
       }
 
+      # Find out if x and y are logical variables encoded by 0-1 (numeric 0,1)
+      is_logical_numeric_x <- is.numeric_logical(dataScatter[ ,input$x_input_sc])
+      is_logical_numeric_y <- is.numeric_logical(dataScatter[ ,input$y_input_sc])
+
+      var_x_code <- ifelse(is_logical_numeric_x,
+                           paste0("as.integer(" , input$x_input_sc, ")"),
+                           input$x_input_sc)
+      var_y_code <- ifelse(is_logical_numeric_y,
+                           paste0("as.integer(" , input$y_input_sc, ")"),
+                           input$y_input_sc)
+
       Aes <- paste0(Aes_col, Aes_size, Aes_shape)
       Code$AES <- Aes
-      Code$gg <- paste0("ggplot(data = ", Code_Data$name, ", aes(x = ",
-                        input$x_input_sc, ", y = ", input$y_input_sc, Aes, "))")
+      Code$gg <- paste0("ggplot(data = ", Code_Data$name,
+                        ", aes(x = ", var_x_code,
+                        ", y = ", var_y_code,
+                        Aes, "))")
 
 
 
@@ -1365,13 +1474,17 @@ shinyServer(function(input, output, session){
         Code$scales <- NULL
       }
 
-      if (input$x_log_sc & !is.factor(dataScatter()[ ,input$x_input_sc])) {
+      dt_x <- dataScatter[ ,input$x_input_sc]
+      if (input$x_log_sc & is.numeric(dt_x) & !is.numeric_logical(dt_x)) {
+
         pl <- pl + scale_x_log10(breaks = trans_breaks("log10", function(x) 10^x),
                                  labels = trans_format("log10", math_format(10^.x)))
         Code$scales <- " ; library(scales)"
       }
 
-      if (input$y_log_sc & !is.factor(dataScatter()[ ,input$y_input_sc])) {
+      dt_y <- dataScatter[ ,input$y_input_sc]
+      if (input$y_log_sc & is.numeric(dt_y) & !is.numeric_logical(dt_y)) {
+
         pl <- pl + scale_y_log10(breaks = trans_breaks("log10", function(x) 10^x),
                                  labels = trans_format("log10", math_format(10^.x)))
         Code$scales <- " ; library(scales)"
@@ -1537,22 +1650,25 @@ shinyServer(function(input, output, session){
 
 
   output$brush_info_sc <- renderUI({
-    if (!is.null( plotData() )) {
+
+    plotData <- plotData()
+    dataScatter <- dataScatter()
+    if (!is.null(plotData)) {
       X <- input$x_input_sc
       Y <- input$y_input_sc
       inS <- input$scatter_brush
 
       mX <- NA ; sX <- NA ; mY <- NA ; sY <- NA ; N <- NA
 
-      if (!is.null( plotData() ) & !is.null( input$scatter_brush) ) {
-        N <- length(brushedPoints(dataScatter(),inS, xvar = X, yvar = Y)[ ,X])
-        if (is.numeric(plotData()[ ,X] )) {
-          mX <- round(mean(brushedPoints(dataScatter(),inS, xvar = X, yvar = Y)[ ,X]),4)
-          sX <- round(sd(brushedPoints(dataScatter(),inS, xvar = X, yvar = Y)[ ,X]),4)
+      if (!is.null(plotData) & !is.null( input$scatter_brush) ) {
+        N <- length(brushedPoints(dataScatter,inS, xvar = X, yvar = Y)[ ,X])
+        if (is.numeric(plotData[ ,X])) {
+          mX <- round(mean(brushedPoints(dataScatter,inS, xvar = X, yvar = Y)[ ,X]),4)
+          sX <- round(sd(brushedPoints(dataScatter,inS, xvar = X, yvar = Y)[ ,X]),4)
         }
-        if (is.numeric(plotData()[ ,Y] )) {
-          mY <- round(mean(brushedPoints(dataScatter(),inS, xvar = X, yvar = Y)[ ,Y]),4)
-          sY <- round(sd(brushedPoints(dataScatter(),inS, xvar = X, yvar = Y)[ ,Y]),4)
+        if (is.numeric(plotData[ ,Y] )) {
+          mY <- round(mean(brushedPoints(dataScatter,inS, xvar = X, yvar = Y)[ ,Y]),4)
+          sY <- round(sd(brushedPoints(dataScatter,inS, xvar = X, yvar = Y)[ ,Y]),4)
         }
       }
 
