@@ -2036,9 +2036,11 @@ shinyServer(function(input, output, session){
       Code_hi$aes <- paste0(Dens1, Dens2, Count, Fill_by, Weight)
 
 
-
-
-
+      if (input$change_fill_hi == "Count" & input$change_density_hi2 == "Colour by") {
+        validate(paste0("This combination is infeasible. \n\n",
+                 "If density is colored by some discrete variable (discrete y-axis),\n",
+                 "then filling the histogram by counts is not possible (continuous y-axis)."))
+      }
 
       pl_hi <- ggplot(dataHist(), aes(x = .data[[input$x_input_hi]]))
 
@@ -2131,6 +2133,11 @@ shinyServer(function(input, output, session){
 
       }
 
+      Code_hi$pct_y_axis <- ""
+      if (input$position_hi == "fill" | input$dens_position_hi == "fill") {
+        pl_hi <- pl_hi + scale_y_continuous(labels = label_percent())
+        Code_hi$pct_y_axis <- paste0(Code_hi$b, " + \n  scale_y_continuous(labels = label_percent())")
+      }
 
       if (input$change_density_hi == "no") {
         pl_hi <- pl_hi + ylab("count")
@@ -2324,9 +2331,9 @@ shinyServer(function(input, output, session){
       return(
         paste0(
           sprintf(paste0("library(ggplot2)", Code_hi$scales, "\n\n", Subset_hi$gg, Code_hi$a,
-                         Code_hi$b, Code_hi$c, Code_hi$ylab, Code_hi$e, Code_hi$f, Subset_hi$logx, Code_hi$g, Code_hi$h, Code_hi$i,
+                         Code_hi$b, Code_hi$c, Code_hi$pct_y_axis, Code_hi$ylab, Code_hi$e, Code_hi$f, Subset_hi$logx, Code_hi$g, Code_hi$h, Code_hi$i,
                          "\n\n\n\n# Alternatively: ----------------------------\n\n",
-                         Code_hi$gg, Code_hi$a, Code_hi$b, Code_hi$c, Code_hi$ylab, Code_hi$e,
+                         Code_hi$gg, Code_hi$a, Code_hi$b, Code_hi$c, Code_hi$pct_y_axis, Code_hi$ylab, Code_hi$e,
                          Code_hi$f, Code_hi$d, Code_hi$g, Code_hi$h, Code_hi$i, Code_hi$range)))
       )
     }
@@ -2334,7 +2341,7 @@ shinyServer(function(input, output, session){
       return(
         paste0(
           sprintf(paste0("library(ggplot2)", Code_hi$scales, "\n\n", Code_hi$gg, Code_hi$a,
-                         Code_hi$b, Code_hi$c, Code_hi$ylab, Code_hi$e, Code_hi$f, Code_hi$d, Code_hi$g, Code_hi$h,
+                         Code_hi$b, Code_hi$c, Code_hi$pct_y_axis, Code_hi$ylab, Code_hi$e, Code_hi$f, Code_hi$d, Code_hi$g, Code_hi$h,
                          Code_hi$i, Code_hi$range))))
     }
   })
@@ -2531,11 +2538,11 @@ shinyServer(function(input, output, session){
                              Code_ba$weight, "))")
       return(
         paste0(
-          sprintf(paste0("library(ggplot2)\n\n", Subset_ba$gg, Code_ba$bar, Code_ba$col_by,
-                         Code_ba$facet1, Code_ba$facet2, Code_ba$theme,
+          sprintf(paste0("library(ggplot2)\n\n", Subset_ba$gg, Code_ba$bar, Code_ba$pct_y_axis,
+                         Code_ba$col_by, Code_ba$facet1, Code_ba$facet2, Code_ba$theme,
                          Code_ba$legend, Code_ba$title, Code_ba$lab_x, Code_ba$lab_y, Code_ba$flip,
                          "\n\n\n\n# Alternatively: --------------------------------------\n\n",
-                         Code_ba$gg, Code_ba$bar, Code_ba$col_by,
+                         Code_ba$gg, Code_ba$bar, Code_ba$pct_y_axis, Code_ba$col_by,
                          Code_ba$facet1, Code_ba$facet2, Code_ba$range_fac, Code_ba$theme,
                          Code_ba$legend, Code_ba$title, Code_ba$lab_x, Code_ba$lab_y, Code_ba$flip)))
       )
@@ -2543,7 +2550,7 @@ shinyServer(function(input, output, session){
     if (is.null(Subset_ba$x)) {
       return(
         paste0(
-          sprintf(paste0(Code_ba$gg, Code_ba$bar, Code_ba$col_by,
+          sprintf(paste0(Code_ba$gg, Code_ba$bar, Code_ba$pct_y_axis, Code_ba$col_by,
                          Code_ba$facet1, Code_ba$facet2, Code_ba$range_fac, Code_ba$theme,
                          Code_ba$legend, Code_ba$title, Code_ba$lab_x, Code_ba$lab_y, Code_ba$flip))))
     }
@@ -2607,6 +2614,11 @@ shinyServer(function(input, output, session){
                                   alpha = input$opacity_ba)
 
         Code_ba$bar <- paste0(" + \n  geom_bar(", syntax(c(Width, Opacity, Position )), ")")
+      }
+
+      if (input$position_ba == "fill") {
+          pl_ba <- pl_ba + scale_y_continuous(labels = label_percent())
+          Code_ba$pct_y_axis <- paste0(Code_hi$b, " + \n  scale_y_continuous(labels = label_percent())")
       }
 
       Code_ba$col_by <- NULL

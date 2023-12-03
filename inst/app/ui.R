@@ -568,7 +568,7 @@ shinyUI(
                                  selected = "no"),
 
                     conditionalPanel(condition = "input.change_density_hi !== 'no'",
-                                     radioButtons(inputId = "change_density_hi2", label = "Colour:",
+                                     radioButtons(inputId = "change_density_hi2", label = "Density colour type:",
                                                   choices = c("Colour", "Colour by"),
                                                   selected = "Colour")
                     ),
@@ -576,27 +576,27 @@ shinyUI(
                     conditionalPanel(condition = "input.change_density_hi !== 'no' &&
                                      input.change_density_hi2 === 'Colour'",
 
-                                     colourInput(inputId = "dens_color_hi", label = "Colour:",
+                                     colourInput(inputId = "dens_color_hi", label = "Density colour:",
                                                  showColour = "background",
                                                  value = "#BD1515"),
 
-                                     colourInput(inputId = "dens_fill_hi", label = "Fill:",
+                                     colourInput(inputId = "dens_fill_hi", label = "Density fill:",
                                                  showColour = "background",
                                                  value = "#BD1515"),
 
-                                     sliderInput(inputId = "dens_opacity_hi", label = "Opacity:",
+                                     sliderInput(inputId = "dens_opacity_hi", label = "Density opacity:",
                                                  min = 0, max = 1, value = 0.2),
-                                     actionButton(inputId = "reset_dens_hi", label = "Reset:")
+                                     actionButton(inputId = "reset_dens_hi", label = "Density reset:")
                     ),
 
                     conditionalPanel(condition = "input.change_density_hi !== 'no' &&
                                      input.change_density_hi2 === 'Colour by'",
-                                     selectInput(inputId = "dens_fill_by_hi", label = "Colour by:",
+                                     selectInput(inputId = "dens_fill_by_hi", label = "Density colour by:",
                                                  choices = ""),
-                                     sliderInput(inputId = "dens_fill_by_opacity_hi", label = "Opacity",
+                                     sliderInput(inputId = "dens_fill_by_opacity_hi", label = "Density opacity",
                                                  min = 0, max = 1, value = 0.2),
 
-                                     radioButtons(inputId = "dens_position_hi", label = "Position:",
+                                     radioButtons(inputId = "dens_position_hi", label = "Density position:",
                                                   choices = c("Identity" = "identity", "Stack" = "stack", "Dodge" = "dodge",
                                                               "Fill" = "fill"),
                                                   selected = "identity")
