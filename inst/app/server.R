@@ -3133,7 +3133,8 @@ shinyServer(function(input, output, session){
   observeEvent(input$reset_colours_box, {
     updateColourInput(session, inputId = "color_box", value = "black")
     updateColourInput(session, inputId = "fill_box", value = "white")
-    updateSliderInput(session, inputId = "colour_size_box", value = 0.5)
+    updateColourInput(session, inputId = "out_color", value = "black")
+    # updateSliderInput(session, inputId = "colour_size_box", value = 0.5)
   })
 
 
@@ -3149,6 +3150,17 @@ shinyServer(function(input, output, session){
     if (input$fill_by_col_box == "seq") {
       updateSliderInput(session, inputId = "palette_box",
                         min = 1, max = 18, value = 1, step = 1)
+    }
+  })
+
+
+  observe({
+    if (input$box_jitter) {
+      updateSelectInput(session, inputId = "out_shape",
+                        selected = c("No outlier" = -1))
+    } else {
+        updateSelectInput(session, inputId = "out_shape",
+                          selected = c("Dot" = 19))
     }
   })
 
@@ -3168,13 +3180,13 @@ shinyServer(function(input, output, session){
             paste0("library(ggplot2)", Code_box$scales, "\n\n", Subset_box$gg, Code_box$boxplot,
                    Code_box$col_by, Code_box$flip, Code_box$grid, Code_box$wrap,
                    Subset_box$logy, Code_box$labx, Code_box$laby,
-                   Code_box$theme, Code_box$leg, Code_box$title,
+                   Code_box$theme, Code_box$leg, Code_box$title, Code_box$jitter,
                    "\n\n\n\n# Alternatively: ----------------------------\n\n",
 
                    Code_box$gg, Code_box$boxplot,
                    Code_box$col_by, Code_box$flip, Code_box$grid, Code_box$wrap,
                    Code_box$range_x, Code_box$logy, Code_box$range_y, Code_box$labx, Code_box$laby,
-                   Code_box$theme, Code_box$leg, Code_box$title)))
+                   Code_box$theme, Code_box$leg, Code_box$title, Code_box$jitter)))
       )
     }
 
@@ -3183,7 +3195,7 @@ shinyServer(function(input, output, session){
       paste0(sprintf(paste0("library(ggplot2)", Code_box$scales, "\n\n", Code_box$gg, Code_box$boxplot,
                             Code_box$col_by, Code_box$flip, Code_box$grid, Code_box$wrap,
                             Code_box$range_x, Code_box$logy, Code_box$range_y, Code_box$labx, Code_box$laby,
-                            Code_box$theme, Code_box$leg, Code_box$title)))
+                            Code_box$theme, Code_box$leg, Code_box$title, Code_box$jitter)))
     }
 
   })
@@ -3206,7 +3218,14 @@ shinyServer(function(input, output, session){
     if ( !is.null(data_box()) ) {
 
 
-      Code_box$Fill_by_box <- ifelse(input$change_fill_box == "Colour by", paste0(", fill = ", input$fill_by_box), "")
+      Code_box$Fill_by_box <- ifelse(input$change_fill_box == "Fill by", paste0(", fill = ", input$fill_by_box), "")
+
+      Code_box$Colour_by_box <- ifelse(input$change_fill_box == "Colour by", paste0(", colour = ", input$fill_by_box), "")
+
+      Out_alpha_jitter <- ifelse(input$box_jitter_opacity != 1,
+                                 paste0(", alpha = ", input$box_jitter_opacity), "")
+
+      Code_box$jitter <- ""
 
       Fill <- ifelse(input$fill_box != "#FFFFFF", paste0(", fill = ", "'",input$fill_box, "'"), "")
 
@@ -3229,8 +3248,16 @@ shinyServer(function(input, output, session){
       Out_shape <- ifelse(input$out_shape != 19,
                           paste0(", outlier.shape = ", input$out_shape), "")
 
-      Code_box$gg <- paste0("ggplot(data = ", Code_Data$name, ", aes(x = ", input$x_input_box,
-                            ", y = ", input$y_input_box, Code_box$Fill_by_box, "))")
+      Code_box_seed <- ""
+
+      if (input$box_jitter) {
+        set.seed(1)
+        Code_box_seed <- "set.seed(1)\n"
+      }
+
+      Code_box$gg <- paste0(Code_box_seed, "ggplot(data = ", Code_Data$name, ", aes(x = ", input$x_input_box,
+                            ", y = ", input$y_input_box, Code_box$Fill_by_box,
+                            Code_box$Colour_by_box, "))")
 
 
       pl_box <- ggplot(data = data_box(), aes(x = .data[[input$x_input_box]], y = .data[[input$y_input_box]]))
@@ -3251,11 +3278,19 @@ shinyServer(function(input, output, session){
         Code_box$boxplot <- paste0(" + \n  geom_boxplot(",
                                    syntax(c(Fill, Colour, Width, Size, Alpha, Out_col, Out_size, Out_shape)),
                                    ")")
+
+        if (input$box_jitter) {
+          pl_box <- pl_box + geom_jitter(alpha = input$box_jitter_opacity)
+          Code_box$jitter <- paste0(" + \n  geom_jitter(", syntax(c(Out_alpha_jitter)), ")")
+
+
+        }
       }
 
-      if (input$change_fill_box == "Colour by") {
+      if (input$change_fill_box == "Fill by") {
 
         pl_box <- pl_box + geom_boxplot(aes(fill = .data[[input$fill_by_box]]),
+                                        size = input$colour_size_box,
                                         width = input$box_width,
                                         alpha = input$opacity_box,
                                         outlier.colour = input$out_color,
@@ -3263,15 +3298,47 @@ shinyServer(function(input, output, session){
                                         outlier.shape = as.numeric(input$out_shape)
                                         )
 
-        Code_box$boxplot <- paste0(" + \n  geom_boxplot(", syntax(c(Width, Alpha, Out_col, Out_size, Out_shape)), ")")
+        Code_box$boxplot <- paste0(" + \n  geom_boxplot(", syntax(c(Size, Width, Alpha, Out_col, Out_size, Out_shape)), ")")
+
+        if (input$box_jitter) {
+          pl_box <- pl_box + geom_jitter(alpha = input$box_jitter_opacity)
+          Code_box$jitter <- paste0(" + \n  geom_jitter(", syntax(c(Out_alpha_jitter)), ")")
+        }
+      }
+
+      if (input$change_fill_box == "Colour by") {
+
+        pl_box <- pl_box + geom_boxplot(aes(colour = .data[[input$fill_by_box]]),
+                                        size = input$colour_size_box,
+                                        width = input$box_width,
+                                        alpha = input$opacity_box,
+                                        outlier.colour = input$out_color,
+                                        outlier.size = input$out_size,
+                                        outlier.shape = as.numeric(input$out_shape)
+        )
+
+        Code_box$boxplot <- paste0(" + \n  geom_boxplot(", syntax(c(Size, Width, Alpha, Out_col, Out_size, Out_shape)), ")")
+
+        if (input$box_jitter) {
+          pl_box <- pl_box + geom_jitter(aes(colour = .data[[input$fill_by_box]]),
+                                         alpha = input$box_jitter_opacity)
+          Code_box$jitter <- paste0(" + \n  geom_jitter(", syntax(c(Out_alpha_jitter)), ")")
+        }
       }
 
       Code_box$col_by <- NULL
-      if (input$change_fill_box == "Colour by" & input$fill_by_col_box != "default") {
+      if ((input$change_fill_box == "Fill by") & input$fill_by_col_box != "default") {
         pl_box <- pl_box + scale_fill_brewer(type = input$fill_by_col_box, palette = input$palette_box)
 
         Code_box$col_by <- paste0(" + \n  scale_fill_brewer(type = ", "'",input$fill_by_col_box, "'",
                                    ", palette = ", input$palette_box, ")")
+      }
+
+      if ((input$change_fill_box == "Colour by") & input$fill_by_col_box != "default") {
+        pl_box <- pl_box + scale_colour_brewer(type = input$fill_by_col_box, palette = input$palette_box)
+
+        Code_box$col_by <- paste0(" + \n  scale_colour_brewer(type = ", "'",input$fill_by_col_box, "'",
+                                  ", palette = ", input$palette_box, ")")
       }
 
       # Grid

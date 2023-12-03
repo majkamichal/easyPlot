@@ -740,7 +740,7 @@ shinyUI(
                ),
                column(2,
                       radioButtons(inputId = "change_fill_box", label = "Colours:",
-                                   choices = c("Colours", "Colour by"),
+                                   choices = c("Colours", "Colour by", "Fill by"),
                                    selected = "Colours", inline = FALSE),
 
                       conditionalPanel(condition = "input.change_fill_box === 'Colours'",
@@ -753,16 +753,10 @@ shinyUI(
                                        colourInput(inputId = "color_box", label = "Colour:",
                                                    showColour = "background",
                                                    value = "black",
-                                                   allowTransparent = FALSE),
-
-                                       sliderInput(inputId = "colour_size_box", "Box size:",
-                                                   min = 0.1, max = 2.5,
-                                                   value = 0.5, step = 0.1),
-
-                                       actionButton(inputId = "reset_colours_box", label = "Reset")
+                                                   allowTransparent = FALSE)
                       ),
 
-                      conditionalPanel(condition = "input.change_fill_box === 'Colour by'",
+                      conditionalPanel(condition = "input.change_fill_box === 'Colour by' || input.change_fill_box === 'Fill by'",
 
                                        selectInput(inputId = "fill_by_box", label = "Colour by:",
                                                    choices = ""),
@@ -771,7 +765,8 @@ shinyUI(
                                                    choices = c("Default" = "default", "Qualitative" = "qual",
                                                                "Sequential" = "seq", "Diverging" = "div"))
                       ),
-                      conditionalPanel(condition = "input.change_fill_box === 'Colour by' &&
+                      conditionalPanel(condition = "(input.change_fill_box === 'Colour by' ||
+                                                     input.change_fill_box === 'Fill by') &&
                                        input.fill_by_col_box !== 'default'",
                                        sliderInput(inputId = "palette_box", label = "Palette:",
                                                    min = 1, max = 8, value = 1, step = 1)
@@ -810,26 +805,48 @@ shinyUI(
                                      selectInput(inputId = "scales_box", label = "Scale:",
                                                  choices = c("Default" = "fixed", "Free" = "free",
                                                              "Free x" = "free_x", "Free y" = "free_y"))
-                    )
-             ),
-             column(2,
-                    sliderInput(inputId = "box_width", label = "Box width:",
-                                min = 0.01, max = 1, value = 0.75),
+                    ),
+                    checkboxInput("box_jitter", label = "Add jitter", value = FALSE),
+                    conditionalPanel(condition = "input.box_jitter == true",
+                                     sliderInput(inputId = "box_jitter_opacity",
+                                                 label = "Jitter opacity:",
+                                                 min = 0, max = 1, value = 1,
+                                                 step = 0.01),
+                                     ),
 
-                    sliderInput(inputId = "opacity_box", label = "Opacity:",
-                                min = 0, max = 1, value = 1,
-                                step = 0.01),
                     hr(),
                     sliderInput(inputId = "out_size", label = "Outlier size:",
                                 min = 0, max = 5, value = 1.5, step = 0.1),
 
                     selectInput(inputId = "out_shape", label = "Outlier shape",
-                                choices = c("Dot" = 19, "Solid square" = 15, "Solid triangle" = 17,
-                                            "Solid rhombus" = 18, "Circle" = 1, "Square" = 0,
-                                            "Triangle" = 2, "Rhombus" = 5)),
+                                choices = c("Dot" = 19,
+                                            "No outlier" = -1,
+                                            "Solid square" = 15,
+                                            "Solid triangle" = 17,
+                                            "Solid rhombus" = 18,
+                                            "Circle" = 1,
+                                            "Square" = 0,
+                                            "Triangle" = 2,
+                                            "Rhombus" = 5)),
 
-                    colourInput(inputId = "out_color", label = "Colour:", showColour = "background",
-                                value = "black", allowTransparent = FALSE)
+                    colourInput(inputId = "out_color",
+                                label = "Outlier Colour:",
+                                showColour = "background",
+                                value = "black",
+                                allowTransparent = FALSE)
+             ),
+             column(2,
+
+                    sliderInput(inputId = "box_width", label = "Box width:",
+                                min = 0, max = 1, value = 0.75),
+
+                    sliderInput(inputId = "colour_size_box", "Box size:",
+                                min = 0, max = 2.5,
+                                value = 0.5, step = 0.1),
+
+                    sliderInput(inputId = "opacity_box", label = "Opacity:",
+                                min = 0, max = 1, value = 1,
+                                step = 0.01)
              ),
 
 
@@ -908,7 +925,9 @@ shinyUI(
                                       value = "GGplot"),
 
                             downloadButton(outputId = "download_plot_box", label = "Download ")
-                    )
+                    ),
+                    hr(),
+                    actionButton(inputId = "reset_colours_box", label = "Reset colours")
              )
                ),
              br(),
