@@ -16,6 +16,16 @@ is.date <- function(x) {
   inherits(x, "Date")
 }
 
+convert_numeric_to_date <- function(value, is_date) {
+  if (is_date) as.Date(value, origin = "1970-01-01")
+  else value
+}
+
+convert_numeric_to_datetime <- function(value, is_datetime) {
+  if (is_datetime) as.POSIXct(value, origin = "1970-01-01 00:00.00 UTC")
+  else value
+}
+
 
 shinyServer(function(input, output, session){
 
@@ -820,7 +830,7 @@ shinyServer(function(input, output, session){
           var_x <- data_sc[ ,inX]
           var_y <- data_sc[ ,inY]
 
-          if ( is.numeric(var_y)) {
+          if (is.numeric(var_y)) {
             min_y <- min(var_y)
             max_y <- max(var_y)
           }
@@ -1156,9 +1166,6 @@ shinyServer(function(input, output, session){
       }
 
 
-
-
-
       if (input$point_app_sc != "Jitter") {
 
         if (input$point_app_sc == "none") {
@@ -1178,15 +1185,14 @@ shinyServer(function(input, output, session){
                                   color = input$color_sc, stat = Unique)
 
             Code$points <- paste0(" + \n  geom_point(", syntax(c(Unique2, Colour, Size, Alpha)), ")")
-          }
-          else {
+
+          } else {
             pl <- pl + geom_point(size = input$point_size_sc, alpha = input$opacity_sc,
                                   stat = Unique)
 
             Code$points <- paste0(" + \n  geom_point(", syntax(c(Unique2, Size, Alpha)), ")")
           }
         }
-
 
 
         if (input$change_point_size_sc == "Size by") {
@@ -1238,7 +1244,6 @@ shinyServer(function(input, output, session){
             Code$points <- paste0(" + \n  geom_jitter(", syntax(c(Size, Alpha)), ")")
           }
         }
-
 
 
         if (input$change_point_size_sc == "Size by") {
@@ -1319,8 +1324,10 @@ shinyServer(function(input, output, session){
       }
 
       # Find out if x and y are logical variables encoded by 0-1 (numeric 0,1)
-      is_logical_numeric_x <- is.numeric_logical(dataScatter[ ,input$x_input_sc])
-      is_logical_numeric_y <- is.numeric_logical(dataScatter[ ,input$y_input_sc])
+      x_var_sc <- dataScatter[ ,input$x_input_sc]
+      y_var_sc <- dataScatter[ ,input$y_input_sc]
+      is_logical_numeric_x <- is.numeric_logical(x_var_sc)
+      is_logical_numeric_y <- is.numeric_logical(y_var_sc)
 
       var_x_code <- ifelse(is_logical_numeric_x,
                            paste0("as.integer(" , input$x_input_sc, ")"),
@@ -1365,8 +1372,8 @@ shinyServer(function(input, output, session){
                                  span = Span2)
 
           Code$smooth <- paste0(" + \n  stat_smooth(", syntax(c(Fill2_b, Size2_b, Span2_b)), ")")
-        }
-        else {
+
+        } else {
           pl <- pl + stat_smooth(colour = Col2,
                                  fill = Fill2,
                                  linewidth = Size2,
@@ -1474,16 +1481,14 @@ shinyServer(function(input, output, session){
         Code$scales <- NULL
       }
 
-      dt_x <- dataScatter[ ,input$x_input_sc]
-      if (input$x_log_sc & is.numeric(dt_x) & !is.numeric_logical(dt_x)) {
+      if (input$x_log_sc & is.numeric(x_var_sc) & !is.numeric_logical(x_var_sc)) {
 
         pl <- pl + scale_x_log10(breaks = trans_breaks("log10", function(x) 10^x),
                                  labels = trans_format("log10", math_format(10^.x)))
         Code$scales <- " ; library(scales)"
       }
 
-      dt_y <- dataScatter[ ,input$y_input_sc]
-      if (input$y_log_sc & is.numeric(dt_y) & !is.numeric_logical(dt_y)) {
+      if (input$y_log_sc & is.numeric(y_var_sc) & !is.numeric_logical(y_var_sc)) {
 
         pl <- pl + scale_y_log10(breaks = trans_breaks("log10", function(x) 10^x),
                                  labels = trans_format("log10", math_format(10^.x)))
@@ -1496,7 +1501,6 @@ shinyServer(function(input, output, session){
 
         Code$labx <- paste0(" + \n  xlab(", "'", input$label_x_sc, "'", ")")
       }
-
 
       if (input$label_x_sc == input$x_input_sc) {
         Code$labx <- NULL
@@ -1582,8 +1586,18 @@ shinyServer(function(input, output, session){
         Code$title <- NULL
       }
 
+      # Zoom graph when dbl click on market region
       if (!is.null(sc_ranges$x) | !is.null(sc_ranges$y)) {
-        pl <- pl + coord_cartesian(xlim = sc_ranges$x, ylim = sc_ranges$y)
+
+        xlim_ <- sc_ranges$x
+        ylim_ <- sc_ranges$y
+
+        xlim_ <- convert_numeric_to_datetime(convert_numeric_to_date(sc_ranges$x, is.date(x_var_sc)),
+                                             is.datetime(x_var_sc))
+        ylim_ <- convert_numeric_to_datetime(convert_numeric_to_date(sc_ranges$y, is.date(y_var_sc)),
+                                             is.datetime(y_var_sc))
+
+        pl <- pl + coord_cartesian(xlim = xlim_, ylim = ylim_)
       }
 
 
@@ -1638,9 +1652,8 @@ shinyServer(function(input, output, session){
   observeEvent(input$scatter_dblclick, {
     brush <- input$scatter_brush
     if (!is.null(brush)) {
-      sc_ranges$x <- c(brush$xmin, brush$xmax)
-      sc_ranges$y <- c(brush$ymin, brush$ymax)
-
+        sc_ranges$x <- c(brush$xmin, brush$xmax)
+        sc_ranges$y <- c(brush$ymin, brush$ymax)
     } else {
       sc_ranges$x <- NULL
       sc_ranges$y <- NULL
