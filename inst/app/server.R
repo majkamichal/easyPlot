@@ -3212,7 +3212,7 @@ shinyServer(function(input, output, session){
 
       Colour <- ifelse(input$color_box != "#000000", paste0(", colour = ", "'", input$color_box, "'"), "")
 
-      Width <- ifelse(input$box_width != 1, paste0(", width = ", input$box_width), "")
+      Width <- ifelse(input$box_width != 0.75, paste0(", width = ", input$box_width), "")
 
       Alpha <- ifelse(input$opacity_box != 1,
                       paste0(", alpha = ", input$opacity_box),"")
@@ -3223,10 +3223,10 @@ shinyServer(function(input, output, session){
       Out_col <- ifelse(input$out_color != "#000000",
                         paste0(", outlier.colour = ", "'", input$out_color, "'"), "")
 
-      Out_size <- ifelse(input$out_size != 2,
+      Out_size <- ifelse(input$out_size != 1.5,
                          paste0(", outlier.size = ", input$out_size), "")
 
-      Out_shape <- ifelse(input$out_shape != 16,
+      Out_shape <- ifelse(input$out_shape != 19,
                           paste0(", outlier.shape = ", input$out_shape), "")
 
       Code_box$gg <- paste0("ggplot(data = ", Code_Data$name, ", aes(x = ", input$x_input_box,

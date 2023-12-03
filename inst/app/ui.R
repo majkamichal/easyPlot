@@ -814,17 +814,17 @@ shinyUI(
              ),
              column(2,
                     sliderInput(inputId = "box_width", label = "Box width:",
-                                min = 0.05, max = 1, value = 1),
+                                min = 0.01, max = 1, value = 0.75),
 
                     sliderInput(inputId = "opacity_box", label = "Opacity:",
                                 min = 0, max = 1, value = 1,
                                 step = 0.01),
                     hr(),
                     sliderInput(inputId = "out_size", label = "Outlier size:",
-                                min = 1, max = 5, value = 2, step = 0.25),
+                                min = 0, max = 5, value = 1.5, step = 0.1),
 
                     selectInput(inputId = "out_shape", label = "Outlier shape",
-                                choices = c("Dot" = 16, "Solid square" = 15, "Solid triangle" = 17,
+                                choices = c("Dot" = 19, "Solid square" = 15, "Solid triangle" = 17,
                                             "Solid rhombus" = 18, "Circle" = 1, "Square" = 0,
                                             "Triangle" = 2, "Rhombus" = 5)),
 
