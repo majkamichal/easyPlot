@@ -2037,9 +2037,9 @@ shinyServer(function(input, output, session){
 
 
       if (input$change_fill_hi == "Count" & input$change_density_hi2 == "Colour by") {
-        validate(paste0("This combination is infeasible. \n\n",
-                 "If density is colored by some discrete variable (discrete y-axis),\n",
-                 "then filling the histogram by counts is not possible (continuous y-axis)."))
+        validate(paste0("\n This combination is infeasible. \n\n",
+                 " If density is colored by some discrete variable (discrete y-axis),\n",
+                 " then filling the histogram by counts is not possible (continuous y-axis)."))
       }
 
       pl_hi <- ggplot(dataHist(), aes(x = .data[[input$x_input_hi]]))
@@ -2136,7 +2136,7 @@ shinyServer(function(input, output, session){
       Code_hi$pct_y_axis <- ""
       if (input$position_hi == "fill" | input$dens_position_hi == "fill") {
         pl_hi <- pl_hi + scale_y_continuous(labels = label_percent())
-        Code_hi$pct_y_axis <- paste0(Code_hi$b, " + \n  scale_y_continuous(labels = label_percent())")
+        Code_hi$pct_y_axis <- paste0(" + \n  scale_y_continuous(labels = label_percent())")
       }
 
       if (input$change_density_hi == "no") {
