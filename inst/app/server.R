@@ -1648,40 +1648,61 @@ shinyServer(function(input, output, session){
   })
 
 
-
   output$brush_info_sc <- renderUI({
 
     plotData <- plotData()
     dataScatter <- dataScatter()
+
     if (!is.null(plotData)) {
+
       X <- input$x_input_sc
       Y <- input$y_input_sc
       inS <- input$scatter_brush
 
       mX <- NA ; sX <- NA ; mY <- NA ; sY <- NA ; N <- NA
 
-      if (!is.null(plotData) & !is.null( input$scatter_brush) ) {
-        N <- length(brushedPoints(dataScatter,inS, xvar = X, yvar = Y)[ ,X])
-        if (is.numeric(plotData[ ,X])) {
-          mX <- round(mean(brushedPoints(dataScatter,inS, xvar = X, yvar = Y)[ ,X]),4)
-          sX <- round(sd(brushedPoints(dataScatter,inS, xvar = X, yvar = Y)[ ,X]),4)
+      if (!is.null(plotData) & !is.null(inS) ) {
+
+        var_x <- plotData[ ,X]
+        var_y <- plotData[ ,Y]
+
+        is_var_x_dt <- is.datettime(var_x)
+        is_var_y_dt <- is.datettime(var_y)
+
+        is_var_x_date <- is.date(var_x)
+        is_var_y_date <- is.date(var_y)
+
+        var_x_scaling_fct <- ifelse(is_var_x_dt, 8640000, 1)
+        var_y_scaling_fct <- ifelse(is_var_y_dt, 8640000, 1)
+        var_x_mean_rounding <- ifelse(is_var_x_dt, "secs", 4)
+        var_y_mean_rounding <- ifelse(is_var_y_dt, "secs", 4)
+
+        brushed_pts_x <- brushedPoints(dataScatter, inS, xvar = X, yvar = Y)[ ,X]
+        brushed_pts_y <- brushedPoints(dataScatter, inS, xvar = X, yvar = Y)[ ,Y]
+
+        N <- length(brushed_pts_x)
+
+        if (is.numeric(var_x) | is_var_x_date | is_var_x_dt) {
+          mX <- as.character(round(mean(brushed_pts_x), var_x_mean_rounding))
+          sX <- round(sd(brushed_pts_x) / var_x_scaling_fct, 4)
         }
-        if (is.numeric(plotData[ ,Y] )) {
-          mY <- round(mean(brushedPoints(dataScatter,inS, xvar = X, yvar = Y)[ ,Y]),4)
-          sY <- round(sd(brushedPoints(dataScatter,inS, xvar = X, yvar = Y)[ ,Y]),4)
+
+        if (is.numeric(var_y) | is_var_y_date | is_var_y_dt) {
+          mY <- as.character(round(mean(brushed_pts_y), var_y_mean_rounding))
+          sY <- round(sd(brushed_pts_y) / var_y_scaling_fct, 4)
         }
       }
 
-      if (is.null( input$scatter_brush) ) return()
-      if (mX == "NaN" & mY == "NaN" | is.na(mX) & is.na(mY)) return()
+      if (length(inS) == 0 || is.null(inS)) return()
+      if ((is.na(mX) || mX == "NaN") & (is.na(mY) || mY == "NaN")) return()
 
       list(
         tags$div( HTML("N:"), paste("  ", N)),
         br(),
-        tags$div( HTML("X&#772;:"), paste("  ", mX)),
+        tags$div( HTML("X&#772;: "), paste("  ", mX)),
         tags$div( HTML("&sigma;<sub>x</sub>:"), paste(sX)),
         br(),
-        tags$div( HTML("Y&#772;:"), paste0("  ", mY)),
+        tags$div( HTML("Y&#772;: "), paste0("  ", mY)),
         tags$div( HTML("&sigma;<sub>y</sub>:"), paste0(sY)),
 
         tags$style(type = "text/css", "#brush_info_sc {
@@ -1689,8 +1710,7 @@ shinyServer(function(input, output, session){
                    border-color: rgba(25,5,2,0.5);
                    padding: 12px;
                    border-radius: 5px; }"))
-    }
-    else {
+    } else {
       return()
     }
   })
@@ -1720,8 +1740,6 @@ shinyServer(function(input, output, session){
     near
 
   })
-
-
 
   download_type_sc <- reactive({
     input$download_type_sc
