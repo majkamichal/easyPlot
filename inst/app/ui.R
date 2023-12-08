@@ -103,6 +103,15 @@ shinyUI(
                                          value = FALSE)
                               )
                             ) # end conditionalPanel("uploaded")
+
+                            # br(),
+                            # hr(),
+                            # h4("Contact:"),
+                            # HTML("<a target=\"_blank\" href='https://twitter.com/majkamichal' <i class='fa fa-twitter fa-2x' aria-hidden='true'></i></a>"),
+                            # br(),
+                            # a("michalmajka@hotmail.com", href="mailto:michalmajka@hotmail.com"),
+                            # br()
+
                           ), # end sidebarPanel
                           mainPanel(
                             bsAlert("dataAlert1"),
