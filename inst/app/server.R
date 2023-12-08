@@ -198,10 +198,21 @@ shinyServer(function(input, output, session){
               x <- tryCatch({
                 openxlsx::readWorkbook(data_xlsx_wb(),
                                        sheet = input$select_xlsx_sheet,
-                                       detectDates = TRUE,
+                                       detectDates = input$detect_dates_xlsx,
                                        startRow = as.integer(skip_rows_xlsx),
                                        namedRegion = select_xlsx_named_region) # named_regions_xlsx[2]) # NULL)
-              }, error = function(e) NULL)
+              }, error = function(e) {
+
+                closeAlert(session, "alert1")
+                createAlert(session,
+                            anchorId = "dataAlert1",
+                            alertId = "alert1",
+                            title = "Data could not have been loaded",
+                            content = "Hint: conversion of dates may have gone wrong. Uncheck 'Detect dates'",
+                            style = "Warning")
+                req(NULL)
+                }
+              )
 
               if (input$logicals_as_factor_xlsx) {
                 ind_logical <- sapply(x, is.logical)

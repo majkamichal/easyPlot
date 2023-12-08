@@ -16,6 +16,10 @@ list(
                 label = "Logicals as factors",
                 value = TRUE),
 
+  checkboxInput(inputId = "detect_dates_xlsx",
+                label = "Detect dates",
+                value = TRUE),
+
   numericInput(
     inputId = "skip_xlsx",
     label =  "Start row",
