@@ -2,6 +2,8 @@
 
 shinyServer(function(input, output, session){
 
+  # bslib::bs_themer()
+
   Sys.sleep(0.25)
   hide(id = "loader", anim = TRUE, animType = "fade")
 

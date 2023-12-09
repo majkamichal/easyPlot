@@ -14,9 +14,10 @@ shinyUI(
                  ".recalculating {opacity: 1.0;}" ) # No blinking
     ),
     navbarPage(title = "easyPlot", id = "navbar", fluid = TRUE, theme = shinytheme("flatly"),
+    # navbarPage(title = "easyPlot", id = "navbar", fluid = TRUE, theme = bslib::bs_theme(),
+
 
                tabPanel(title = "Data", icon = icon("table"),
-
                         sidebarLayout(
                           sidebarPanel(
 
@@ -29,8 +30,8 @@ shinyUI(
                             recode_class_render_UI3("my_data"),
                             recode_class_render_UI4("my_data"),
                             recode_class_render_UI5("my_data"),
-
                             br(),
+
                             checkboxInput(inputId = "exampleData",
                                           label = "Use example data",
                                           value = FALSE
