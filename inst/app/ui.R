@@ -2,7 +2,6 @@
 
 # ============================= User Interface: ================================
 
-
 shinyUI(
   tagList(
     shinyjs::useShinyjs(),
@@ -14,6 +13,7 @@ shinyUI(
                  ".recalculating {opacity: 1.0;}" ) # No blinking
     ),
     navbarPage(title = "easyPlot", id = "navbar", fluid = TRUE, theme = shinytheme("flatly"),
+    # navbarPage(title = "easyPlot", id = "navbar", fluid = TRUE,
     # navbarPage(title = "easyPlot", id = "navbar", fluid = TRUE, theme = bslib::bs_theme(),
 
 
@@ -82,7 +82,7 @@ shinyUI(
                                         placement = "right",
                                         options = list(container = "body")),
 
-                              tags$hr(),
+                              # tags$hr(),
 
                               # Dynamic UI for CSV datasets
                               conditionalPanel(
