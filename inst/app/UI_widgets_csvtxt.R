@@ -33,22 +33,16 @@ list(
                min = 1)
       )
     ),
-    fluidRow(
-      column(5,
-             checkboxInput(inputId = "header",
-                           label =  "Header",
-                           value = TRUE)
-      ),
-      column(5,
-             list(
-               checkboxInput(inputId = "strings_as_factor",
-                             label = "Strings as factors",
-                             value = TRUE),
 
-               checkboxInput(inputId = "logicals_as_factor",
-                             label = "Logicals as factors",
-                             value = TRUE)
-             )
-      )
-   )
+    checkboxInput(inputId = "header",
+                 label =  "Header",
+                 value = TRUE),
+
+    checkboxInput(inputId = "strings_as_factor",
+                   label = "Strings as factors",
+                   value = TRUE),
+
+    checkboxInput(inputId = "logicals_as_factor",
+                   label = "Logicals as factors",
+                   value = TRUE)
 )

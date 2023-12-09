@@ -1,16 +1,4 @@
 
-# Libraries: -------------------------------------------------------------------
-suppressPackageStartupMessages(library(shiny))
-suppressPackageStartupMessages(library(ggplot2))
-suppressPackageStartupMessages(library(shinyjs))
-suppressPackageStartupMessages(library(DT))
-suppressPackageStartupMessages(library(colourpicker))
-library(shinyBS)
-library(shinythemes)
-library(scales)
-library(Cairo)
-library(shinyAce)
-
 
 # ============================= User Interface: ================================
 
@@ -35,6 +23,13 @@ shinyUI(
                             checkboxInput(inputId = "my_data",
                                           label = "My data",
                                           value = TRUE),
+
+                            recode_class_render_UI("my_data"),
+                            recode_class_render_UI2("my_data"),
+                            recode_class_render_UI3("my_data"),
+                            recode_class_render_UI4("my_data"),
+                            recode_class_render_UI5("my_data"),
+
                             br(),
                             checkboxInput(inputId = "exampleData",
                                           label = "Use example data",
@@ -46,8 +41,14 @@ shinyUI(
                               selectInput(inputId = "Data", label = "Example Datasets:",
                                           choices = c("iris", "mtcars", "faithful", "attitude", "diamonds")),
 
+                              recode_class_render_UI("example_data"),
+                              recode_class_render_UI2("example_data"),
+                              recode_class_render_UI3("example_data"),
+                              recode_class_render_UI4("example_data"),
+                              recode_class_render_UI5("example_data"),
                               verbatimTextOutput(outputId = "description")
                             ),
+
 
                             tags$hr(),
 
@@ -92,6 +93,16 @@ shinyUI(
                               ),
 
                               # Recoding of variables
+                              # conditionalPanel(
+                              #   condition = "output.data_format == 'csvtxt' || output.data_format == 'xlsx'",
+                              #   uiOutput("recode_class_dynamic"),
+                              #   source("UI_recode_variables.R", local = TRUE)$value),
+
+                              recode_class_render_UI("uploaded"),
+                              recode_class_render_UI2("uploaded"),
+                              recode_class_render_UI3("uploaded"),
+                              recode_class_render_UI4("uploaded"),
+                              recode_class_render_UI5("uploaded"),
 
                               # Data Ready button
                               conditionalPanel(
@@ -102,7 +113,10 @@ shinyUI(
                                          type = "toggle",
                                          value = FALSE)
                               )
-                            ) # end conditionalPanel("uploaded")
+                            ), # end conditionalPanel("uploaded")
+
+                            # # Recoding of variables
+                            # uiOutput("recode_class_dynamic"),
 
                             # br(),
                             # hr(),
@@ -111,6 +125,8 @@ shinyUI(
                             # br(),
                             # a("michalmajka@hotmail.com", href="mailto:michalmajka@hotmail.com"),
                             # br()
+                            # # Writte in the RMarkdown document how to also install the package
+                            # # with install.packages("easyPlot")
 
                           ), # end sidebarPanel
                           mainPanel(

@@ -1,31 +1,4 @@
 
-syntax <- function(a = NULL) {
-  res <- paste(a, collapse = "")
-  substring(res, 3)
-}
-
-is.numeric_logical <- function(x) {
-  all(x %in% c(0, 1))
-}
-
-is.datetime <- function(x) {
-  inherits(x, "POSIXct")
-}
-
-is.date <- function(x) {
-  inherits(x, "Date")
-}
-
-convert_numeric_to_date <- function(value, is_date) {
-  if (is_date) as.Date(value, origin = "1970-01-01")
-  else value
-}
-
-convert_numeric_to_datetime <- function(value, is_datetime) {
-  if (is_datetime) as.POSIXct(value, origin = "1970-01-01 00:00.00 UTC")
-  else value
-}
-
 
 shinyServer(function(input, output, session){
 
@@ -254,51 +227,69 @@ shinyServer(function(input, output, session){
     return(NULL)
   })
 
+
   observe({
       req(input$uploaded)
       updateButton(session, inputId = "readyButton", value = FALSE,
                    style = "danger", icon = icon("ban"))
   })
 
-  dataForTable <- reactive({
 
-    if (input$my_data & !is.null(data) ) {
+  dataForTable2 <- reactive({
+
+    if (input$my_data & !is.null(data)) {
+
       closeAlert(session, "alert1")
-      return( data )
-    }
+      x <- data
 
-    if (input$exampleData ) {
+    } else if (input$exampleData) {
+
       closeAlert(session, "alert1")
-      return( dataset1() )
-    }
+      x <- dataset1()
 
-    else {
+    } else {
 
-      if (is.null( uploadedData() )) {
+      if (is.null(uploadedData())) {
+
         createAlert(session, anchorId = "dataAlert1", alertId = "alert1",
                     title = "Please provide a data frame with at least
                     two variables", content = "")
-        return( NULL )
-      }
-      else {
+        x <- NULL
+
+      } else {
 
         if (!input$upload_data) {
+
             createAlert(session, anchorId = "dataAlert1", alertId = "alert1",
                         title = "Please provide a data frame with at least
                     two variables", content = "")
-            return( NULL )
+            x <- NULL
+
         } else {
+
             closeAlert(session, "alert1")
-            return( uploadedData() )
+            x <- uploadedData()
         }
-
-
       }
     }
+
+    dataForTable(x)
+    dataForTableBackup(x)
+    head(x)
 })
+
+
+  # Recoding classes of variables
+  dataForTable <- reactiveVal(NULL)
+  dataForTableBackup <- reactiveVal(NULL)
+
+  source("server_recode_variables.R", local = TRUE)$value
+
 
   output$table <- DT::renderDataTable({
       req(dataForTable())
+      req(dataForTable2())
+      check <- dataForTable2()
       dataForTable()
       },
       colnames = paste0(colnames(dataForTable()), "\n", "(", sapply(dataForTable(), function(x) class(x)[1]), ")"),
@@ -324,7 +315,10 @@ shinyServer(function(input, output, session){
   )
 
   filtered_data <- reactive({
-
+      check <- dataForTable2()
+      req(input$table_rows_all)
+      req(dataForTable2())
+      req(dataForTable())
       dt <- dataForTable()[input$table_rows_all, ]
 
       # Commit: https://github.com/majkamichal/easyPlot/commit/dcf243db910aab3f3c572c612fa63f4a71581b0a
@@ -1084,7 +1078,7 @@ shinyServer(function(input, output, session){
 
           if (input$x_log_sc & !any(c(is.factor(var_x),
                                       is.date(var_x),
-                                      is.datettime(var_x),
+                                      is.datetime(var_x),
                                       is.numeric_logical(var_x)))) {
 
             Code$logx <- paste0(" + \n  scale_x_log10(breaks = trans_breaks('log10', function(x) 10^x)",
@@ -1092,7 +1086,7 @@ shinyServer(function(input, output, session){
           }
           if (input$y_log_sc & !any(c(is.factor(var_y),
                                       is.date(var_y),
-                                      is.datettime(var_y),
+                                      is.datetime(var_y),
                                       is.numeric_logical(var_y)))) {
 
             Code$logy <- paste0(" + \n  scale_y_log10(breaks = trans_breaks('log10', function(x) 10^x)",
@@ -1690,8 +1684,8 @@ shinyServer(function(input, output, session){
         var_x <- plotData[ ,X]
         var_y <- plotData[ ,Y]
 
-        is_var_x_dt <- is.datettime(var_x)
-        is_var_y_dt <- is.datettime(var_y)
+        is_var_x_dt <- is.datetime(var_x)
+        is_var_y_dt <- is.datetime(var_y)
 
         is_var_x_date <- is.date(var_x)
         is_var_y_date <- is.date(var_y)
