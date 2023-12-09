@@ -177,7 +177,7 @@ recode_class_conversion_server <- function(cID, data) {
       data_new <- data()
       data_new <- fun_selected_vars_to_class(data_new, selected_vars, target_class)
       data(data_new)
-      showNotification("Classes have been updated",
+      showNotification("Dataset has been updated",
                        duration = 2.5,
                        closeButton = TRUE
       )

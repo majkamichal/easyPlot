@@ -1,11 +1,6 @@
+# Uploaded data
 recode_class_reset_server("uploaded")
 recode_class_reset_server2("uploaded", dataForTable, dataForTableBackup)
-
-recode_class_reset_server("example_data")
-recode_class_reset_server2("example_data", dataForTable, dataForTableBackup)
-
-recode_class_reset_server("my_data")
-recode_class_reset_server2("my_data", dataForTable, dataForTableBackup)
 
 recode_class_conversion_server("uploaded", dataForTable)
 recode_class_server("uploaded",
@@ -17,6 +12,11 @@ recode_target_class_server("uploaded")
 recode_class_vars_server("uploaded", dataForTable)
 recode_class_convert_server("uploaded")
 
+
+# Example data
+recode_class_reset_server("example_data")
+recode_class_reset_server2("example_data", dataForTable, dataForTableBackup)
+
 recode_class_conversion_server("example_data", dataForTable)
 recode_class_server("example_data",
                     reactive(input$exampleData),
@@ -27,6 +27,10 @@ recode_target_class_server("example_data")
 recode_class_vars_server("example_data", dataForTable)
 recode_class_convert_server("example_data")
 
+
+# Data from easyPlot()
+recode_class_reset_server("my_data")
+recode_class_reset_server2("my_data", dataForTable, dataForTableBackup)
 
 recode_class_conversion_server("my_data", dataForTable)
 recode_class_server("my_data",
