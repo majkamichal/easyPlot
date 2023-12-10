@@ -119,7 +119,8 @@ shinyServer(function(input, output, session){
 
       upFile <- input$uploaded
 
-      Code_Data$upload <- substr(upFile$name, 1, nchar(upFile$name) - 4)
+      # Code_Data$upload <- substr(upFile$name, 1, nchar(upFile$name) - 4)
+      Code_Data$upload <- NULL
 
       if (is.null(upFile)) {
 
@@ -137,6 +138,8 @@ shinyServer(function(input, output, session){
           }
 
           if (any(endsWith(upFile$name, c(".csv", ".txt")))) {
+
+              Code_Data$upload <- substr(upFile$name, 1, nchar(upFile$name) - 4)
 
               output$data_format <- renderText("csvtxt")
               outputOptions(output, "data_format", suspendWhenHidden = FALSE)
@@ -158,6 +161,8 @@ shinyServer(function(input, output, session){
           }
 
           if (any(endsWith(upFile$name, c(".xlsx", ".xls")))) {
+
+              Code_Data$upload <- substr(upFile$name, 1, nchar(upFile$name) - 5)
 
               output$data_format <- renderText("xlsx")
               outputOptions(output, "data_format", suspendWhenHidden = FALSE)
@@ -204,6 +209,112 @@ shinyServer(function(input, output, session){
       }
   })
 
+
+
+  observe({
+
+    is_data_uploaded <- !is.null(uploadedData())
+
+    if (is_data_uploaded) {
+
+      upFile <- input$uploaded
+      csv_ <- any(endsWith(upFile$name, c(".csv", ".txt")))
+      xlsx_ <- any(endsWith(upFile$name, c(".xlsx", ".xls")))
+
+      if (csv_) {
+
+        file_name <- substr(upFile$name, 1, nchar(upFile$name) - 4)
+        n_ <- nchar(paste0(file_name, " <- read.csv("))
+        blank_ <- paste0(rep(" ", n_), collapse = "")
+
+        header_ <- ifelse(input$header, yes = "", no = paste0(",\n", blank_, "header = TRUE"))
+
+        sep_ <- ifelse(input$sep == ".", yes = "", no = paste0(",\n", blank_, "sep = '", input$sep, "'"))
+
+        quote_ <- ifelse(input$quote == "\"", yes = "", no = paste0(",\n", blank_, "quote = '", input$quote, "'"))
+
+        dec_ <- ifelse(input$dec ==  ".", yes = "", no = paste0(",\n", blank_, "dec = '", input$dec, "'"))
+
+        strings_as_factor_ <- ifelse(input$strings_as_factor == FALSE, yes = "", no = paste0(",\n", blank_, "stringsAsFactors = ", input$strings_as_factor))
+
+        skip_ <- ifelse(input$skip - 1 == 0, yes = "", no = paste0(",\n", blank_, "skip = ", as.integer(input$skip) - 1))
+
+        x_comment <- "# Load dataset (update the file path)"
+
+        x_code <- paste0(file_name,
+                    " <- read.csv('", upFile$name, "'",
+                     header_,
+                     sep_,
+                     quote_,
+                     dec_,
+                     strings_as_factor_,
+                     skip_,
+                     ")")
+
+        x_full_code <- paste0("\n",
+                              x_comment,
+                              "\n",
+                              x_code,
+                              "\n")
+
+        Code$load_data <- x_full_code
+        Code_hi$load_data <- x_full_code
+        Code_ba$load_data <- x_full_code
+        Code_box$load_data <- x_full_code
+
+      } else {
+
+        file_name <- substr(upFile$name, 1, nchar(upFile$name) - 5)
+        n_ <- nchar(paste0(file_name, " <- openxlsx::read.xlsx("))
+        blank_ <- paste0(rep(" ", n_), collapse = "")
+        start_row__ <- as.integer(input$skip_xlsx)
+
+        sheet_ <- paste0(",\n", blank_, "sheet = '", input$select_xlsx_sheet, "'")
+        detect_dates_ <- ifelse(input$detect_dates_xlsx == FALSE, yes = "", no = paste0(",\n", blank_, "detectDates = TRUE"))
+        start_row_ <- ifelse(start_row__ == 1, yes = "", no = paste0(",\n", blank_, "startRow = ", start_row__))
+        named_region_ <- ifelse(input$select_xlsx_named_region == "None", yes = "", no = paste0(",\n", blank_, "namedRegion = '", input$select_xlsx_named_region, "'"))
+
+        x_comment <- "# Load dataset (update the file path)"
+
+        x_code <- paste0(file_name,
+                         " <- openxlsx::read.xlsx('", upFile$name, "'",
+                         sheet_,
+                         detect_dates_,
+                         start_row_,
+                         named_region_,
+                         ")")
+
+        x_full_code <- paste0("\n",
+                              x_comment,
+                              "\n",
+                              x_code,
+                              "\n")
+
+        Code$load_data <- x_full_code
+        Code_hi$load_data <- x_full_code
+        Code_ba$load_data <- x_full_code
+        Code_box$load_data <- x_full_code
+
+      }
+
+    } else {
+
+      Code$load_data <- NULL
+      Code_hi$load_data <- NULL
+      Code_ba$load_data <- NULL
+      Code_box$load_data <- NULL
+    }
+
+    if (input$my_data | input$exampleData) {
+      Code$load_data <- NULL
+      Code_hi$load_data <- NULL
+      Code_ba$load_data <- NULL
+      Code_box$load_data <- NULL
+    }
+
+  })
+
+
   data_xlsx_wb <- reactive({
 
     upFile <- input$uploaded
@@ -218,8 +329,11 @@ shinyServer(function(input, output, session){
                         inputId = "select_xlsx_sheet",
                         choices = sheets_xlsx)
 
-      # Named regions
-      named_regions_xlsx <- c("None", openxlsx::getNamedRegions(wb))
+      nr <- openxlsx::getNamedRegions(wb)
+      nr_attr <- attributes(nr)$sheet
+      ind_nr <- which(sheets_xlsx %in% nr_attr)
+      nr <- as.character(nr[ind_nr])
+      named_regions_xlsx <- c("None", nr)
       updateSelectInput(session,
                         inputId = "select_xlsx_named_region",
                         choices = named_regions_xlsx)
@@ -743,7 +857,7 @@ shinyServer(function(input, output, session){
 
         return(radioButtons(inputId = "errbar_sc",
                      label = "Errorbars:",
-                     choices = c("none" = "none", "Mean +- SE" = "SE", "95% CI" = "95" ),
+                     choices = c("none" = "none", "Mean +- SE" = "SE", "95% CI" = "95"),
                      selected = "none"))
       } else {
         return(radioButtons(inputId = "errbar_sc",
@@ -1136,7 +1250,7 @@ shinyServer(function(input, output, session){
 
       # ERRORBARS
 
-      if (input$errbar_sc == "SE") {
+      if (!is.null(input$errbar_sc) & input$errbar_sc == "SE") {
         pl <- pl + stat_summary(fun.data = "mean_cl_normal", fun.args = list(mult = 1),
                                 geom = "errorbar", color = input$err_col_sc,
                                 width = input$err_width_sc)  +
@@ -1233,7 +1347,7 @@ shinyServer(function(input, output, session){
 
       if (input$point_app_sc == "Jitter") {
 
-        Code$seed <- paste0("set.seed(", Seed,")\n")
+        Code$seed <- paste0("\n# Set seed for reproducibility\nset.seed(", Seed, ")\n")
         set.seed(Seed)
 
         if (input$change_point_size_sc == "Size") {
@@ -1345,7 +1459,8 @@ shinyServer(function(input, output, session){
 
       Aes <- paste0(Aes_col, Aes_size, Aes_shape)
       Code$AES <- Aes
-      Code$gg <- paste0("ggplot(data = ", Code_Data$name,
+      Code$gg <- paste0("\n# Graph\n",
+                        "ggplot(data = ", Code_Data$name,
                         ", aes(x = ", var_x_code,
                         ", y = ", var_y_code,
                         Aes, "))")
@@ -1492,14 +1607,14 @@ shinyServer(function(input, output, session){
 
         pl <- pl + scale_x_log10(breaks = trans_breaks("log10", function(x) 10^x),
                                  labels = trans_format("log10", math_format(10^.x)))
-        Code$scales <- " ; library(scales)"
+        Code$scales <- "\nlibrary(scales)"
       }
 
       if (input$y_log_sc & is.numeric(y_var_sc) & !is.numeric_logical(y_var_sc)) {
 
         pl <- pl + scale_y_log10(breaks = trans_breaks("log10", function(x) 10^x),
                                  labels = trans_format("log10", math_format(10^.x)))
-        Code$scales <- " ; library(scales)"
+        Code$scales <- "\nlibrary(scales)"
       }
 
       # LABELS
@@ -1624,16 +1739,18 @@ shinyServer(function(input, output, session){
     Subset$and <- ifelse(!is.null(Subset$x) & !is.null(Subset$y), " & ", "")
 
     if (!is.null(Subset$x) | !is.null(Subset$y)) {
-      Subset$gg <- paste0("sub.data <- subset(", Code_Data$name, ", ", Subset$x, Subset$and, Subset$y, ")",
-                           "\n\n", "ggplot(data = sub.data", ", aes(x = ", input$x_input_sc, ", y = ",
-                           input$y_input_sc, Code$AES, "))")
+      Subset$gg <- paste0("\n# Subset of data\n",
+                          "sub.data <- subset(", Code_Data$name, ", ", Subset$x, Subset$and, Subset$y, ")",
+                          "\n\n# Graph\n",
+                          "ggplot(data = sub.data", ", aes(x = ", input$x_input_sc, ", y = ",
+                          input$y_input_sc, Code$AES, "))")
       return(
         paste0(
           sprintf(
-            paste0("library(ggplot2)", Code$scales, "\n\n",Code$seed, Subset$gg, Code$errbar, Code$points,
+            paste0("library(ggplot2)", Code$scales, "\n", Code$load_data, Code$seed, Subset$gg, Code$errbar, Code$points,
                    Code$gradient, Code$smooth, Code$grid, Code$wrap, Code$flip, Subset$logx,
                    Subset$logy, Code$leg, Code$labx, Code$laby,
-                   Code$theme, Code$title, "\n\n\n\n\n\n\n# Alternatively: ----------------------------\n\n",
+                   Code$theme, Code$title, "\n\n\n\n\n\n# Alternatively: ----------------------------\n",
 
                    Code$seed, Code$gg, Code$points,
                    Code$gradient, Code$smooth, Code$errbar, Code$grid, Code$wrap, Code$flip, Code$logx, Code$range1,
@@ -1644,7 +1761,7 @@ shinyServer(function(input, output, session){
 
     if (is.null(Subset$x) & is.null(Subset$y)) {
 
-      paste0(sprintf(paste0("library(ggplot2)", Code$scales, "\n\n" ,Code$seed, Code$gg, Code$errbar, Code$points,
+      paste0(sprintf(paste0("library(ggplot2)", Code$scales, "\n", Code$load_data, Code$seed, Code$gg, Code$errbar, Code$points,
                             Code$gradient, Code$smooth, Code$grid, Code$wrap, Code$flip, Code$logx, Code$range1,
                             Code$logy, Code$range2, Code$range_xfac, Code$range_yfac, Code$labx, Code$laby,
                             Code$theme, Code$leg, Code$title)))
@@ -1994,7 +2111,7 @@ shinyServer(function(input, output, session){
               if (rangeX[1] != min(data_hi[ ,inX]) | rangeX[2] != max(data_hi[ ,inX])) {
                 Subset_hi$x <-  paste0(inX, " >= ", rangeX[1], " & ", inX, " <= ", rangeX[2])
                 Code_hi$d <- NULL
-                Code_hi$scales <- " ; library(scales)"
+                Code_hi$scales <- "\nlibrary(scales)"
                 Code_hi$range <- paste0(" + \n  scale_x_continuous(limits = c(", rangeX[1], ", ", rangeX[2], ")",
                                          ", breaks = trans_breaks('log10', function(x) 10^x),\n",
                                          "                     ",
@@ -2082,7 +2199,9 @@ shinyServer(function(input, output, session){
 
       pl_hi <- ggplot(dataHist(), aes(x = .data[[input$x_input_hi]]))
 
-      Code_hi$gg <- paste0("ggplot(data = ", Code_Data$name, ", aes(x = ", input$x_input_hi, Code_hi$aes,"))")
+      Code_hi$gg <- paste0("\n# Graph\n",
+                           "ggplot(data = ", Code_Data$name,
+                           ", aes(x = ", input$x_input_hi, Code_hi$aes,"))")
 
       if (Density == "Density") {
         Code_hi$a <- NULL
@@ -2364,13 +2483,15 @@ shinyServer(function(input, output, session){
   plot_code_hi <- reactive({
 
     if (!is.null(Subset_hi$x)) {
-      Subset_hi$gg <- paste0("sub.data <- subset(", Code_Data$name, ", ", Subset_hi$x, ")",
-                              "\n\n", "ggplot(data = sub.data", ", aes(x = ", input$x_input_hi, Code_hi$aes,"))")
+      Subset_hi$gg <- paste0("\n# Subset of data\n",
+                              "sub.data <- subset(", Code_Data$name, ", ", Subset_hi$x, ")",
+                              "\n\n# Graph\n",
+                              "ggplot(data = sub.data", ", aes(x = ", input$x_input_hi, Code_hi$aes,"))")
       return(
         paste0(
-          sprintf(paste0("library(ggplot2)", Code_hi$scales, "\n\n", Subset_hi$gg, Code_hi$a,
+          sprintf(paste0("library(ggplot2)", Code_hi$scales, "\n", Code_hi$load_data, Subset_hi$gg, Code_hi$a,
                          Code_hi$b, Code_hi$c, Code_hi$pct_y_axis, Code_hi$ylab, Code_hi$e, Code_hi$f, Subset_hi$logx, Code_hi$g, Code_hi$h, Code_hi$i,
-                         "\n\n\n\n# Alternatively: ----------------------------\n\n",
+                         "\n\n\n\n\n\n# Alternatively: ----------------------------\n",
                          Code_hi$gg, Code_hi$a, Code_hi$b, Code_hi$c, Code_hi$pct_y_axis, Code_hi$ylab, Code_hi$e,
                          Code_hi$f, Code_hi$d, Code_hi$g, Code_hi$h, Code_hi$i, Code_hi$range)))
       )
@@ -2378,7 +2499,7 @@ shinyServer(function(input, output, session){
     if (is.null(Subset_hi$x)) {
       return(
         paste0(
-          sprintf(paste0("library(ggplot2)", Code_hi$scales, "\n\n", Code_hi$gg, Code_hi$a,
+          sprintf(paste0("library(ggplot2)", Code_hi$scales, "\n", Code_hi$load_data, Code_hi$gg, Code_hi$a,
                          Code_hi$b, Code_hi$c, Code_hi$pct_y_axis, Code_hi$ylab, Code_hi$e, Code_hi$f, Code_hi$d, Code_hi$g, Code_hi$h,
                          Code_hi$i, Code_hi$range))))
     }
@@ -2571,16 +2692,18 @@ shinyServer(function(input, output, session){
   plot_code_ba <- reactive({
 
     if (!is.null(Subset_ba$x)) {
-      Subset_ba$gg <- paste0("sub.data <- subset(", Code_Data$name, ", ", Subset_ba$x, ")",
-                              "\n\n", "ggplot(data = sub.data", ", aes(x = ", input$x_input_ba, Code_ba$Fill_by,
+      Subset_ba$gg <- paste0("\n# Subset of data\n",
+                             "sub.data <- subset(", Code_Data$name, ", ", Subset_ba$x, ")",
+                             "\n\n# Graph\n",
+                             "ggplot(data = sub.data", ", aes(x = ", input$x_input_ba, Code_ba$Fill_by,
                              Code_ba$weight, "))")
       return(
         paste0(
-          sprintf(paste0("library(ggplot2)\n\n", Subset_ba$gg, Code_ba$bar, Code_ba$pct_y_axis,
+          sprintf(paste0("library(ggplot2)", "\n", Code_ba$load_data, Subset_ba$gg, Code_ba$bar, Code_ba$pct_y_axis,
                          Code_ba$col_by, Code_ba$facet1, Code_ba$facet2, Code_ba$theme,
                          Code_ba$legend, Code_ba$title, Code_ba$lab_x, Code_ba$lab_y, Code_ba$flip,
-                         "\n\n\n\n# Alternatively: --------------------------------------\n\n",
-                         Code_ba$gg, Code_ba$bar, Code_ba$pct_y_axis, Code_ba$col_by,
+                         "\n\n\n\n\n\n# Alternatively: --------------------------------------\n",
+                         Code_ba$load_data, Code_ba$gg, Code_ba$bar, Code_ba$pct_y_axis, Code_ba$col_by,
                          Code_ba$facet1, Code_ba$facet2, Code_ba$range_fac, Code_ba$theme,
                          Code_ba$legend, Code_ba$title, Code_ba$lab_x, Code_ba$lab_y, Code_ba$flip)))
       )
@@ -2588,7 +2711,7 @@ shinyServer(function(input, output, session){
     if (is.null(Subset_ba$x)) {
       return(
         paste0(
-          sprintf(paste0(Code_ba$gg, Code_ba$bar, Code_ba$pct_y_axis, Code_ba$col_by,
+          sprintf(paste0("library(ggplot2)", "\n", Code_ba$load_data, Code_ba$gg, Code_ba$bar, Code_ba$pct_y_axis, Code_ba$col_by,
                          Code_ba$facet1, Code_ba$facet2, Code_ba$range_fac, Code_ba$theme,
                          Code_ba$legend, Code_ba$title, Code_ba$lab_x, Code_ba$lab_y, Code_ba$flip))))
     }
@@ -2629,7 +2752,8 @@ shinyServer(function(input, output, session){
       Code_ba$weight <- ifelse(input$weight_ba != "none", paste0(", weight = ", input$weight_ba), "")
 
 
-      Code_ba$gg <- paste0("ggplot(data = ", Code_Data$name, ", aes(x = ",
+      Code_ba$gg <- paste0("\n# Graph\n",
+                           "ggplot(data = ", Code_Data$name, ", aes(x = ",
                            input$x_input_ba, Code_ba$Fill_by, Code_ba$weight, "))")
 
 
@@ -2857,11 +2981,9 @@ shinyServer(function(input, output, session){
 
       }
 
-
-
       # update the code for the histogram
       # shinyjs::text(id = "print_code_ba", text = plot_code_ba() )
-      updateAceEditor(session, editorId = "print_code_ba", value = plot_code_ba() )
+      updateAceEditor(session, editorId = "print_code_ba", value = plot_code_ba())
       plots$pl_ba <- pl_ba
       pl_ba
     }
@@ -2869,11 +2991,10 @@ shinyServer(function(input, output, session){
   })
 
 
-
-
   download_type_ba <- reactive({
     input$download_type_ba
   })
+
 
   output$download_plot_ba <- downloadHandler(
     filename = function() {
@@ -2912,6 +3033,7 @@ shinyServer(function(input, output, session){
     }
   })
 
+
   observe({
     y_vars <- names(plotData())[sapply(plotData(), is.numeric)]
     if (!is.null( plotData() ) & length(y_vars) != 0) {
@@ -2929,6 +3051,7 @@ shinyServer(function(input, output, session){
                         selected = ".none.")
     }
   })
+
 
   # DYNAMIC FACTORS:
   output$dynamic_factors_box <- renderUI({
@@ -3026,7 +3149,7 @@ shinyServer(function(input, output, session){
                     Subset_box$y <- paste0(inY, " >= ", rangeY[1], " & ", inY, " <= ", rangeY[2])
 
                     Code_box$logy <- NULL
-                    Code_box$scales <- " ; library(scales)"
+                    Code_box$scales <- "\nlibrary(scales)"
                     Code_box$range_y <- paste0(" + \n  scale_y_continuous(limits = c(", rangeY[1], ", ", rangeY[2], ")",
                                                 ", breaks = trans_breaks('log10', function(x) 10^x),\n",
                                                 "                     ",
@@ -3214,6 +3337,7 @@ shinyServer(function(input, output, session){
     }
   })
 
+
   # PRINT THE CODE
   Code_box <- reactiveValues()
 
@@ -3221,19 +3345,21 @@ shinyServer(function(input, output, session){
     Subset_box$and <- ifelse(!is.null(Subset_box$x) & !is.null(Subset_box$y), " & ", "")
 
     if (!is.null(Subset_box$x) | !is.null(Subset_box$y)) {
-      Subset_box$gg <- paste0("sub.data <- subset(", Code_Data$name, ", ", Subset_box$x, Subset_box$and, Subset_box$y, ")",
-                               "\n\n", "ggplot(data = sub.data", ", aes(x = ", input$x_input_box, ", y = ",
-                               input$y_input_box, Code_box$Fill_by_box, "))")
+      Subset_box$gg <- paste0("\n# Subset of data\n",
+                              "sub.data <- subset(", Code_Data$name, ", ", Subset_box$x, Subset_box$and, Subset_box$y, ")",
+                              "\n\n# Graph\n",
+                              "ggplot(data = sub.data", ", aes(x = ", input$x_input_box, ", y = ",
+                              input$y_input_box, Code_box$Fill_by_box, "))")
       return(
         paste0(
           sprintf(
-            paste0("library(ggplot2)", Code_box$scales, "\n\n", Subset_box$gg, Code_box$boxplot,
+            paste0("library(ggplot2)", Code_box$scales, "\n", Code_ba$load_data, Code_box$seed, Subset_box$gg, Code_box$boxplot,
                    Code_box$col_by, Code_box$flip, Code_box$grid, Code_box$wrap,
                    Subset_box$logy, Code_box$labx, Code_box$laby,
                    Code_box$theme, Code_box$leg, Code_box$title, Code_box$jitter,
-                   "\n\n\n\n# Alternatively: ----------------------------\n\n",
+                   "\n\n\n\n\n\n# Alternatively: ----------------------------\n",
 
-                   Code_box$gg, Code_box$boxplot,
+                   Code_ba$load_data, Code_box$seed, Code_box$gg, Code_box$boxplot,
                    Code_box$col_by, Code_box$flip, Code_box$grid, Code_box$wrap,
                    Code_box$range_x, Code_box$logy, Code_box$range_y, Code_box$labx, Code_box$laby,
                    Code_box$theme, Code_box$leg, Code_box$title, Code_box$jitter)))
@@ -3242,7 +3368,7 @@ shinyServer(function(input, output, session){
 
     if (is.null(Subset_box$x) & is.null(Subset_box$y)) {
 
-      paste0(sprintf(paste0("library(ggplot2)", Code_box$scales, "\n\n", Code_box$gg, Code_box$boxplot,
+      paste0(sprintf(paste0("library(ggplot2)", Code_box$scales, "\n", Code_ba$load_data, Code_box$seed, Code_box$gg, Code_box$boxplot,
                             Code_box$col_by, Code_box$flip, Code_box$grid, Code_box$wrap,
                             Code_box$range_x, Code_box$logy, Code_box$range_y, Code_box$labx, Code_box$laby,
                             Code_box$theme, Code_box$leg, Code_box$title, Code_box$jitter)))
@@ -3302,10 +3428,15 @@ shinyServer(function(input, output, session){
 
       if (input$box_jitter) {
         set.seed(1)
-        Code_box_seed <- "set.seed(1)\n"
+        Code_box$seed <- paste0("\n#Set seed for reproducibility",
+                                "\n",
+                                "set.seed(1)\n")
+      } else {
+        Code_box$seed <- NULL
       }
 
-      Code_box$gg <- paste0(Code_box_seed, "ggplot(data = ", Code_Data$name, ", aes(x = ", input$x_input_box,
+      Code_box$gg <- paste0("\n# Graph\n",
+                            "ggplot(data = ", Code_Data$name, ", aes(x = ", input$x_input_box,
                             ", y = ", input$y_input_box, Code_box$Fill_by_box,
                             Code_box$Colour_by_box, "))")
 

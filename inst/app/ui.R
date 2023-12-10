@@ -14,7 +14,7 @@ shinyUI(
     ),
     # navbarPage(title = "easyPlot", id = "navbar", fluid = TRUE, theme = shinytheme("flatly"),
     navbarPage(title = "easyPlot", id = "navbar", fluid = TRUE,
-    # navbarPage(title = "easyPlot", id = "navbar", fluid = TRUE, theme = bslib::bs_theme(),
+    # navbarPage(title = "easyPlot", id = "navbar", fluid = TRUE, theme = bslib::bs_theme("5"),
 
 
                tabPanel(title = "Data", icon = icon("table"),
@@ -255,8 +255,9 @@ shinyUI(
 
                         uiOutput(outputId = "errbar_out_sc"),
 
-                        conditionalPanel( condition = "input.errbar_sc !== 'none'",
-                          checkboxInput(inputId = "customize_err_sc",label = "Customize:",
+                        conditionalPanel(condition = "input.errbar_sc !== 'none'",
+                          checkboxInput(inputId = "customize_err_sc",
+                                        label = "Customize:",
                                         value = FALSE)
                         ),
 
