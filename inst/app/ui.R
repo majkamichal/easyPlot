@@ -12,8 +12,8 @@ shinyUI(
       tags$style(type="text/css",
                  ".recalculating {opacity: 1.0;}" ) # No blinking
     ),
-    navbarPage(title = "easyPlot", id = "navbar", fluid = TRUE, theme = shinytheme("flatly"),
-    # navbarPage(title = "easyPlot", id = "navbar", fluid = TRUE,
+    # navbarPage(title = "easyPlot", id = "navbar", fluid = TRUE, theme = shinytheme("flatly"),
+    navbarPage(title = "easyPlot", id = "navbar", fluid = TRUE,
     # navbarPage(title = "easyPlot", id = "navbar", fluid = TRUE, theme = bslib::bs_theme(),
 
 
@@ -119,9 +119,6 @@ shinyUI(
                                          value = FALSE)
                               )
                             ), # end conditionalPanel("uploaded")
-
-                            # # Recoding of variables
-                            # uiOutput("recode_class_dynamic"),
 
                             # br(),
                             # hr(),

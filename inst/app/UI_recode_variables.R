@@ -29,9 +29,12 @@ recode_class_server <- function(cID, input_exampleData, input_upload, input_uplo
 
     output$recode_class_dynamic <- renderUI({
 
-      widget <- checkboxInput(inputId = NS(cID, "recode_class"),
-                              label = "Recode variables",
-                              value = FALSE)
+      # widget <- checkboxInput(inputId = NS(cID, "recode_class"),
+      #                         label = "Recode variables",
+      #                         value = FALSE)
+      widget <- prettySwitch(inputId = NS(cID, "recode_class"),
+                             label = "Recode variables",
+                             fill = TRUE)
 
       if (input_my_data()) {
 
