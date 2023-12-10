@@ -1,3 +1,5 @@
+options(shiny.maxRequestSize = 100 * 1024^2)
+
 # Libraries: -------------------------------------------------------------------
 suppressPackageStartupMessages(library(shiny))
 suppressPackageStartupMessages(library(ggplot2))
