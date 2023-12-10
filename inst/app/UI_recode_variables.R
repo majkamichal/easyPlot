@@ -34,6 +34,7 @@ recode_class_server <- function(cID, input_exampleData, input_upload, input_uplo
       #                         value = FALSE)
       widget <- prettySwitch(inputId = NS(cID, "recode_class"),
                              label = "Recode variables",
+                             status = "primary",
                              fill = TRUE)
 
       if (input_my_data()) {
