@@ -21,7 +21,7 @@ easyPlot <- function(data = NULL) {
   }
 
   # Makes sure all dependencies are available
-  dependencies <- c("ggplot2", "shinyjs", "shinyAce", "shinyBS", "scales",
+  dependencies <- c("ggplot2", "shinyjs", "shinyAce", "shinyBS", "scales", "Hmisc",
                     "shinythemes", "shinyWidgets", "Cairo", "DT", "colourpicker")
 
   ind_missing_package <- !dependencies %in% utils::installed.packages()[ ,"Package"]
@@ -32,11 +32,11 @@ easyPlot <- function(data = NULL) {
            ifelse(n_missing_packages == 1, "the", "these"),
            " missing package",
            ifelse(n_missing_packages > 1, "s", ""),
-           ":\n ",
+           ":\n\n ",
            "install.packages(",
            ifelse(n_missing_packages > 1, "c(", ""),
            paste0("\"", dependencies[ind_missing_package], collapse = "\", "),
-           ifelse(n_missing_packages > 1, "\"))", "\")"))
+           ifelse(n_missing_packages > 1, "\"))", "\")"), "\n\n")
   }
 
   if (!is.null(data) && (!is.data.frame(data) | length(data) < 2)) {
