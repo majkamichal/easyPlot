@@ -12,9 +12,9 @@ shinyUI(
       tags$style(type="text/css",
                  ".recalculating {opacity: 1.0;}" ) # No blinking
     ),
-    # navbarPage(title = "easyPlot", id = "navbar", fluid = TRUE, theme = shinytheme("flatly"),
-    navbarPage(title = "easyPlot", id = "navbar", fluid = TRUE,
-    # navbarPage(title = "easyPlot", id = "navbar", fluid = TRUE, theme = bslib::bs_theme("5"),
+    # navbarPage(title = easy_plot_header_name, id = "navbar", fluid = TRUE, theme = shinytheme("flatly"),
+    navbarPage(title = easy_plot_header_name, id = "navbar", fluid = TRUE,
+    # navbarPage(title = easy_plot_header_name, id = "navbar", fluid = TRUE, theme = bslib::bs_theme("5"),
 
 
                tabPanel(title = "Data", icon = icon("table"),

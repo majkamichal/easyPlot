@@ -45,6 +45,9 @@ easyPlot <- function(data = NULL) {
 
   options("easyPlot.shiny.data" = data)
   options("easyPlot.shiny.name" = deparse(substitute(data)))
+  options("easyPlot.version" = as.character(packageVersion("easyPlot")))
+
+  on.exit(options("easyPlot.version" = NULL))
 
   shiny::runApp(appDir,
                 display.mode = "normal",
