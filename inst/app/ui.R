@@ -27,14 +27,15 @@ shinyUI(
 
                             conditionalPanel(
                               condition = "input.my_data",
-
+                              br(),
                               recode_class_render_UI("my_data"),
                               recode_class_render_UI2("my_data"),
                               recode_class_render_UI3("my_data"),
                               recode_class_render_UI4("my_data"),
                               recode_class_render_UI5("my_data"),
-                              br()
                             ),
+
+                            tags$hr(),
 
                             checkboxInput(inputId = "exampleData",
                                           label = "Use example data",
