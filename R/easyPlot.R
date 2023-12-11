@@ -9,7 +9,7 @@
 #' @export
 #'
 #' @examples
-#' # Rund easyPlot gui
+#' # Run easyPlot gui
 #' if (interactive()) {
 #'   easyPlot()
 #' }

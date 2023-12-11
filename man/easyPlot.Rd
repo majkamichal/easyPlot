@@ -13,8 +13,16 @@ easyPlot(data = NULL)
 Start an Interactive User Interface `easyPlot`
 }
 \examples{
-# easyPlot()
-# easyPlot(iris)
+# Run easyPlot gui
+if (interactive()) {
+  easyPlot()
+}
+
+# Pass custom data to easyPlot
+if (interactive()) {
+  easyPlot(iris)
+}
+
 }
 \author{
 Michal Majka
