@@ -19,6 +19,5 @@
   packageStartupMessage("Thank you for using the easyPlot package!")
   packageStartupMessage("Don't forget to report bugs / request features under:")
   packageStartupMessage("https://github.com/majkamichal/easyPlot")
-
   packageStartupMessage(rule)
 }
