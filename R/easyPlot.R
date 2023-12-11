@@ -9,8 +9,16 @@
 #' @export
 #'
 #' @examples
-#' # easyPlot()
-#' # easyPlot(iris)
+#' # Rund easyPlot gui
+#' if (interactive()) {
+#'   easyPlot()
+#' }
+#'
+#' # Pass custom data to easyPlot
+#' if (interactive()) {
+#'   easyPlot(iris)
+#' }
+#'
 
 easyPlot <- function(data = NULL) {
 
