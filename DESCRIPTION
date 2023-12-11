@@ -1,11 +1,11 @@
 Package: easyPlot
 Type: Package
 Title: easyPlot
-Description: easyPlot is a simple graphical user interface for ggplot2 which
-    allows the user to create four kind of plots (scatterplots, histograms, boxplots
-    and bar charts) and dynamically generates a reproducible code.
-Version: 0.9.1
-Date: 2016-02-20
+Description: easyPlot is a graphical user interface for ggplot2 which
+    allows the user to dynamically create four kind of plots (scatterplots, histograms, boxplots
+    and bar charts) and generates a reproducible code.
+Version: 0.9.8
+Date: 2023-12-11
 Author: Michal Majka <michalmajka@hotmail.com>
 Maintainer: Michal Majka <michalmajka@hotmail.com>
 URL: http://github.com/majkamichal/easyPlot
@@ -19,10 +19,13 @@ imports:
     shinyAce,
     shinyBS,
     shinythemes,
-    Cairo,
-    DT,
+    ShinyWidgets,
     colourpicker,
-    utils
+    scales,
+    Cairo,
+    Hmisc,
+    utils,
+    DT
 License: GPL-3 + file LICENSE
 Encoding: UTF-8
 RoxygenNote: 7.2.3
