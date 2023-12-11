@@ -11,14 +11,13 @@
 #' @examples
 #' # Run easyPlot gui
 #' if (interactive()) {
-#'   easyPlot()
+#'   easyPlot::easyPlot()
 #' }
 #'
 #' # Pass custom data to easyPlot
 #' if (interactive()) {
-#'   easyPlot(iris)
+#'   easyPlot::easyPlot(iris)
 #' }
-#'
 
 easyPlot <- function(data = NULL) {
 
