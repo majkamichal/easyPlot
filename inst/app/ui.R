@@ -33,9 +33,10 @@ shinyUI(
                               recode_class_render_UI3("my_data"),
                               recode_class_render_UI4("my_data"),
                               recode_class_render_UI5("my_data"),
+
                             ),
 
-                            tags$hr(),
+                            shiny::tags$hr(id = "my_data_hr"),
 
                             checkboxInput(inputId = "exampleData",
                                           label = "Use example data",

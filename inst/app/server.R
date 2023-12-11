@@ -4,7 +4,7 @@ shinyServer(function(input, output, session){
 
   # bslib::bs_themer()
 
-  Sys.sleep(0.25)
+  Sys.sleep(0.2)
   hide(id = "loader", anim = TRUE, animType = "fade")
 
   session$onSessionEnded(function() { })
@@ -25,6 +25,7 @@ shinyServer(function(input, output, session){
   observe({
     if (is.null(data))
       hide(id = "my_data", anim = TRUE, animType = "fade")
+      hide(id = "my_data_hr", anim = TRUE, animType = "fade")
   })
 
   observe({
@@ -89,7 +90,7 @@ shinyServer(function(input, output, session){
 
     Code_Data$example <- input$Data
 
-    shinyjs::html(id = "description", html = descriptions() )
+    shinyjs::html(id = "description", html = descriptions())
     switch(input$Data,
            "faithful" = faithful,
            "iris" = iris,
