@@ -189,6 +189,7 @@ shinyServer(function(input, output, session){
                             alertId = "alert1",
                             title = "Data could not have been loaded",
                             content = "Hint: conversion of dates may have gone wrong. Uncheck 'Detect dates'",
+                            dismiss = FALSE,
                             style = "Warning")
                 req(NULL)
                 }
@@ -367,18 +368,24 @@ shinyServer(function(input, output, session){
 
       if (is.null(uploadedData())) {
 
-        createAlert(session, anchorId = "dataAlert1", alertId = "alert1",
-                    title = "Please provide a data frame with at least
-                    two variables", content = "")
+        createAlert(session,
+                    anchorId = "dataAlert1",
+                    alertId = "alert1",
+                    title = "Please provide a data frame with at least two variables",
+                    content = "",
+                    dismiss = FALSE)
         x <- NULL
 
       } else {
 
         if (!input$upload_data) {
 
-            createAlert(session, anchorId = "dataAlert1", alertId = "alert1",
-                        title = "Please provide a data frame with at least
-                    two variables", content = "")
+            createAlert(session,
+                        anchorId = "dataAlert1",
+                        alertId = "alert1",
+                        title = "Please provide a data frame with at least two variables",
+                        content = "",
+                        dismiss = FALSE)
             x <- NULL
 
         } else {
@@ -493,21 +500,36 @@ shinyServer(function(input, output, session){
         }
 
     } else {
-          createAlert(session, anchorId = "dataAlert1", alertId = "alert1",
-                      title = "Please provide a data frame with at least
-                  two variables", content = "")
-          createAlert(session, anchorId = "dataAlert2", alertId = "alert2",
-                      title = "Please provide a data frame with at least
-                  two variables", content = "")
-          createAlert(session, anchorId = "dataAlert3", alertId = "alert3",
-                      title = "Please provide a data frame with at least
-                  two variables", content = "")
-          createAlert(session, anchorId = "dataAlert4", alertId = "alert4",
-                      title = "Please provide a data frame with at least
-                  two variables", content = "")
-          createAlert(session, anchorId = "dataAlert5", alertId = "alert5",
-                      title = "Please provide a data frame with at least
-                  two variables", content = "")
+      createAlert(session,
+                  anchorId = "dataAlert1",
+                  alertId = "alert1",
+                  title = "Please provide a data frame with at least two variables",
+                  content = "",
+                  dismiss = FALSE)
+      createAlert(session,
+                  anchorId = "dataAlert2",
+                  alertId = "alert2",
+                  title = "Please provide a data frame with at least two variables",
+                  content = "",
+                  dismiss = FALSE)
+      createAlert(session,
+                  anchorId = "dataAlert3",
+                  alertId = "alert3",
+                  title = "Please provide a data frame with at least two variables",
+                  content = "",
+                  dismiss = FALSE)
+      createAlert(session,
+                  anchorId = "dataAlert4",
+                  alertId = "alert4",
+                  title = "Please provide a data frame with at least two variables",
+                  content = "",
+                  dismiss = FALSE)
+      createAlert(session,
+                  anchorId = "dataAlert5",
+                  alertId = "alert5",
+                  title = "Please provide a data frame with at least two variables",
+                  content = "",
+                  dismiss = FALSE)
 
       Code_Data$name <- NULL
       return(NULL)
@@ -532,22 +554,31 @@ shinyServer(function(input, output, session){
               createAlert(session,
                           anchorId = "dataAlert2_upload",
                           alertId = "alert2_upload",
-                          title = "If your uploaded dataset is ready to visualise then press the red button in the upload section", content = "")
+                          title = "If your uploaded dataset is ready to visualise then press the red button in the upload section",
+                          content = "",
+                          dismiss = FALSE)
               createAlert(session,
                           anchorId = "dataAlert3_upload",
                           alertId = "alert3_upload",
-                          title = "If your uploaded dataset is ready to visualise then press the red button in the upload section", content = "")
+                          title = "If your uploaded dataset is ready to visualise then press the red button in the upload section",
+                          content = "",
+                          dismiss = FALSE)
               createAlert(session,
                           anchorId = "dataAlert4_upload",
                           alertId = "alert4_upload",
-                          title = "If your uploaded dataset is ready to visualise then press the red button in the upload section", content = "")
+                          title = "If your uploaded dataset is ready to visualise then press the red button in the upload section",
+                          content = "",
+                          dismiss = FALSE)
               createAlert(session,
                           anchorId = "dataAlert5_upload",
                           alertId = "alert5_upload",
-                          title = "If your uploaded dataset is ready to visualise then press the red button in the upload section", content = "")
+                          title = "If your uploaded dataset is ready to visualise then press the red button in the upload section",
+                          content = "",
+                          dismiss = FALSE)
           }
 
       } else {
+
               closeAlert(session, alertId = "alert2_upload")
               closeAlert(session, alertId = "alert3_upload")
               closeAlert(session, alertId = "alert4_upload")
@@ -2142,7 +2173,12 @@ shinyServer(function(input, output, session){
         }
       }
       else {
-        createAlert(session, anchorId = "alert_hi", alertId = "no_numeric_hi", title = "No numeric variable available")
+        createAlert(session,
+                    anchorId = "alert_hi",
+                    alertId = "no_numeric_hi",
+                    title = "No numeric variable available",
+                    content = "",
+                    dismiss = FALSE)
         return(NULL)
       }
     }
@@ -2574,7 +2610,12 @@ shinyServer(function(input, output, session){
         }
       }
       else {
-        createAlert(session, anchorId = "alert_ba", alertId = "no_factor_ba", title = "No factor variable available")
+        createAlert(session,
+                    anchorId = "alert_ba",
+                    alertId = "no_factor_ba",
+                    title = "No factor variable available",
+                    content = "",
+                    dismiss = FALSE)
         return(NULL)
       }
     }
@@ -3024,8 +3065,12 @@ shinyServer(function(input, output, session){
     }
     else {
       if (!is.null(plotData())) {
-        createAlert(session, anchorId = "alert_box1", alertId = "no_factor_box1",
-                    "No factor variable available")
+        createAlert(session,
+                    anchorId = "alert_box1",
+                    alertId = "no_factor_box1",
+                    title = "No factor variable available",
+                    content = "",
+                    dismiss = FALSE)
       }
       updateSelectInput(session, inputId = "x_input_box",
                         choices =  ".none.",
@@ -3043,8 +3088,12 @@ shinyServer(function(input, output, session){
     }
     else {
       if (!is.null(plotData())) {
-        createAlert(session, anchorId = "alert_box2", alertId = "no_factor_box2",
-                    "No numeric variable available")
+        createAlert(session,
+                    anchorId = "alert_box2",
+                    alertId = "no_factor_box2",
+                    title = "No numeric variable available",
+                    content = "",
+                    dismiss = FALSE)
       }
       updateSelectInput(session, inputId = "y_input_box",
                         choices =  ".none.",
