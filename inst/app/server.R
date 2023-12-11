@@ -115,7 +115,7 @@ shinyServer(function(input, output, session){
                       icon = icon("ban"))
   }))
 
-  uploadedData <- reactive({
+  uploadedData2 <- reactive({
 
       upFile <- input$uploaded
 
@@ -211,6 +211,7 @@ shinyServer(function(input, output, session){
   })
 
 
+  uploadedData <- debounce(uploadedData2, 1000)
 
   observe({
 
