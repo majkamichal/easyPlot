@@ -23,9 +23,12 @@ shinyServer(function(input, output, session){
   Code_Data <- reactiveValues(data = "")
 
   observe({
-    if (is.null(data))
+    if (is.null(data)) {
       hide(id = "my_data", anim = TRUE, animType = "fade")
       hide(id = "my_data_hr", anim = TRUE, animType = "fade")
+    } else {
+      updateCheckboxInput(session, inputId = "my_data", value = TRUE)
+    }
   })
 
   observe({
@@ -131,7 +134,6 @@ shinyServer(function(input, output, session){
 
           updateCheckboxInput(session, inputId = "my_data", value = FALSE)
           updateCheckboxInput(session, inputId = "exampleData", value = FALSE)
-
           skip_rows <- as.integer(input$skip)
 
           if (is.na(skip_rows) || skip_rows < 1) {
