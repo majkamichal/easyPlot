@@ -10,11 +10,12 @@ suppressPackageStartupMessages(library(DT))
 suppressPackageStartupMessages(library(colourpicker))
 suppressPackageStartupMessages(library(Hmisc))
 suppressPackageStartupMessages(library(shinyWidgets))
-library(shinyBS)
-library(shinythemes)
-library(scales)
-library(Cairo)
-library(shinyAce)
+suppressPackageStartupMessages(library(data.table))
+suppressPackageStartupMessages(library(shinyBS))
+suppressPackageStartupMessages(library(shinythemes))
+suppressPackageStartupMessages(library(scales))
+suppressPackageStartupMessages(library(Cairo))
+suppressPackageStartupMessages(library(shinyAce))
 
 
 # Define version for the UI header: --------------------------------------------

@@ -15,6 +15,7 @@ Depends:
     shiny (>= 0.12.2)
 imports: 
     ggplot2,
+    data.table,
     shinyjs (>= 0.9),
     shinyAce,
     shinyBS,

@@ -145,13 +145,21 @@ shinyServer(function(input, output, session){
               output$data_format <- renderText("csvtxt")
               outputOptions(output, "data_format", suspendWhenHidden = FALSE)
 
-              x <- read.csv(upFile$datapath,
-                            header = input$header,
-                            sep = input$sep,
-                            quote = input$quote,
-                            dec = input$dec,
-                            stringsAsFactors = input$strings_as_factor,
-                            skip = skip_rows - 1)
+              # x <- read.csv(upFile$datapath,
+              #               header = input$header,
+              #               sep = input$sep,
+              #               quote = input$quote,
+              #               dec = input$dec,
+              #               stringsAsFactors = input$strings_as_factor,
+              #               skip = skip_rows - 1)
+              x <- data.table::fread(upFile$datapath,
+                                     header = input$header,
+                                     sep = input$sep,
+                                     quote = input$quote,
+                                     dec = input$dec,
+                                     stringsAsFactors = input$strings_as_factor,
+                                     skip = skip_rows - 1,
+                                     data.table = FALSE)
 
               # Re-code logical variables into factors depending on a widget
               if (input$logicals_as_factor) {
