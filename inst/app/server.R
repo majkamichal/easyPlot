@@ -738,7 +738,7 @@ shinyServer(function(input, output, session){
                                   showColour = "background",
                                   value = "#132B43"),
 
-                      actionButton(inputId = "reset_count_sc", "Reset:")))
+                      actionButton(inputId = "reset_count_sc", "Reset colour:")))
 
 
         }
