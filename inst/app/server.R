@@ -147,27 +147,61 @@ shinyServer(function(input, output, session){
               output$data_format <- renderText("csvtxt")
               outputOptions(output, "data_format", suspendWhenHidden = FALSE)
 
-              # x <- read.csv(upFile$datapath,
-              #               header = input$header,
-              #               sep = input$sep,
-              #               quote = input$quote,
-              #               dec = input$dec,
-              #               stringsAsFactors = input$strings_as_factor,
-              #               skip = skip_rows - 1)
-              x <- data.table::fread(upFile$datapath,
-                                     header = input$header,
-                                     sep = input$sep,
-                                     quote = input$quote,
-                                     dec = input$dec,
-                                     stringsAsFactors = input$strings_as_factor,
-                                     skip = skip_rows - 1,
-                                     data.table = FALSE)
+              x <- tryCatch({
+                data.table::fread(upFile$datapath,
+                                  header = input$header,
+                                  sep = input$sep,
+                                  quote = input$quote,
+                                  dec = input$dec,
+                                  stringsAsFactors = input$strings_as_factor,
+                                  skip = skip_rows - 1,
+                                  check.names = TRUE,
+                                  data.table = FALSE)
+
+              }, error = function(e) {
+                closeAlert(session, "alert1")
+                if (input$sep == input$dec) {
+                  createAlert(session,
+                              anchorId = "dataAlert1",
+                              alertId = "alert1",
+                              title = "Seperator and decimal cannot be the same",
+                              content = "",
+                              dismiss = FALSE,
+                              style = "Warning")
+                } else {
+                  createAlert(session,
+                              anchorId = "dataAlert1",
+                              alertId = "alert1",
+                              title = "Data could not have been loaded",
+                              content = "",
+                              dismiss = FALSE,
+                              style = "Warning")
+                }
+
+                NULL
+              })
 
               # Re-code logical variables into factors depending on a widget
-              if (input$logicals_as_factor) {
-                  ind_logical <- sapply(x, is.logical)
-                  x[ind_logical] <- lapply(x[ind_logical], as.factor)
-              }
+                x <- tryCatch({
+                  if (input$logicals_as_factor) {
+                    ind_logical <- sapply(x, is.logical)
+                    x[ind_logical] <- lapply(x[ind_logical], as.factor)
+                  }
+                  x
+                }, error = function(e) {
+                  x
+                })
+
+                # remove empty columns
+                x <- tryCatch({
+                  if (ncol(x) > 1) {
+                    x <- x[ ,colSums(is.na(x)) < nrow(x)]
+                  }
+                  x
+                }, error = function(e) {
+                  x
+                })
+
               return(x)
           }
 
@@ -202,18 +236,20 @@ shinyServer(function(input, output, session){
                             content = "Hint: conversion of dates may have gone wrong. Uncheck 'Detect dates'",
                             dismiss = FALSE,
                             style = "Warning")
-                req(NULL)
+                NULL
                 }
               )
 
-              if (input$logicals_as_factor_xlsx) {
-                ind_logical <- sapply(x, is.logical)
-                x[ind_logical] <- lapply(x[ind_logical], as.factor)
-              }
+              if (!is.null(x)) {
+                if (input$logicals_as_factor_xlsx) {
+                  ind_logical <- sapply(x, is.logical)
+                  x[ind_logical] <- lapply(x[ind_logical], as.factor)
+                }
 
-              if (input$strings_as_factor_xlsx) {
-                ind_logical <- sapply(x, is.character)
-                x[ind_logical] <- lapply(x[ind_logical], as.factor)
+                if (input$strings_as_factor_xlsx) {
+                  ind_logical <- sapply(x, is.character)
+                  x[ind_logical] <- lapply(x[ind_logical], as.factor)
+                }
               }
 
               return(x)
@@ -237,12 +273,15 @@ shinyServer(function(input, output, session){
       if (csv_) {
 
         file_name <- substr(upFile$name, 1, nchar(upFile$name) - 4)
-        n_ <- nchar(paste0(file_name, " <- read.csv("))
+        # n_ <- nchar(paste0(file_name, " <- read.csv("))
+        n_ <- nchar(paste0(file_name, " <- data.table::fread("))
+
         blank_ <- paste0(rep(" ", n_), collapse = "")
 
-        header_ <- ifelse(input$header, yes = "", no = paste0(",\n", blank_, "header = TRUE"))
+        # header_ <- ifelse(input$header, yes = "", no = paste0(",\n", blank_, "header = TRUE"))
+        header_ <- paste0(",\n", blank_, "header = ", input$header)
 
-        sep_ <- ifelse(input$sep == ".", yes = "", no = paste0(",\n", blank_, "sep = '", input$sep, "'"))
+        sep_ <- ifelse(input$sep == "auto", yes = "", no = paste0(",\n", blank_, "sep = '", input$sep, "'"))
 
         quote_ <- ifelse(input$quote == "\"", yes = "", no = paste0(",\n", blank_, "quote = '", input$quote, "'"))
 
@@ -255,14 +294,16 @@ shinyServer(function(input, output, session){
         x_comment <- "# Load dataset (update the file path)"
 
         x_code <- paste0(file_name,
-                    " <- read.csv('", upFile$name, "'",
-                     header_,
-                     sep_,
-                     quote_,
-                     dec_,
-                     strings_as_factor_,
-                     skip_,
-                     ")")
+                         " <- data.table::fread('", upFile$name, "'",
+                         header_,
+                         sep_,
+                         quote_,
+                         dec_,
+                         strings_as_factor_,
+                         skip_,
+                         paste0(",\n", blank_, "check.names = TRUE"),
+                         paste0(",\n", blank_, "data.table = FALSE"),
+                         ")")
 
         x_full_code <- paste0("\n",
                               x_comment,

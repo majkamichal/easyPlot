@@ -4,8 +4,8 @@ list(
            radioButtons(
              inputId = "sep",
              label =  'Separator',
-             choices = c(Comma = ",", Semicolon = ";", Tab = '\t', Whitespace = " "),
-             selected = ";")
+             choices = c("Auto" = "auto", Comma = ",", Semicolon = ";", Tab = '\t', Whitespace = " "),
+             selected = "auto")
 
     ),
     column(5,
