@@ -23,7 +23,7 @@ shinyUI(
 
                             checkboxInput(inputId = "my_data",
                                           label = "My data",
-                                          value = FALSE),
+                                          value = TRUE),
 
                             conditionalPanel(
                               condition = "input.my_data",

@@ -24,8 +24,10 @@ shinyServer(function(input, output, session){
 
   observe({
     if (is.null(data)) {
+      hide(id = "my_data-recode_class_dynamic", anim = TRUE, animType = "fade")
       hide(id = "my_data", anim = TRUE, animType = "fade")
       hide(id = "my_data_hr", anim = TRUE, animType = "fade")
+
     } else {
       updateCheckboxInput(session, inputId = "my_data", value = TRUE)
     }
