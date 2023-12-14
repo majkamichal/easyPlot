@@ -1603,14 +1603,21 @@ shinyServer(function(input, output, session){
 
       # Grid
       facets_sc <- paste(input$x_facet_sc, "~", input$y_facet_sc)
-      Scales_sc <- input$scales_sc
 
+      if (input$x_facet_sc != "." & input$y_facet_sc != ".") {
+        validate(
+          need(input$x_facet_sc != input$y_facet_sc,
+               "Faceting variables can only appear in `rows` or `cols` not both.")
+          )
+      }
+
+
+      Scales_sc <- input$scales_sc
       print_scales_sc  <- paste0(", scales = ", "'", Scales_sc , "'")
       if (Scales_sc == "fixed") {
         print_scales_sc <- ""
       }
 
-      # PRINT CODE
       if (facets_sc == ". ~ .") {
         Code$grid <- NULL
       }
@@ -2371,6 +2378,14 @@ shinyServer(function(input, output, session){
       # FACETS
 
       facets_hi <- paste(input$x_facet_hi, "~", input$y_facet_hi)
+
+      if (input$x_facet_hi != "." & input$y_facet_hi != ".") {
+        validate(
+          need(input$x_facet_hi != input$y_facet_hi,
+               "Faceting variables can only appear in `rows` or `cols` not both.")
+        )
+      }
+
       Scales_hi <- input$scales_hi
 
       print_scales_hi  <- paste0(", scales = ", "'", Scales_hi , "'")
@@ -2848,6 +2863,13 @@ shinyServer(function(input, output, session){
       # FACETS
 
       facets_ba <- paste(input$x_facet_ba, "~", input$y_facet_ba)
+      if (input$x_facet_ba != "." & input$y_facet_ba != ".") {
+        validate(
+          need(input$x_facet_ba != input$y_facet_ba,
+               "Faceting variables can only appear in `rows` or `cols` not both.")
+        )
+      }
+
       Scales_ba <- input$scales_ba
 
       print_scales_ba  <- paste0(", scales = ", "'", Scales_ba , "'")
@@ -3585,6 +3607,13 @@ shinyServer(function(input, output, session){
 
       # Grid
       facets_box <- paste(input$x_facet_box, "~", input$y_facet_box)
+      if (input$x_facet_box != "." & input$y_facet_box != ".") {
+        validate(
+          need(input$x_facet_box != input$y_facet_box,
+               "Faceting variables can only appear in `rows` or `cols` not both.")
+        )
+      }
+
       Scales_box <- input$scales_box
 
       print_scales_box  <- paste0(", scales = ", "'", Scales_box , "'")
