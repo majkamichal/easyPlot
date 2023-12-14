@@ -258,7 +258,7 @@ shinyServer(function(input, output, session){
   })
 
 
-  uploadedData <- debounce(uploadedData2, 1000)
+  uploadedData <- debounce(uploadedData2, 500)
 
   observe({
 
