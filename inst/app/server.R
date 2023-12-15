@@ -1971,21 +1971,10 @@ shinyServer(function(input, output, session){
 
   })
 
-  download_type_sc <- reactive({
-    input$download_type_sc
-  })
 
-  output$download_plot_sc <- downloadHandler(
-    filename = function() {
-      paste0(input$download_name_sc, ".", input$download_type_sc)
-    },
-    content = function(file) {
-      fun <- match.fun( download_type_sc() )
-      fun(file, height = input$download_height_sc, width = input$download_width_sc)
-      print(plots$pl)
-      dev.off()
-    }
-  )
+  # Download plot handler
+  downloadGraphObserverServer("scatterplot")
+  downloadGraphHandlerServer("scatterplot", plots$pl)
 
 
   # ----------------------------- HISTOGRAM SECTION ----------------------------
@@ -2563,26 +2552,6 @@ shinyServer(function(input, output, session){
   })
 
 
-
-  # PLOT DOWNLOAD
-
-  download_type_hi <- reactive({
-    input$download_type_hi
-  })
-
-  output$download_plot_hi <- downloadHandler(
-    filename = function() {
-      paste0(input$download_name_hi, ".", input$download_type_hi)
-    },
-
-    content = function(file) {
-      fun <- match.fun( download_type_hi() )
-      fun(file, height = input$download_height_hi, width = input$download_width_hi)
-      print(plots$pl_hi)
-      dev.off()
-    }
-  )
-
   # PRINT THE CODE
   Code_hi <- reactiveValues()
 
@@ -2610,6 +2579,11 @@ shinyServer(function(input, output, session){
                          Code_hi$i, Code_hi$range))))
     }
   })
+
+
+  # Download plot handler
+  downloadGraphObserverServer("histogram")
+  downloadGraphHandlerServer("histogram", plots$pl_hi)
 
 
   # BAR CHART: -------------------------------------------------------------------
@@ -3109,23 +3083,9 @@ shinyServer(function(input, output, session){
   })
 
 
-  download_type_ba <- reactive({
-    input$download_type_ba
-  })
-
-
-  output$download_plot_ba <- downloadHandler(
-    filename = function() {
-      paste0(input$download_name_ba, ".", input$download_type_ba)
-    },
-
-    content = function(file) {
-      fun <- match.fun( download_type_ba() )
-      fun(file, height = input$download_height_ba, width = input$download_width_ba)
-      print(plots$pl_ba)
-      dev.off()
-    }
-  )
+  # Download plot handler
+  downloadGraphObserverServer("bargraph")
+  downloadGraphHandlerServer("bargraph", plots$pl_ba)
 
 
   # BOXPLOTS: --------------------------------------------------------------------
@@ -3822,24 +3782,9 @@ shinyServer(function(input, output, session){
   })
 
 
-  # PLOT DOWNLOAD
-
-  download_type_box <- reactive({
-    input$download_type_box
-  })
-
-  output$download_plot_box <- downloadHandler(
-    filename = function() {
-      paste0(input$download_name_box, ".", input$download_type_box)
-    },
-
-    content = function(file) {
-      fun <- match.fun( download_type_box() )
-      fun(file, height = input$download_height_box, width = input$download_width_box)
-      print(plots$pl_box)
-      dev.off()
-    }
-  )
+  # Download plot handler
+  downloadGraphObserverServer("boxplot")
+  downloadGraphHandlerServer("boxplot", plots$pl_box)
 
 
   onStop(function() {

@@ -375,27 +375,7 @@ shinyUI(
                             actionButton(inputId = "reset_sc", "Reset")
                         ),
                         br(),
-                        # SAVE THE PLOT
-                        actionButton(inputId = "save_sc", label = "  Download", icon = icon("download")),
-                        bsModal(id= "modal_sc", title = "Download the plot", trigger = "save_sc",
-                                size = "medium",
-
-                                selectInput(inputId = "download_type_sc", label = "Image format",
-                                            choices = c("PNG" = "png", "JPEG" = "jpeg", "TIFF" = "tiff"),
-                                            selected = "png"),
-
-                                numericInput(inputId = "download_width_sc", label = "Width (px)",
-                                             value = 480, min = 300, max = 10000),
-
-                                numericInput(inputId = "download_height_sc", label = "Height (px)",
-                                             value = 480, min = 300, max = 10000),
-
-
-                                textInput(inputId = "download_name_sc", label = "File name",
-                                          value = "GGplot"),
-
-                                downloadButton(outputId = "download_plot_sc", label = "Download")
-                        )
+                        downloadGraphButtonUI("scatterplot")
                       )
                  )),
       tabPanel("POINTS",
@@ -710,29 +690,7 @@ shinyUI(
                         actionButton(inputId = "reset_hi", "Reset:")
                     ),
                     br(),
-                    # DOWNLOAD PLOT
-                    actionButton(inputId = "save_hi", label = "  Download", icon = icon("download")),
-                    bsModal(id= "modal_hi", title = "Download the plot", trigger = "save_hi",
-                            size = "medium",
-
-                            selectInput(inputId = "download_type_hi", label = "Image format",
-                                        choices = c("PNG" = "png", "JPEG" = "jpeg", "TIFF" = "tiff"),
-                                        selected = "png"),
-
-                            numericInput(inputId = "download_width_hi", label = "Width (px)",
-                                         value = 480, min = 300, max = 10000),
-
-                            numericInput(inputId = "download_height_hi", label = "Height (px)",
-                                         value = 480, min = 300, max = 10000),
-
-                            textInput(inputId = "download_name_hi", label = "File name",
-                                      value = "GGplot"),
-
-                            downloadButton(outputId = "download_plot_hi", label = "Download ")
-                    )
-
-
-
+                    downloadGraphButtonUI("histogram")
              )
 
              ),
@@ -968,27 +926,8 @@ shinyUI(
 
                         actionButton(inputId = "reset_box", "Reset")
                     ),
-                    # DOWNLOAD PLOT
                     br(),
-                    actionButton(inputId = "save_box", label = "  Download", icon = icon("download")),
-                    bsModal(id= "modal_box", title = "Download the plot", trigger = "save_box",
-                            size = "medium",
-
-                            selectInput(inputId = "download_type_box", label = "Image format",
-                                        choices = c("PNG" = "png", "JPEG" = "jpeg", "TIFF" = "tiff"),
-                                        selected = "png"),
-
-                            numericInput(inputId = "download_width_box", label = "Width (px)",
-                                         value = 480, min = 300, max = 10000),
-
-                            numericInput(inputId = "download_height_box", label = "Height (px)",
-                                         value = 480, min = 300, max = 10000),
-
-                            textInput(inputId = "download_name_box", label = "File name",
-                                      value = "GGplot"),
-
-                            downloadButton(outputId = "download_plot_box", label = "Download ")
-                    ),
+                    downloadGraphButtonUI("boxplot"),
                     hr(),
                     actionButton(inputId = "reset_colours_box", label = "Reset colours")
              )
@@ -1184,26 +1123,8 @@ shinyUI(
 
                         actionButton(inputId = "reset_ba", "Reset")
                     ),
-                    # DOWNLOAD PLOT
                     br(),
-                    actionButton(inputId = "save_ba", label = "  Download", icon = icon("download")),
-                    bsModal(id = "modal_ba", title = "Download the plot", trigger = "save_ba",
-                            size = "medium",
-
-                            selectInput(inputId = "download_type_ba", label = "Image format",
-                                        choices = c("PNG" = "png", "JPEG" = "jpeg", "TIFF" = "tiff"),
-                                        selected = "png"),
-
-                            numericInput(inputId = "download_width_ba", label = "Width (px)",
-                                         value = 480, min = 300, max = 10000),
-
-                            numericInput(inputId = "download_height_ba", label = "Height (px)",
-                                         value = 480, min = 300, max = 10000),
-
-                            textInput(inputId = "download_name_ba", label = "File name",
-                                      value = "GGplot"),
-
-                            downloadButton(outputId = "download_plot_ba", label = "Download "))
+                    downloadGraphButtonUI("bargraph")
                )
              ),
              br(),
