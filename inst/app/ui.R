@@ -89,14 +89,14 @@ shinyUI(
                               # Dynamic UI for CSV datasets
                               conditionalPanel(
                                   condition = "input.upload_data == true && output.data_format == 'csvtxt'",
-                                  source("UI_widgets_csvtxt.R", local = TRUE)$value
+                                  source("widgets_csvtxt_UI.R", local = TRUE)$value
                               ),
 
 
                               # Dynamic UI for XLSX datasets
                               conditionalPanel(
                                 condition = "input.upload_data == true && output.data_format == 'xlsx'",
-                                source("UI_widgets_xlsx.R", local = TRUE)$value
+                                source("widgets_xlsx_UI.R", local = TRUE)$value
                               ),
 
                               # Recoding of variables
