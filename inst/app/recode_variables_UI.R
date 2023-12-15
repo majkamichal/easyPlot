@@ -1,38 +1,38 @@
-recode_class_render_UI <- function(cID) {
-  uiOutput(NS(cID, "recode_class_dynamic"))
+recode_class_render_UI <- function(ID) {
+  uiOutput(NS(ID, "recode_class_dynamic"))
 }
 
 
-recode_class_render_UI2 <- function(cID) {
-  uiOutput(NS(cID, "recode_class_dynamic2"))
+recode_class_render_UI2 <- function(ID) {
+  uiOutput(NS(ID, "recode_class_dynamic2"))
 }
 
 
-recode_class_render_UI3 <- function(cID) {
-  uiOutput(NS(cID, "recode_class_dynamic3"))
+recode_class_render_UI3 <- function(ID) {
+  uiOutput(NS(ID, "recode_class_dynamic3"))
 }
 
 
-recode_class_render_UI4 <- function(cID) {
-  uiOutput(NS(cID, "recode_class_dynamic4"))
+recode_class_render_UI4 <- function(ID) {
+  uiOutput(NS(ID, "recode_class_dynamic4"))
 }
 
 
-recode_class_render_UI5 <- function(cID) {
-  uiOutput(NS(cID, "recode_class_dynamic5"))
+recode_class_render_UI5 <- function(ID) {
+  uiOutput(NS(ID, "recode_class_dynamic5"))
 }
 
 
-recode_class_server <- function(cID, input_exampleData, input_upload, input_uploaded, input_my_data) {
+recode_class_server <- function(ID, input_exampleData, input_upload, input_uploaded, input_my_data) {
 
-  moduleServer(cID, function(input, output, session) {
+  moduleServer(ID, function(input, output, session) {
 
     output$recode_class_dynamic <- renderUI({
 
-      # widget <- checkboxInput(inputId = NS(cID, "recode_class"),
+      # widget <- checkboxInput(inputId = NS(ID, "recode_class"),
       #                         label = "Recode variables",
       #                         value = FALSE)
-      widget <- prettySwitch(inputId = NS(cID, "recode_class"),
+      widget <- prettySwitch(inputId = NS(ID, "recode_class"),
                              label = "Recode variables",
                              status = "primary",
                              fill = TRUE)
@@ -66,9 +66,9 @@ recode_class_server <- function(cID, input_exampleData, input_upload, input_uplo
 }
 
 
-recode_target_class_server <- function(cID) {
+recode_target_class_server <- function(ID) {
 
-  moduleServer(cID, function(input, output, session) {
+  moduleServer(ID, function(input, output, session) {
 
     output$recode_class_dynamic2 <- renderUI({
 
@@ -76,7 +76,7 @@ recode_target_class_server <- function(cID) {
 
       if (input$recode_class == TRUE) {
 
-          selectInput(inputId = NS(cID, "recode_target_class"),
+          selectInput(inputId = NS(ID, "recode_target_class"),
                       label = "Select new class",
                       choices = c("Factor" = "factor",
                                   "Date" = "Date",
@@ -92,9 +92,9 @@ recode_target_class_server <- function(cID) {
 }
 
 
-recode_class_vars_server <- function(cID, x) {
+recode_class_vars_server <- function(ID, x) {
 
-  moduleServer(cID, function(input, output, session) {
+  moduleServer(ID, function(input, output, session) {
 
     output$recode_class_dynamic3 <- renderUI({
       req(x)
@@ -106,7 +106,7 @@ recode_class_vars_server <- function(cID, x) {
         data <- head(x())
         new_choices <- fun_find_vars_to_recode(data, input$recode_target_class)
 
-        selectInput(inputId = NS(cID, "recode_class_vars"),
+        selectInput(inputId = NS(ID, "recode_class_vars"),
                     label = "Select variables to recode:",
                     multiple = TRUE,
                     choices = new_choices)
@@ -120,16 +120,16 @@ recode_class_vars_server <- function(cID, x) {
 }
 
 
-recode_class_convert_server <- function(cID) {
+recode_class_convert_server <- function(ID) {
 
-  moduleServer(cID, function(input, output, session) {
+  moduleServer(ID, function(input, output, session) {
 
     output$recode_class_dynamic4 <- renderUI({
 
       req(input$recode_class)
 
       if (input$recode_class == TRUE) {
-        actionButton(inputId = NS(cID, "recode_class_convert"),
+        actionButton(inputId = NS(ID, "recode_class_convert"),
                      label = "Convert",
                      class = "btn-primary") # add icon
 
@@ -142,16 +142,16 @@ recode_class_convert_server <- function(cID) {
 }
 
 
-recode_class_reset_server <- function(cID) {
+recode_class_reset_server <- function(ID) {
 
-  moduleServer(cID, function(input, output, session) {
+  moduleServer(ID, function(input, output, session) {
 
     output$recode_class_dynamic5 <- renderUI({
 
       req(input$recode_class)
 
       if (input$recode_class == TRUE) {
-        actionButton(inputId = NS(cID, "recode_class_reset"),
+        actionButton(inputId = NS(ID, "recode_class_reset"),
                      label = "Reset",
                      class = "btn-link") # add icon
 
@@ -165,9 +165,9 @@ recode_class_reset_server <- function(cID) {
 
 
 
-recode_class_conversion_server <- function(cID, data) {
+recode_class_conversion_server <- function(ID, data) {
 
-  moduleServer(cID, function(input, output, session) {
+  moduleServer(ID, function(input, output, session) {
 
     observeEvent(input$recode_class_convert, {
 
@@ -190,9 +190,9 @@ recode_class_conversion_server <- function(cID, data) {
 }
 
 
-recode_class_reset_server2 <- function(cID, data, backup) {
+recode_class_reset_server2 <- function(ID, data, backup) {
 
-  moduleServer(cID, function(input, output, session) {
+  moduleServer(ID, function(input, output, session) {
 
     observeEvent(input$recode_class_reset, {
       req(data())

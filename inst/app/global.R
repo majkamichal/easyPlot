@@ -30,7 +30,7 @@ easy_plot_header_name <- paste0("easyPlot ", easy_plot_version_)
 
 
 # Source files: ----------------------------------------------------------------
-source("UI_recode_variables.R", local = TRUE)$value
+source("recode_variables_UI.R", local = TRUE)$value
 
 
 # Source global variables / functions: -----------------------------------------
