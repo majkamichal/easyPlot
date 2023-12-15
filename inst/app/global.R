@@ -28,6 +28,13 @@ easy_plot_version_ <- ifelse(is.null(easy_plot_package_version_),
 
 easy_plot_header_name <- paste0("easyPlot ", easy_plot_version_)
 
+# Define if my data checkbox is shown: -----------------------------------------
+show_my_data_bool_ <- FALSE
+show_my_data_bool_option <- options()$easyPlot.show.my.data
+if (!is.null(show_my_data_bool_option) && show_my_data_bool_option) {
+  show_my_data_bool_ <- TRUE
+}
+
 
 # Source files: ----------------------------------------------------------------
 source("recode_variables_UI.R", local = TRUE)$value
