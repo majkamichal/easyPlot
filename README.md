@@ -5,8 +5,8 @@
 
 ## Overview
 
-[easyPlot](https://github.com/majkamichal/easyPlot) is an intuitive
-graphical user interface (GUI) meticulously designed for
+[easyPlot](http://easyplot.michalmajka.com) is an intuitive graphical
+user interface (GUI) meticulously designed for
 [ggplot2](https://ggplot2.tidyverse.org). `easyPlot` serves as a
 powerful tool, allowing users to effortlessly create four fundamental
 types of graphs — scatterplots, histograms, boxplots, and bar charts —
@@ -57,6 +57,11 @@ data visualization toolbox.
 Take a look at [easyPlot](https://github.com/majkamichal/easyPlot) and
 feel welcome to contribute. We’re building this tool together to make
 data visualization more accessible.
+
+## Live version
+
+Live version of the app can be accessed
+[here](http://easyplot.michalmajka.com).
 
 ## Installation
 
