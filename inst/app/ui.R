@@ -1140,7 +1140,41 @@ shinyUI(
 
     tabPanel(title = "Info",
              icon = icon("circle-info"),
-             includeMarkdown("INFO.rmd")
+             HTML('<h1>easyPlot</h1>
+
+<p><strong>Effortless Data Visualization with ggplot2</strong></p>
+
+<p><code>easyPlot</code> is a Shiny app crafted for ggplot2, simplifying the creation of scatterplots, histograms, boxplots, and bar charts.</p>
+
+<hr/>
+
+<h2>Key features</h2>
+
+<ul>
+<li><p><strong>Seamless Data Upload:</strong> Easily import data in various formats (csv, xlsx, txt) for a smooth start to your visualization journey.</p></li>
+<li><p><strong>Swift Visualization:</strong> Swiftly explore patterns and relationships within your dataset, providing quick insights.</p></li>
+<li><p><strong>Multivariate Visualizations:</strong> Visualize multiple variables simultaneously, enhancing the depth of data exploration in a single graph.</p></li>
+<li><p><strong>Flexible Styling:</strong> Customize the appearance of your graphs by adjusting colors, themes, and other visual elements to suit your preferences.</p></li>
+<li><p><strong>Interactive Scatterplot:</strong> Identify outliers, calculate summary statistics for marked points, and efficiently zoom into specific areas for enhanced data exploration.</p></li>
+<li><p><strong>Reproducibility:</strong> Benefit from automatic generation of R code corresponding to your plots, ensuring easy reproduction and integration into your scripts and reports.</p></li>
+</ul>
+
+<hr/>
+
+<h2>Connect with Us</h2>
+
+<ul>
+<li><p>For feedback, feature requests, and bug reports, please visit my <a href="https://github.com/majkamichal/easyPlot">GitHub repository</a>.</p></li>
+<li><p>Contact me at <a href="mailto:michalmajka@hotmail.com">michalmajka@hotmail.com</a>.</p></li>
+<li><p>Follow me on <a href="https://twitter.com/majkamichal">Twitter</a> and <a href="https://www.linkedin.com/in/michal-majka/">LinkedIn</a> for updates.</p></li>
+<li><p>If you find easyPlot valuable and would like to support my work, consider <a href="https://www.buymeacoffee.com/michalmajka">buy me a coffee</a>.</p></li>
+</ul>
+
+<hr/>
+
+<p><strong>Thank you for using easyPlot!</strong></p>
+
+<hr/>')
     ),
     tabPanel(title = "", value = "quit", icon = icon("power-off"),
              br(),
