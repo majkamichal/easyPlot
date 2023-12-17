@@ -1,0 +1,46 @@
+---
+title: "easyPlot"
+output: html_document
+---
+  
+# easyPlot
+
+**Effortless Data Visualization with ggplot2**
+
+`easyPlot` is a Shiny app crafted for ggplot2, simplifying the creation of scatterplots, histograms, boxplots, and bar charts.
+
+
+
+----------------------------------------------------
+
+## Key features
+
+- **Seamless Data Upload:** Easily import data in various formats (csv, xlsx, txt) for a smooth start to your visualization journey.
+
+- **Swift Visualization:** Swiftly explore patterns and relationships within your dataset, providing quick insights.
+
+- **Multivariate Visualizations:** Visualize multiple variables simultaneously, enhancing the depth of data exploration in a single graph.
+
+- **Flexible Styling:** Customize the appearance of your graphs by adjusting colors, themes, and other visual elements to suit your preferences.
+
+- **Interactive Scatterplot:** Identify outliers, calculate summary statistics for marked points, and efficiently zoom into specific areas for enhanced data exploration.
+
+- **Reproducibility:** Benefit from automatic generation of R code corresponding to your plots, ensuring easy reproduction and integration into your scripts and reports.
+
+----------------------------------------------------
+
+## Connect with Us
+
+- For feedback, feature requests, and bug reports, please visit my [GitHub repository](https://github.com/majkamichal/easyPlot).
+  
+- Contact me at [michalmajka@hotmail.com](mailto:michalmajka@hotmail.com).
+  
+- Follow me on [Twitter](https://twitter.com/majkamichal) and [LinkedIn](https://www.linkedin.com/in/michal-majka/) for updates.
+    
+- If you find easyPlot valuable and would like to support my work, consider [buy me a coffee](https://www.buymeacoffee.com/michalmajka).
+
+----------------------------------------------------
+    
+**Thank you for using easyPlot!**
+      
+----------------------------------------------------

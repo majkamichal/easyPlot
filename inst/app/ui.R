@@ -1137,6 +1137,11 @@ shinyUI(
              br()
 
              ),
+
+    tabPanel(title = "Info",
+             icon = icon("circle-info"),
+             includeMarkdown("INFO.rmd")
+    ),
     tabPanel(title = "", value = "quit", icon = icon("power-off"),
              br(),
              br(),
