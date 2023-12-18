@@ -366,11 +366,11 @@ shinyUI(
 
                             sliderInput("width_sc" , "Plot Width (px)",
                                         min = 100, max = 1500, value = 700,
-                                        step = 25),
+                                        step = 10),
 
                             sliderInput("height_sc", "Plot Height (px)",
                                         min = 100, max = 1500, value = 500,
-                                        step = 25),
+                                        step = 10),
 
                             actionButton(inputId = "reset_sc", "Reset")
                         ),
@@ -682,11 +682,11 @@ shinyUI(
 
                         sliderInput("width_hi" , "Plot Width (px):",
                                     min = 100, max = 1500, value = 700,
-                                    step = 25),
+                                    step = 10),
 
                         sliderInput("height_hi", "Plot Height (px):",
                                     min = 100, max = 1500, value = 500,
-                                    step = 25),
+                                    step = 10),
                         actionButton(inputId = "reset_hi", "Reset:")
                     ),
                     br(),
@@ -918,11 +918,11 @@ shinyUI(
 
                         sliderInput("width_box" , "Plot Width (px):",
                                     min = 100, max = 1500, value = 700,
-                                    step = 25),
+                                    step = 10),
 
                         sliderInput("height_box", "Plot Height (px):",
                                     min = 100, max = 1500, value = 500,
-                                    step = 25),
+                                    step = 10),
 
                         actionButton(inputId = "reset_box", "Reset")
                     ),
@@ -1115,11 +1115,11 @@ shinyUI(
 
                         sliderInput("width_ba" , "Plot Width (px):",
                                     min = 100, max = 1500, value = 700,
-                                    step = 25),
+                                    step = 10),
 
                         sliderInput("height_ba", "Plot Height (px):",
                                     min = 100, max = 1500, value = 500,
-                                    step = 25),
+                                    step = 10),
 
                         actionButton(inputId = "reset_ba", "Reset")
                     ),
