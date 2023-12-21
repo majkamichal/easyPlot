@@ -402,8 +402,11 @@ shinyServer(function(input, output, session){
 
   observe({
       req(input$uploaded)
-      updateButton(session, inputId = "readyButton", value = FALSE,
-                   style = "danger", icon = icon("ban"))
+      updateButton(session,
+                   inputId = "readyButton",
+                   value = FALSE,
+                   style = "danger",
+                   icon = icon("ban"))
   })
 
 
@@ -944,9 +947,11 @@ shinyServer(function(input, output, session){
 
   output$errbar_out_sc <- renderUI({
 
-    if (!is.null(plotData() )) {
+    plot_data <- plotData()
 
-      if (is.factor(plotData()[ ,input$x_input_sc]) & !is.factor(plotData()[ ,input$y_input_sc]) ){
+    if (!is.null(plot_data)) {
+
+      if (is.factor(plot_data[ ,input$x_input_sc]) & !is.factor(plot_data[ ,input$y_input_sc])) {
 
         return(radioButtons(inputId = "errbar_sc",
                      label = "Errorbars:",
@@ -969,10 +974,10 @@ shinyServer(function(input, output, session){
   # LOESS DYNAMIC SECTION:
 
   output$loess_out_sc <- renderUI({
+    plot_data <- plotData()
+    if (!is.null(plot_data)) {
 
-    if (!is.null(plotData() )) {
-
-      if (!is.factor(plotData()[ ,input$x_input_sc]) & !is.factor(plotData()[ ,input$y_input_sc]) ){
+      if (!is.factor(plot_data[ ,input$x_input_sc]) & !is.factor(plot_data[ ,input$y_input_sc]) ){
         return(radioButtons(inputId = "loess_sc",
                      label = "Loess",
                      choices = c("none", "Loess", "Loess + SE"),
@@ -1008,19 +1013,25 @@ shinyServer(function(input, output, session){
   # POINTS APPERANCE
   observe({
 
-    vars <- names(plotData())[sapply(plotData(), is.factor)]
-    vars_num <- names(plotData())[sapply(plotData(), is.numeric)]
+    plot_data <- plotData()
+    vars <- names(plot_data)[sapply(plot_data, is.factor)]
+    vars_num <- names(plot_data)[sapply(plot_data, is.numeric)]
+
     # POINTSIZE
-    updateSelectInput(session, inputId = "point_size_by_sc",
+    updateSelectInput(session,
+                      inputId = "point_size_by_sc",
                       choices = vars_num)
     # SHAPE
-    updateSelectInput(session, inputId = "shape_sc", choices = c("none",vars),
+    updateSelectInput(session, inputId = "shape_sc",
+                      choices = c("none", vars),
                       selected = "none")
     # COLOUR
-    updateSelectInput(session, inputId = "color_by_sc",
-                      choices = c("none", names( plotData() )),
+    updateSelectInput(session,
+                      inputId = "color_by_sc",
+                      choices = c("none", names(plot_data)),
                       selected = "none")
   })
+
 
   # RESET BUTTON FOR SIZE OF THE PLOT
   observeEvent(input$reset_sc, {
