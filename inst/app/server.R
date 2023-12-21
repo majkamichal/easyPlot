@@ -493,17 +493,12 @@ shinyServer(function(input, output, session){
   )
 
   filtered_data <- reactive({
-      check <- dataForTable2()
+
+      check <- dataForTable2() # need it for updating
       req(input$table_rows_all)
-      req(dataForTable2())
       req(dataForTable())
+
       dt <- dataForTable()[input$table_rows_all, ]
-
-      # Commit: https://github.com/majkamichal/easyPlot/commit/dcf243db910aab3f3c572c612fa63f4a71581b0a
-      # # Re-code logical variables into factors
-      # ind_logical <- sapply(dt, is.logical)
-      # dt[ind_logical] <- lapply(dt[ind_logical], as.factor)
-
       dt
   })
 
@@ -520,15 +515,16 @@ shinyServer(function(input, output, session){
         d <- filtered_data()
         d <- d[complete.cases(d), ]
 
-        test1 <- sapply(d, is.character)
-        test2 <- sapply(d, is.logical)
+        # test1 <- sapply(d, is.character)
+        # test2 <- sapply(d, is.logical)
+        #
+        # if (sum(test1) > 0) {
+        #   d[ ,test1] <- sapply(d[ , test1], as.factor)
+        # }
+        # if (sum(test2) > 0) {
+        #   d[ ,test2] <- sapply(d[ ,test2], as.numeric)
+        # }
 
-        if (sum(test1) > 0) {
-          d[ ,test1] <- sapply(d[ , test1], as.factor)
-        }
-        if (sum(test2) > 0) {
-          d[ ,test2] <- sapply(d[ ,test2], as.numeric)
-        }
         if (nrow(d) == 0) {
           Code_Data$name <- NULL
           return( NULL )
