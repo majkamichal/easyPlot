@@ -421,6 +421,7 @@ shinyServer(function(input, output, session){
 
     } else {
 
+      # No data has been uploaded
       if (is.null(uploadedData())) {
 
         createAlert(session,
@@ -431,8 +432,10 @@ shinyServer(function(input, output, session){
                     dismiss = FALSE)
         x <- NULL
 
+      # Data has been aleady uploaded
       } else {
 
+        # Checkbox is not checked
         if (!input$upload_data) {
 
             createAlert(session,
@@ -442,7 +445,7 @@ shinyServer(function(input, output, session){
                         content = "",
                         dismiss = FALSE)
             x <- NULL
-
+        # Checkbox is checked and data is uploaded
         } else {
 
             closeAlert(session, "alert1")
@@ -450,7 +453,7 @@ shinyServer(function(input, output, session){
         }
       }
     }
-
+    # Store dataset
     dataForTable(x)
     dataForTableBackup(x)
     head(x)
@@ -460,14 +463,13 @@ shinyServer(function(input, output, session){
   # Recoding classes of variables
   dataForTable <- reactiveVal(NULL)
   dataForTableBackup <- reactiveVal(NULL)
-
   source("recode_variables_server.R", local = TRUE)$value
 
 
   output$table <- DT::renderDataTable({
       req(dataForTable())
       req(dataForTable2())
-      check <- dataForTable2()
+      check <- dataForTable2() # needed for updating
       dataForTable()
       },
       colnames = paste0(colnames(dataForTable()), "\n", "(", sapply(dataForTable(), function(x) class(x)[1]), ")"),
@@ -492,6 +494,7 @@ shinyServer(function(input, output, session){
       ), filter = "top"
   )
 
+
   filtered_data <- reactive({
 
       check <- dataForTable2() # need it for updating
@@ -505,15 +508,16 @@ shinyServer(function(input, output, session){
 
   plotData <- reactive ({
 
-    if (is.data.frame(filtered_data()) & length(filtered_data() ) > 1) {
+    d <- filtered_data()
+
+    if (is.data.frame(d) & length(d) > 1) {
 
         ready <- input$readyButton
         exampleDat <- input$exampleData
         my_data <- input$my_data
         upload_data <- input$upload_data
 
-        d <- filtered_data()
-        d <- d[complete.cases(d), ]
+        d <- d[complete.cases(d), ] # TODO: add this part to reproducible code
 
         # test1 <- sapply(d, is.character)
         # test2 <- sapply(d, is.logical)
@@ -527,7 +531,7 @@ shinyServer(function(input, output, session){
 
         if (nrow(d) == 0) {
           Code_Data$name <- NULL
-          return( NULL )
+          return(NULL)
         }
 
         closeAlert(session, alertId = "alert1")
@@ -547,16 +551,36 @@ shinyServer(function(input, output, session){
             return(d)
         } else {
             Code_Data$name <- NULL
-            return( NULL )
+            return(NULL)
         }
 
     } else {
+      Code_Data$name <- NULL
+      return(NULL)
+    }
+  })
+
+
+  observe({
+      if (is.null(plotData())) {
+          updateAceEditor(session, editorId = "print_code_sc",  value = "")
+          updateAceEditor(session, editorId = "print_code_hi",  value = "")
+          updateAceEditor(session, editorId = "print_code_ba",  value = "")
+          updateAceEditor(session, editorId = "print_code_box", value = "")
+      }
+  })
+
+
+  observe({
+
+    if (!input$exampleData & !input$my_data & !input$upload_data) {
+
       createAlert(session,
-                  anchorId = "dataAlert1",
-                  alertId = "alert1",
-                  title = "Please provide a data frame with at least two variables",
-                  content = "",
-                  dismiss = FALSE)
+                 anchorId = "dataAlert1",
+                 alertId = "alert1",
+                 title = "Please provide a data frame with at least two variables",
+                 content = "",
+                 dismiss = FALSE)
       createAlert(session,
                   anchorId = "dataAlert2",
                   alertId = "alert2",
@@ -581,19 +605,7 @@ shinyServer(function(input, output, session){
                   title = "Please provide a data frame with at least two variables",
                   content = "",
                   dismiss = FALSE)
-
-      Code_Data$name <- NULL
-      return(NULL)
     }
-  })
-
-  observe({
-      if (is.null(plotData())) {
-          updateAceEditor(session, editorId = "print_code_sc",  value = "")
-          updateAceEditor(session, editorId = "print_code_hi",  value = "")
-          updateAceEditor(session, editorId = "print_code_ba",  value = "")
-          updateAceEditor(session, editorId = "print_code_box", value = "")
-      }
   })
 
 
@@ -601,7 +613,7 @@ shinyServer(function(input, output, session){
 
       if (input$upload_data & !input$readyButton) {
 
-          if (!input$exampleData & !input$my_data) {
+          if (!input$exampleData & !input$my_data & !is.null(uploadedData())) {
               createAlert(session,
                           anchorId = "dataAlert2_upload",
                           alertId = "alert2_upload",
@@ -638,13 +650,12 @@ shinyServer(function(input, output, session){
   })
 
 
-
   # ----------------------------- SCATTERPLOT SECTION --------------------------
 
   observe({
     if (!is.null( plotData() )){
       updateSelectInput(session, inputId = "x_input_sc",
-                        choices =  names( plotData() ),
+                        choices =  names(plotData()),
                         selected = names(plotData())[1])
     }
     else {
