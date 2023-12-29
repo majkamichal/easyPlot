@@ -220,12 +220,12 @@ shinyUI(
                           colourInput(inputId = "loess_col1_sc",
                                       label = "Colour:",
                                       showColour = "both",
-                                      value = "blue",
+                                      value = "#3366FF",
                                       returnName = TRUE,
                                       allowTransparent = FALSE),
 
                           sliderInput(inputId = "loess_size1_sc", label = "Linewidth:",
-                                      min = 0.1, max = 5, value = 0.5, step = 0.1),
+                                      min = 0, max = 5, value = 1, step = 0.05),
                           sliderInput(inputId = "loess_span1_sc", label = "Span:",
                                       min = 0, max = 1, value = 0.75, step = 0.05)
 
@@ -239,7 +239,7 @@ shinyUI(
                                       label = "Colour:",
                                       showColour = "both",
                                       returnName = TRUE,
-                                      value = "blue",
+                                      value = "#3366FF",
                                       allowTransparent = FALSE),
 
                           colourInput(inputId = "loess_fill2_sc",
@@ -250,7 +250,7 @@ shinyUI(
                                       allowTransparent = FALSE),
 
                           sliderInput(inputId = "loess_size2_sc", label = "Linewidth:",
-                                      min = 0.1, max = 5, value = 0.5, step = 0.1),
+                                      min = 0, max = 5, value = 1, step = 0.05),
                           sliderInput(inputId = "loess_span2_sc", label = "Span:",
                                       min = 0, max = 1, value = 0.75, step = 0.05)
 

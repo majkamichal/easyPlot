@@ -1347,7 +1347,7 @@ shinyServer(function(input, output, session){
 
       Alpha <- ifelse(input$opacity_sc != 1, paste0(", alpha = ", input$opacity_sc), "")
 
-      Colour <- ifelse(input$color_sc != '#000000', paste0(", colour = ", "'", input$color_sc, "'"), "")
+      Colour <- ifelse(input$color_sc == '#000000' | input$color_sc == 'black', "", paste0(", colour = ", "'", input$color_sc, "'"))
 
       Aes_size <- NULL ; Aes_col <- NULL ; Aes_shape <- NULL
 
@@ -1583,10 +1583,10 @@ shinyServer(function(input, output, session){
         Fill2 <- input$loess_fill2_sc
         Span2 <- input$loess_span2_sc
 
-        Col2_b <-  ifelse(Col2 != '#0000FF', paste0(", colour = ", "'",Col2,"'"), "")
-        Size2_b <- ifelse(Size2 != 0.5, paste0(", linewidth = ", Size2), "")
-        Span2_b <- ifelse(Span2 != 0.75, paste0(", span = ", Span2),"")
-        Fill2_b <- ifelse(Fill2 != '#999999', paste0(", fill = ", "'",Fill2, "'"), "")
+        Col2_b <-  ifelse(Col2 != '#3366FF', paste0(", colour = ", "'", Col2, "'"), "")
+        Size2_b <- ifelse(Size2 != 1, paste0(", linewidth = ", Size2), "")
+        Span2_b <- ifelse(Span2 != 0.75, paste0(", span = ", Span2), "")
+        Fill2_b <- ifelse(Fill2 != 'gray60', paste0(", fill = ", "'", Fill2, "'"), "")
 
         cond <- FALSE
         if (input$color_by_sc != "none") {
@@ -1612,8 +1612,8 @@ shinyServer(function(input, output, session){
 
       if (input$loess_sc == "Loess") {
 
-        Col1 <-  ifelse(input$loess_col1_sc != '#0000FF', paste0(", colour = ", "'",input$loess_col1_sc,"'"), "")
-        Size1 <- ifelse(input$loess_size1_sc != 0.5, paste0(", linewidth = ", input$loess_size1_sc), "")
+        Col1 <-  ifelse(input$loess_col1_sc != '#3366FF', paste0(", colour = ", "'",input$loess_col1_sc,"'"), "")
+        Size1 <- ifelse(input$loess_size1_sc != 1, paste0(", linewidth = ", input$loess_size1_sc), "")
         Span1 <- ifelse(input$loess_span1_sc != 0.75, paste0(", span = ", input$loess_span1_sc),"")
 
         cond <- FALSE
@@ -2283,9 +2283,9 @@ shinyServer(function(input, output, session){
 
       Fill_by <- ifelse(input$change_fill_hi == "Fill by", paste0(", fill = ", input$fill_by_hi), "")
 
-      Fill <- ifelse(input$fill_hi != '#000000', paste0(", fill = ", "'",input$fill_hi,"'"), "")
+      Fill <- ifelse(input$fill_hi == '#000000' | input$fill_hi == 'black', "", paste0(", fill = ", "'",input$fill_hi,"'"))
 
-      Colour <- ifelse(input$color_hi != '#000000', paste0(", colour = ", "'", input$color_hi,"'"), "")
+      Colour <- ifelse(input$color_hi == '#000000' | input$fill_hi == 'black', "", paste0(", colour = ", "'", input$color_hi,"'"))
 
       Dens1 <- ifelse(input$change_density_hi2 == "Colour" & (Density == "Both" | Density == "Density"), ", y = after_stat(density)", "")
 
@@ -2846,9 +2846,9 @@ shinyServer(function(input, output, session){
 
       Width <- ifelse(input$bar_width != 0.9, paste0(", width = ", input$bar_width), "")
 
-      Fill <- ifelse(input$fill_ba != '#000000', paste0(", fill = ", "'",input$fill_ba, "'"), "")
+      Fill <- ifelse(input$fill_ba == '#000000' | input$fill_ba == 'black', "", paste0(", fill = ", "'",input$fill_ba, "'"))
 
-      Colour <- ifelse(input$color_ba != '#000000', paste0(", colour = ", "'",input$color_ba,"'") , "")
+      Colour <- ifelse(input$color_ba == '#000000' | input$fill_ba == 'black', "", paste0(", colour = ", "'",input$color_ba,"'"))
 
       Size <- ifelse(input$colour_size_ba != 0.5, paste0(", linewidth = ", input$colour_size_ba), "")
 
