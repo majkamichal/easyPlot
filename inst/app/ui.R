@@ -12,12 +12,18 @@ shinyUI(
       tags$style(type="text/css",
                  ".recalculating {opacity: 1.0;}" ) # No blinking
     ),
+    tags$head(
+      tags$link(rel = "icon",
+                type = "image/png",
+                sizes = "32x32",
+                href = "/chart_line_solid.png")
+    ),
     # navbarPage(title = easy_plot_header_name, id = "navbar", fluid = TRUE, theme = shinytheme("flatly"),
-    navbarPage(title = easy_plot_header_name, windowTitle = "easyPlot",
-               id = "navbar", fluid = TRUE,
     # navbarPage(title = easy_plot_header_name, id = "navbar", fluid = TRUE, theme = bslib::bs_theme("5"),
-
-
+    navbarPage(title = easy_plot_header_name,
+               windowTitle = "easyPlot",
+               id = "navbar",
+               fluid = TRUE,
                tabPanel(title = "Data", icon = icon("table"),
                         sidebarLayout(
                           sidebarPanel(
