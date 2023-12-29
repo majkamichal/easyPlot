@@ -27,9 +27,11 @@ output: html_document
 
 - **Reproducibility:** Benefit from automatic generation of R code corresponding to your plots, ensuring easy reproduction and integration into your scripts and reports.
 
+
+
 ----------------------------------------------------
 
-## Connect with Us
+## Connect
 
 - For feedback, feature requests, and bug reports, please visit my [GitHub repository](https://github.com/majkamichal/easyPlot).
   
