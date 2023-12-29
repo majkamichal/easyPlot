@@ -466,7 +466,7 @@ shinyServer(function(input, output, session){
   # Recoding classes of variables
   dataForTable <- reactiveVal(NULL)
   dataForTableBackup <- reactiveVal(NULL)
-  source("recode_variables_server.R", local = TRUE)$value
+  source("moduleRecodeVariablesApplyInServer.R", local = TRUE)$value
 
 
   output$table <- DT::renderDataTable({

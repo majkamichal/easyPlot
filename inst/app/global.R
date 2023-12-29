@@ -38,8 +38,8 @@ if (!is.null(show_my_data_bool_option) && show_my_data_bool_option) {
 
 
 # Source files: ----------------------------------------------------------------
-source("recode_variables_UI.R", local = TRUE)$value
-source("downloadPlotModule.R", local = TRUE)$value
+source("moduleRecodeVariables.R", local = TRUE)$value
+source("moduleDownloadPlot.R", local = TRUE)$value
 
 
 # Source global variables / functions: -----------------------------------------

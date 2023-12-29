@@ -110,7 +110,6 @@ shinyUI(
                               # conditionalPanel(
                               #   condition = "output.data_format == 'csvtxt' || output.data_format == 'xlsx'",
                               #   uiOutput("recode_class_dynamic"),
-                              #   source("UI_recode_variables.R", local = TRUE)$value),
 
                               recode_class_render_UI("uploaded"),
                               recode_class_render_UI2("uploaded"),
