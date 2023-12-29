@@ -26,10 +26,17 @@ easy_plot_version_ <- ifelse(is.null(easy_plot_package_version_),
                              easy_plot_manual_version_,
                              easy_plot_package_version_)
 
-easy_plot_header_name <- paste0("easyPlot ", easy_plot_version_)
+easy_plot_header_name_ <- paste0("easyPlot ", easy_plot_version_)
 
 
-# Define if "My data" checkbox is shown: ---------------------------------------
+# Detect package/server mode: --------------------------------------------------
+package_mode_bool_ <- FALSE
+package_mode_bool_option <- options()$easyPlot.package.mode
+if (!is.null(package_mode_bool_option) && package_mode_bool_option) {
+  package_mode_bool_ <- TRUE
+}
+
+# Define whether "My data" checkbox is shown: ----------------------------------
 show_my_data_bool_ <- FALSE
 show_my_data_bool_option <- options()$easyPlot.show.my.data
 if (!is.null(show_my_data_bool_option) && show_my_data_bool_option) {

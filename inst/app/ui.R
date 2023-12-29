@@ -18,9 +18,9 @@ shinyUI(
                 sizes = "32x32",
                 href = "/chart_line_solid.png")
     ),
-    # navbarPage(title = easy_plot_header_name, id = "navbar", fluid = TRUE, theme = shinytheme("flatly"),
-    # navbarPage(title = easy_plot_header_name, id = "navbar", fluid = TRUE, theme = bslib::bs_theme("5"),
-    navbarPage(title = easy_plot_header_name,
+    # navbarPage(title = easy_plot_header_name_, id = "navbar", fluid = TRUE, theme = shinytheme("flatly"),
+    # navbarPage(title = easy_plot_header_name_, id = "navbar", fluid = TRUE, theme = bslib::bs_theme("5"),
+    navbarPage(title = easy_plot_header_name_,
                windowTitle = "easyPlot",
                id = "navbar",
                fluid = TRUE,
@@ -1182,20 +1182,22 @@ shinyUI(
 
 <hr/>')
     ),
-    tabPanel(title = "", value = "quit", icon = icon("power-off"),
-             br(),
-             br(),
-             br(),
-             br(),
-             br(),
-             br(),
-             fluidRow(
-               column(3),
-               column(6,
-                      h2("Thank you for using easyPlot!")
-               )
-             )
-   )
+    if (package_mode_bool_) {
+        tabPanel(title = "", value = "quit", icon = icon("power-off"),
+                 br(),
+                 br(),
+                 br(),
+                 br(),
+                 br(),
+                 br(),
+                 fluidRow(
+                   column(3),
+                   column(6,
+                          h2("Thank you for using easyPlot!")
+                   )
+                 )
+       )
+   }
   )
  )
 )

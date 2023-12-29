@@ -28,9 +28,9 @@ easyPlot <- function(data = NULL) {
   }
 
   # Makes sure all dependencies are available
-  dependencies <- c("ggplot2", "shinyjs", "shinyAce", "shinyBS", "scales",
-                    "Hmisc", "shinythemes", "shinyWidgets", "Cairo", "DT",
-                    "colourpicker", "data.table", "openxlsx")
+  dependencies <- c("ggplot2", "shinyWidgets", "shinyAce", "shinyBS",
+                    "shinyjs", "shinythemes", "colourpicker", "scales",
+                    "Hmisc", "Cairo", "DT",  "data.table", "openxlsx")
 
   ind_missing_package <- !dependencies %in% utils::installed.packages()[ ,"Package"]
 
@@ -54,10 +54,12 @@ easyPlot <- function(data = NULL) {
   options("easyPlot.shiny.data" = data)
   options("easyPlot.shiny.name" = deparse(substitute(data)))
   options("easyPlot.show.my.data" = !is.null(data))
+  options("easyPlot.package.mode" = TRUE)
   options("easyPlot.version" = as.character(getNamespaceVersion("easyPlot")))
 
   on.exit(options("easyPlot.version" = NULL))
   on.exit(options("easyPlot.show.my.data" = NULL))
+  on.exit(options("easyPlot.package.mode" = NULL))
 
   shiny::runApp(appDir,
                 display.mode = "normal",
