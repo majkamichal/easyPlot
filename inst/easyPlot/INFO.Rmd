@@ -1,6 +1,11 @@
 ---
-title: "easyPlot"
-output: html_document
+title: ""
+output: 
+  html_document: 
+    toc: yes
+    toc_float:
+      toc_collapsed: no
+    theme: cosmo
 ---
   
 # easyPlot
@@ -13,7 +18,7 @@ output: html_document
 
 ----------------------------------------------------
 
-## Key features
+# Key features
 
 - **Seamless Data Upload:** Easily import data in various formats (csv, xlsx, txt) for a smooth start to your visualization journey.
 
@@ -28,10 +33,33 @@ output: html_document
 - **Reproducibility:** Benefit from automatic generation of R code corresponding to your plots, ensuring easy reproduction and integration into your scripts and reports.
 
 
+----------------------------------------------------
+
+# Privacy policy
+
+We want to assure our users that no data is stored or processed on our server after it is uploaded to the easyPlot app. Your data remains private and secure throughout the usage of the application. We prioritize the confidentiality and privacy of your information.
+
+**Data Handling:**
+
+1. **No Storage:** The `easyPlot` app does not store any data uploaded by users on our server. Once you upload your data, it is processed in real-time for visualization purposes only.
+
+2. **Real-time Processing:** Data uploaded to the app is processed in real-time exclusively for generating plots and visualizations within the application interface.
+
+3. **No Tracking:** We do not track or store any personal information related to your data. Your usage of the app is anonymous, and we do not collect any identifiable information.
+
+**User Responsibility:**
+
+1. **Secure Data Transmission:** While we take measures to ensure the security of your data within the app, please ensure that you do not upload sensitive or confidential information.
+
+2. **Session-based Processing:** The app processes your data on a session-by-session basis. Once you close or leave the app, there is no retention of the data from your previous sessions.
+
+3. **External Links:** The app may provide links to external sources for additional information or resources. Please be aware that our privacy policy applies only to data processed within the `easyPlot` app.
+
+By using the `easyPlot` app, you acknowledge and agree to the terms outlined in this privacy disclaimer. If you have any concerns or questions regarding privacy, please contact us. Your privacy and trust are of utmost importance to us.
 
 ----------------------------------------------------
 
-## Connect
+# Connect
 
 - For feedback, feature requests, and bug reports, please visit my [GitHub repository](https://github.com/majkamichal/easyPlot).
   
