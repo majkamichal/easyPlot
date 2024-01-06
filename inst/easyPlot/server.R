@@ -1354,7 +1354,7 @@ shinyServer(function(input, output, session){
 
       # ERRORBARS
 
-      if (!is.null(input$errbar_sc) & input$errbar_sc == "SE") {
+      if (!is.null(input$errbar_sc) && input$errbar_sc == "SE") {
         pl <- pl + stat_summary(fun.data = "mean_cl_normal", fun.args = list(mult = 1),
                                 geom = "errorbar", color = input$err_col_sc,
                                 width = input$err_width_sc)  +
