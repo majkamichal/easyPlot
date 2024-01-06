@@ -1146,7 +1146,67 @@ shinyUI(
 
     tabPanel(title = "Info",
              icon = icon("circle-info"),
-             htmltools::includeMarkdown(path = "INFO.Rmd")
+             htmltools::HTML(
+               '<h1>easyPlot</h1>
+
+<p><strong>Effortless Data Visualization with ggplot2</strong></p>
+
+<p><code>easyPlot</code> is a Shiny app crafted for ggplot2, simplifying the creation of scatterplots, histograms, boxplots, and bar charts.</p>
+
+<hr/>
+
+<h1>Key features</h1>
+
+<ul>
+<li><p><strong>Seamless Data Upload:</strong> Easily import data in various formats (csv, xlsx, txt) for a smooth start to your visualization journey.</p></li>
+<li><p><strong>Swift Visualization:</strong> Swiftly explore patterns and relationships within your dataset, providing quick insights.</p></li>
+<li><p><strong>Multivariate Visualizations:</strong> Visualize multiple variables simultaneously, enhancing the depth of data exploration in a single graph.</p></li>
+<li><p><strong>Flexible Styling:</strong> Customize the appearance of your graphs by adjusting colors, themes, and other visual elements to suit your preferences.</p></li>
+<li><p><strong>Interactive Scatterplot:</strong> Identify outliers, calculate summary statistics for marked points, and efficiently zoom into specific areas for enhanced data exploration.</p></li>
+<li><p><strong>Reproducibility:</strong> Benefit from automatic generation of R code corresponding to your plots, ensuring easy reproduction and integration into your scripts and reports.</p></li>
+</ul>
+
+<hr/>
+
+<h1>Privacy policy</h1>
+
+<p>We want to assure our users that no data is stored or processed on our server after it is uploaded to the easyPlot app. Your data remains private and secure throughout the usage of the application. We prioritize the confidentiality and privacy of your information.</p>
+
+<p><strong>Data Handling:</strong></p>
+
+<ol>
+<li><p><strong>No Storage:</strong> The <code>easyPlot</code> app does not store any data uploaded by users on our server. Once you upload your data, it is processed in real-time for visualization purposes only.</p></li>
+<li><p><strong>Real-time Processing:</strong> Data uploaded to the app is processed in real-time exclusively for generating plots and visualizations within the application interface.</p></li>
+<li><p><strong>No Tracking:</strong> We do not track or store any personal information related to your data. Your usage of the app is anonymous, and we do not collect any identifiable information.</p></li>
+</ol>
+
+<p><strong>User Responsibility:</strong></p>
+
+<ol>
+<li><p><strong>Secure Data Transmission:</strong> While we take measures to ensure the security of your data within the app, please ensure that you do not upload sensitive or confidential information.</p></li>
+<li><p><strong>Session-based Processing:</strong> The app processes your data on a session-by-session basis. Once you close or leave the app, there is no retention of the data from your previous sessions.</p></li>
+<li><p><strong>External Links:</strong> The app may provide links to external sources for additional information or resources. Please be aware that our privacy policy applies only to data processed within the <code>easyPlot</code> app.</p></li>
+</ol>
+
+<p>By using the <code>easyPlot</code> app, you acknowledge and agree to the terms outlined in this privacy disclaimer. If you have any concerns or questions regarding privacy, please contact us. Your privacy and trust are of utmost importance to us.</p>
+
+<hr/>
+
+<h1>Connect</h1>
+
+<ul>
+<li><p>For feedback, feature requests, and bug reports, please visit my <a href="https://github.com/majkamichal/easyPlot">GitHub repository</a>.</p></li>
+<li><p>Contact me at <a href="mailto:michalmajka@hotmail.com">michalmajka@hotmail.com</a>.</p></li>
+<li><p>Follow me on <a href="https://twitter.com/majkamichal">Twitter</a> and <a href="https://www.linkedin.com/in/michal-majka/">LinkedIn</a> for updates.</p></li>
+<li><p>If you find easyPlot valuable and would like to support my work, consider <a href="https://www.buymeacoffee.com/michalmajka">buy me a coffee</a>.</p></li>
+</ul>
+
+<hr/>
+
+<p><strong>Thank you for using easyPlot!</strong></p>
+
+<hr/>'
+             )
    ),
     if (package_mode_bool_) {
         tabPanel(title = "", value = "quit", icon = icon("power-off"),
