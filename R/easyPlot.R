@@ -21,7 +21,7 @@
 
 easyPlot <- function(data = NULL) {
 
-  appDir <- system.file("app", package = "easyPlot")
+  appDir <- system.file("easyPlot", package = "easyPlot")
 
   if (appDir == "") {
       stop("easyPlot(): ", "Could not find the easyPlot directory. Try re-installing `easyPlot`.", call. = FALSE)
