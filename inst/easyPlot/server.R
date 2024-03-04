@@ -1359,14 +1359,14 @@ shinyServer(function(input, output, session){
                                 geom = "errorbar", color = input$err_col_sc,
                                 width = input$err_width_sc)  +
 
-          stat_summary(fun.y = mean, colour = input$err_col_sc, geom = "point",
+          stat_summary(fun = mean, colour = input$err_col_sc, geom = "point",
                        size = input$err_size_sc)
 
 
         Code$errbar <- paste0(" + \n  stat_summary(fun.data = 'mean_cl_normal', fun.args = list(mult = 1), geom = 'errorbar'",
                               ", colour = ", "'", input$err_col_sc, "'", ", width = ",input$err_width_sc, ")",
                               " + \n",
-                              "  stat_summary(fun.y = mean, colour = ",
+                              "  stat_summary(fun = mean, colour = ",
                               "'", input$err_col_sc, "'",
                               ", geom = 'point', size = ", input$err_size_sc, ")")
       }
@@ -1375,13 +1375,13 @@ shinyServer(function(input, output, session){
         pl <- pl + stat_summary(fun.data = "mean_cl_normal", geom = "errorbar",
                                 color = input$err_col_sc, width = input$err_width_sc)  +
 
-          stat_summary(fun.y = mean, colour = input$err_col_sc, geom = "point",
+          stat_summary(fun = mean, colour = input$err_col_sc, geom = "point",
                        size = input$err_size_sc)
 
         Code$errbar <- paste0(" + \n  stat_summary(fun.data = 'mean_cl_normal', geom = 'errorbar', colour = ",
                               "'", input$err_col_sc, "'", ", width = ", input$err_width_sc, ")",
                               " + \n",
-                              "  stat_summary(fun.y = mean, colour = ", "'", input$err_col_sc, "'",
+                              "  stat_summary(fun = mean, colour = ", "'", input$err_col_sc, "'",
                               ", geom = 'point', size = ", input$err_size_sc, ")")
 
       }
