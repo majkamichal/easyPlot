@@ -141,7 +141,7 @@ shinyUI(
                           ), # end sidebarPanel
                           mainPanel(
                             bsAlert("dataAlert1"),
-                            DT::dataTableOutput(outputId = "table")
+                            DT::DTOutput(outputId = "table")
                           )
                         ),
                         br(),
@@ -222,7 +222,7 @@ shinyUI(
                         conditionalPanel(
                           condition = "input.customize_l_sc  && input.loess_sc === 'Loess'",
 
-                          colourInput(inputId = "loess_col1_sc",
+                          colourpicker::colourInput(inputId = "loess_col1_sc",
                                       label = "Colour:",
                                       showColour = "both",
                                       value = "#3366FF",
@@ -240,19 +240,23 @@ shinyUI(
                         conditionalPanel(
                           condition = "input.customize_l_sc && input.loess_sc === 'Loess + SE'",
 
-                          colourInput(inputId = "loess_col2_sc",
-                                      label = "Colour:",
-                                      showColour = "both",
-                                      returnName = TRUE,
-                                      value = "#3366FF",
-                                      allowTransparent = FALSE),
+                          colourpicker::colourInput(
+                            inputId = "loess_col2_sc",
+                            label = "Colour:",
+                            showColour = "both",
+                            returnName = TRUE,
+                            value = "#3366FF",
+                            allowTransparent = FALSE
+                          ),
 
-                          colourInput(inputId = "loess_fill2_sc",
-                                      label = "Colour:",
-                                      showColour = "both",
-                                      returnName = TRUE,
-                                      value = "grey60",
-                                      allowTransparent = FALSE),
+                          colourpicker::colourInput(
+                            inputId = "loess_fill2_sc",
+                            label = "Colour:",
+                            showColour = "both",
+                            returnName = TRUE,
+                            value = "grey60",
+                            allowTransparent = FALSE
+                          ),
 
                           sliderInput(inputId = "loess_size2_sc", label = "Linewidth:",
                                       min = 0, max = 5, value = 1, step = 0.05),
@@ -274,12 +278,14 @@ shinyUI(
                                          sliderInput(inputId = "err_width_sc", label = "Width:",
                                                      min = 0, max = 1, value = 0.1),
 
-                                         colourInput(inputId = "err_col_sc",
-                                                     label = "Colour:",
-                                                     showColour = "both",
-                                                     returnName = TRUE,
-                                                     value = "red",
-                                                     allowTransparent = FALSE),
+                                         colourpicker::colourInput(
+                                           inputId = "err_col_sc",
+                                           label = "Colour:",
+                                           showColour = "both",
+                                           returnName = TRUE,
+                                           value = "red",
+                                           allowTransparent = FALSE
+                                         ),
 
                                          sliderInput(inputId = "err_size_sc", label = "Size:",
                                                      min = 0.5, max = 5, value = 2)
@@ -337,12 +343,14 @@ shinyUI(
                             numericInput(inputId = "title_size_sc", label = "Size",
                                          value = 30, min = 1, max = 50, step = 0.5),
 
-                            colourInput(inputId = "title_color_sc",
-                                        label = "Title colour:",
-                                        showColour = "both",
-                                        returnName = TRUE,
-                                        value = "black",
-                                        allowTransparent = FALSE)
+                            colourpicker::colourInput(
+                              inputId = "title_color_sc",
+                              label = "Title colour:",
+                              showColour = "both",
+                              returnName = TRUE,
+                              value = "black",
+                              allowTransparent = FALSE
+                            )
                         ),
                         # CHANGE THEME
                         checkboxInput(inputId = "change_theme_sc",
@@ -409,12 +417,14 @@ shinyUI(
                                      selected = "Colour", inline = TRUE),
 
                         conditionalPanel(condition = "input.change_color_sc === 'Colour'",
-                                         colourInput(inputId = "color_sc",
-                                                     label = "Colour:",
-                                                     showColour = "both",
-                                                     returnName = TRUE,
-                                                     value = "black",
-                                                     allowTransparent = FALSE)
+                                         colourpicker::colourInput(
+                                           inputId = "color_sc",
+                                           label = "Colour:",
+                                           showColour = "both",
+                                           returnName = TRUE,
+                                           value = "black",
+                                           allowTransparent = FALSE
+                                         )
                         ),
                         conditionalPanel(condition = "input.change_color_sc === 'Colour by'",
 
@@ -520,18 +530,22 @@ shinyUI(
 
                       conditionalPanel(condition = "input.change_fill_hi === 'none' &&
                                        input.change_density_hi !== 'Density'",
-                                       colourInput(inputId = "color_hi",
-                                                   label = "Colour:",
-                                                   showColour = "both",
-                                                   returnName = TRUE,
-                                                   value = '#000000',
-                                                   allowTransparent = FALSE),
-                                       colourInput(inputId = "fill_hi",
-                                                   label = "Fill:",
-                                                   showColour = "both",
-                                                   returnName = TRUE,
-                                                   value = "black",
-                                                   allowTransparent = FALSE),
+                                       colourpicker::colourInput(
+                                         inputId = "color_hi",
+                                         label = "Colour:",
+                                         showColour = "both",
+                                         returnName = TRUE,
+                                         value = '#000000',
+                                         allowTransparent = FALSE
+                                       ),
+                                       colourpicker::colourInput(
+                                         inputId = "fill_hi",
+                                         label = "Fill:",
+                                         showColour = "both",
+                                         returnName = TRUE,
+                                         value = "black",
+                                         allowTransparent = FALSE
+                                       ),
                                        actionButton(inputId = "reset_colours_hi", label = "Reset:")
                       ),
 
@@ -548,16 +562,22 @@ shinyUI(
                       ),
                       conditionalPanel(condition = "input.change_fill_hi === 'Count'",
 
-                                       colourInput(inputId = "high_hi",
-                                                   label = "Gradient high:",
-                                                   showColour = "both",
-                                                   returnName = TRUE,
-                                                   value = "#56B1F7"),
-                                       colourInput(inputId = "low_hi",
-                                                   label = "Gradient low:",
-                                                   showColour = "both",
-                                                   returnName = TRUE,
-                                                   value = "#132B43"),
+                                       colourpicker::colourInput(
+                                         inputId = "high_hi",
+                                         label = "Gradient high:",
+                                         showColour = "both",
+                                         returnName = TRUE,
+                                         value = "#56B1F7",
+                                         allowTransparent = FALSE
+                                       ),
+                                       colourpicker::colourInput(
+                                         inputId = "low_hi",
+                                         label = "Gradient low:",
+                                         showColour = "both",
+                                         returnName = TRUE,
+                                         value = "#132B43",
+                                         allowTransparent = FALSE
+                                       ),
 
                                        actionButton(inputId = "reset_count_hi", "Reset:")
 
@@ -612,17 +632,21 @@ shinyUI(
                     conditionalPanel(condition = "input.change_density_hi !== 'no' &&
                                      input.change_density_hi2 === 'Colour'",
 
-                                     colourInput(inputId = "dens_color_hi",
-                                                 label = "Density colour:",
-                                                 showColour = "both",
-                                                 returnName = TRUE,
-                                                 value = "#BD1515"),
+                                     colourpicker::colourInput(
+                                       inputId = "dens_color_hi",
+                                       label = "Density colour:",
+                                       showColour = "both",
+                                       returnName = TRUE,
+                                       value = "#BD1515"
+                                     ),
 
-                                     colourInput(inputId = "dens_fill_hi",
-                                                 label = "Density fill:",
-                                                 showColour = "both",
-                                                 returnName = TRUE,
-                                                 value = "#BD1515"),
+                                     colourpicker::colourInput(
+                                       inputId = "dens_fill_hi",
+                                       label = "Density fill:",
+                                       showColour = "both",
+                                       returnName = TRUE,
+                                       value = "#BD1515"
+                                     ),
 
                                      sliderInput(inputId = "dens_opacity_hi", label = "Density opacity:",
                                                  min = 0, max = 1, value = 0.2),
@@ -654,12 +678,14 @@ shinyUI(
                         numericInput(inputId = "title_size_hi", label = "Size:",
                                      value = 30, min = 1, max = 50, step = 0.5),
 
-                        colourInput(inputId = "title_color_hi",
-                                    label = "Title colour:",
-                                    showColour = "both",
-                                    returnName = TRUE,
-                                    value = "black",
-                                    allowTransparent = FALSE)
+                        colourpicker::colourInput(
+                          inputId = "title_color_hi",
+                          label = "Title colour:",
+                          showColour = "both",
+                          returnName = TRUE,
+                          value = "black",
+                          allowTransparent = FALSE
+                        )
                     ),
                     # CHANGE THE THEME
                     checkboxInput(inputId = "change_theme_hi", label = "Change the theme:",
@@ -765,19 +791,23 @@ shinyUI(
 
                       conditionalPanel(condition = "input.change_fill_box === 'Colours'",
 
-                                       colourInput(inputId = "fill_box",
-                                                   label = "Fill:",
-                                                   showColour = "both",
-                                                   returnName = TRUE,
-                                                   value = "white",
-                                                   allowTransparent = FALSE),
+                                       colourpicker::colourInput(
+                                         inputId = "fill_box",
+                                         label = "Fill:",
+                                         showColour = "both",
+                                         returnName = TRUE,
+                                         value = "white",
+                                         allowTransparent = FALSE
+                                       ),
 
-                                       colourInput(inputId = "color_box",
-                                                   label = "Colour:",
-                                                   showColour = "both",
-                                                   returnName = TRUE,
-                                                   value = "black",
-                                                   allowTransparent = FALSE)
+                                       colourpicker::colourInput(
+                                         inputId = "color_box",
+                                         label = "Colour:",
+                                         showColour = "both",
+                                         returnName = TRUE,
+                                         value = "black",
+                                         allowTransparent = FALSE
+                                       )
                       ),
 
                       conditionalPanel(condition = "input.change_fill_box === 'Colour by' || input.change_fill_box === 'Fill by'",
@@ -853,12 +883,14 @@ shinyUI(
                                             "Triangle" = 2,
                                             "Rhombus" = 5)),
 
-                    colourInput(inputId = "out_color",
-                                label = "Outlier Colour:",
-                                showColour = "both",
-                                returnName = TRUE,
-                                value = "black",
-                                allowTransparent = FALSE)
+                    colourpicker::colourInput(
+                      inputId = "out_color",
+                      label = "Outlier Colour:",
+                      showColour = "both",
+                      returnName = TRUE,
+                      value = "black",
+                      allowTransparent = FALSE
+                    )
              ),
              column(2,
 
@@ -889,12 +921,14 @@ shinyUI(
                         numericInput(inputId = "title_size_box", label = "Size:",
                                      value = 30, min = 1, max = 50, step = 0.5),
 
-                        colourInput(inputId = "title_color_box",
-                                    label = "Title colour:",
-                                    showColour = "both",
-                                    returnName = TRUE,
-                                    value = "black",
-                                    allowTransparent = FALSE)
+                        colourpicker::colourInput(
+                          inputId = "title_color_box",
+                          label = "Title colour:",
+                          showColour = "both",
+                          returnName = TRUE,
+                          value = "black",
+                          allowTransparent = FALSE
+                        )
                     ),
                     # CHANGE THEME
                     checkboxInput(inputId = "change_theme_box",
@@ -989,18 +1023,22 @@ shinyUI(
 
                       conditionalPanel(condition = "input.change_fill_ba === 'Colours'",
 
-                                       colourInput(inputId = "fill_ba",
-                                                   label = "Fill:",
-                                                   showColour = "both",
-                                                   returnName = TRUE,
-                                                   value = "black",
-                                                   allowTransparent = FALSE),
-                                       colourInput(inputId = "color_ba",
-                                                   label = "Colour:",
-                                                   showColour = "both",
-                                                   returnName = TRUE,
-                                                   value = "black",
-                                                   allowTransparent = FALSE),
+                                       colourpicker::colourInput(
+                                         inputId = "fill_ba",
+                                         label = "Fill:",
+                                         showColour = "both",
+                                         returnName = TRUE,
+                                         value = "black",
+                                         allowTransparent = FALSE
+                                       ),
+                                       colourpicker::colourInput(
+                                         inputId = "color_ba",
+                                         label = "Colour:",
+                                         showColour = "both",
+                                         returnName = TRUE,
+                                         value = "black",
+                                         allowTransparent = FALSE
+                                       ),
                                        sliderInput(inputId = "colour_size_ba", "Box Linewidth:",
                                                    min = 0.1, max = 5, value = 0.5),
                                        actionButton(inputId = "reset_colours_ba", label = "Reset")
@@ -1086,12 +1124,14 @@ shinyUI(
                         numericInput(inputId = "title_size_ba", label = "Size:",
                                      value = 30, min = 1, max = 50, step = 0.5),
 
-                        colourInput(inputId = "title_color_ba",
-                                    label = "Title colour:",
-                                    showColour = "both",
-                                    returnName = TRUE,
-                                    value = "black",
-                                    allowTransparent = FALSE)
+                        colourpicker::colourInput(
+                          inputId = "title_color_ba",
+                          label = "Title colour:",
+                          showColour = "both",
+                          returnName = TRUE,
+                          value = "black",
+                          allowTransparent = FALSE
+                        )
                     ),
                     # CHANGE THEME
                     checkboxInput(inputId = "change_theme_ba",

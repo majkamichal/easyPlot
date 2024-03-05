@@ -19,7 +19,7 @@ suppressPackageStartupMessages(library(shinyAce))
 
 
 # Define version for the UI header: --------------------------------------------
-easy_plot_manual_version_ <- "0.9.8"
+easy_plot_manual_version_ <- "1.0.0"
 
 easy_plot_package_version_ <- options()$easyPlot.version
 easy_plot_version_ <- ifelse(is.null(easy_plot_package_version_),

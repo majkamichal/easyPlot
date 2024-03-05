@@ -469,7 +469,7 @@ shinyServer(function(input, output, session){
   source("moduleRecodeVariablesApplyInServer.R", local = TRUE)$value
 
 
-  output$table <- DT::renderDataTable({
+  output$table <- DT::renderDT({
       req(dataForTable())
       req(dataForTable2())
       check <- dataForTable2() # needed for updating
@@ -566,10 +566,10 @@ shinyServer(function(input, output, session){
 
   observe({
       if (is.null(plotData())) {
-          updateAceEditor(session, editorId = "print_code_sc",  value = "")
-          updateAceEditor(session, editorId = "print_code_hi",  value = "")
-          updateAceEditor(session, editorId = "print_code_ba",  value = "")
-          updateAceEditor(session, editorId = "print_code_box", value = "")
+          shinyAce::updateAceEditor(session, editorId = "print_code_sc",  value = "")
+          shinyAce::updateAceEditor(session, editorId = "print_code_hi",  value = "")
+          shinyAce::updateAceEditor(session, editorId = "print_code_ba",  value = "")
+          shinyAce::updateAceEditor(session, editorId = "print_code_box", value = "")
       }
   })
 
@@ -780,8 +780,8 @@ shinyServer(function(input, output, session){
         if (is.numeric(dataScatter()[ ,var])) {
 
           observeEvent(input$reset_count_sc, {
-            updateColourInput(session, inputId = "low_sc" , value = "#132B43")
-            updateColourInput(session, inputId = "high_sc", value = "#56B1F7")
+            colourpicker::updateColourInput(session, inputId = "low_sc" , value = "#132B43")
+            colourpicker::updateColourInput(session, inputId = "high_sc", value = "#56B1F7")
           })
 
           return(list(colourInput(inputId = "high_sc", label = "Gradient high:",
@@ -1359,7 +1359,7 @@ shinyServer(function(input, output, session){
                                 geom = "errorbar", color = input$err_col_sc,
                                 width = input$err_width_sc)  +
 
-          stat_summary(fun = mean, colour = input$err_col_sc, geom = "point",
+          stat_summary(fun = base::mean, colour = input$err_col_sc, geom = "point",
                        size = input$err_size_sc)
 
 
@@ -1375,7 +1375,7 @@ shinyServer(function(input, output, session){
         pl <- pl + stat_summary(fun.data = "mean_cl_normal", geom = "errorbar",
                                 color = input$err_col_sc, width = input$err_width_sc)  +
 
-          stat_summary(fun = mean, colour = input$err_col_sc, geom = "point",
+          stat_summary(fun = base::mean, colour = input$err_col_sc, geom = "point",
                        size = input$err_size_sc)
 
         Code$errbar <- paste0(" + \n  stat_summary(fun.data = 'mean_cl_normal', geom = 'errorbar', colour = ",
@@ -1834,7 +1834,7 @@ shinyServer(function(input, output, session){
       }
 
 
-      updateAceEditor(session, editorId = "print_code_sc", value = plot_code_sc() )
+      shinyAce::updateAceEditor(session, editorId = "print_code_sc", value = plot_code_sc() )
 
       plots$pl <- pl
       pl
@@ -2019,8 +2019,8 @@ shinyServer(function(input, output, session){
     if (!is.null(plotData())) {
 
       inX <- input$x_input_hi
-      min_x = min(plotData()[ ,inX ])
-      max_x = max(plotData()[ ,inX ])
+      min_x <- min(plotData()[ ,inX ])
+      max_x <- max(plotData()[ ,inX ])
 
       return(sliderInput(inputId = "x_range_hi",
                          label = paste0("Range of '", inX, "':"),
@@ -2141,18 +2141,18 @@ shinyServer(function(input, output, session){
 
   # RESET BUTTONS
   observeEvent(input$reset_count_hi, {
-    updateColourInput(session, inputId = "low_hi" , value = "#132B43")
-    updateColourInput(session, inputId = "high_hi", value = "#56B1F7")
+    colourpicker::updateColourInput(session, inputId = "low_hi" , value = "#132B43")
+    colourpicker::updateColourInput(session, inputId = "high_hi", value = "#56B1F7")
   })
 
   observeEvent(input$reset_colours_hi, {
-    updateColourInput(session, inputId = "color_hi", value = "white")
-    updateColourInput(session, inputId = "fill_hi", value = "black")
+    colourpicker::updateColourInput(session, inputId = "color_hi", value = "white")
+    colourpicker::updateColourInput(session, inputId = "fill_hi", value = "black")
   })
 
   observeEvent(input$reset_dens_hi, {
-    updateColourInput(session, inputId = "dens_color_hi", value = "#BD1515")
-    updateColourInput(session, inputId = "dens_fill_hi", value = "#BD1515")
+    colourpicker::updateColourInput(session, inputId = "dens_color_hi", value = "#BD1515")
+    colourpicker::updateColourInput(session, inputId = "dens_fill_hi", value = "#BD1515")
     updateSliderInput(session, inputId = "dens_opacity_hi", value = 0.2)
   })
 
@@ -2561,7 +2561,7 @@ shinyServer(function(input, output, session){
         Code_hi$i <- NULL
       }
 
-      updateAceEditor(session, editorId = "print_code_hi", value = plot_code_hi() )
+      shinyAce::updateAceEditor(session, editorId = "print_code_hi", value = plot_code_hi() )
 
       plots$pl_hi <- pl_hi
       print(pl_hi)
@@ -2768,8 +2768,8 @@ shinyServer(function(input, output, session){
   })
 
   observeEvent(input$reset_colours_ba, {
-    updateColourInput(session, inputId = "color_ba", value = "black")
-    updateColourInput(session, inputId = "fill_ba", value = "black")
+    colourpicker::updateColourInput(session, inputId = "color_ba", value = "black")
+    colourpicker::updateColourInput(session, inputId = "fill_ba", value = "black")
     updateSliderInput(session, inputId = "colour_size_ba", value = 0.5)
   })
 
@@ -3093,7 +3093,7 @@ shinyServer(function(input, output, session){
 
       # update the code for the histogram
       # shinyjs::text(id = "print_code_ba", text = plot_code_ba() )
-      updateAceEditor(session, editorId = "print_code_ba", value = plot_code_ba())
+      shinyAce::updateAceEditor(session, editorId = "print_code_ba", value = plot_code_ba())
       plots$pl_ba <- pl_ba
       pl_ba
     }
@@ -3196,8 +3196,8 @@ shinyServer(function(input, output, session){
 
       if (is.numeric(plotData()[ ,inY]) ) {
 
-          min_y = min(plotData()[ ,inY ])
-          max_y = max(plotData()[ ,inY ])
+          min_y <- min(plotData()[ ,inY ])
+          max_y <- max(plotData()[ ,inY ])
 
         return(sliderInput(inputId = "y_range_box",
                            label = paste0("Range of '", input$y_input_box,"':"),
@@ -3408,9 +3408,9 @@ shinyServer(function(input, output, session){
   })
 
   observeEvent(input$reset_colours_box, {
-    updateColourInput(session, inputId = "color_box", value = "black")
-    updateColourInput(session, inputId = "fill_box", value = "white")
-    updateColourInput(session, inputId = "out_color", value = "black")
+    colourpicker::updateColourInput(session, inputId = "color_box", value = "black")
+    colourpicker::updateColourInput(session, inputId = "fill_box", value = "white")
+    colourpicker::updateColourInput(session, inputId = "out_color", value = "black")
     # updateSliderInput(session, inputId = "colour_size_box", value = 0.5)
   })
 
@@ -3792,7 +3792,7 @@ shinyServer(function(input, output, session){
       }
 
       #shinyjs::text(id = "print_code_box", text = plot_code_box() )
-      updateAceEditor(session, editorId = "print_code_box", value = plot_code_box() )
+      shinyAce::updateAceEditor(session, editorId = "print_code_box", value = plot_code_box() )
 
       plots$pl_box <- pl_box
       pl_box

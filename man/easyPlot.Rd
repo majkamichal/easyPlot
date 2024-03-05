@@ -13,7 +13,7 @@ easyPlot(data = NULL)
 Start an Interactive User Interface `easyPlot`
 }
 \examples{
-# Run easyPlot gui
+# Run easyPlot GUI
 if (interactive()) {
   easyPlot::easyPlot()
 }

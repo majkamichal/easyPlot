@@ -4,12 +4,24 @@
 #'
 #' @author Michal Majka
 #'
-#' @import shiny
-#'
 #' @export
 #'
+#' @import shiny
+#' @import ggplot2
+#' @import data.table
+#' @import shinyAce
+#' @import shinyBS
+#' @import shinyWidgets
+#' @import scales
+#' @import Cairo
+#' @import utils
+#' @rawNamespace import(colourpicker, except = runExample)
+#' @rawNamespace import(DT, except = c(dataTableOutput, renderDataTable))
+#' @rawNamespace import(Hmisc, except = html)
+#' @rawNamespace import(shinyjs, except = c(alert, colourPicker, updateColourInput, colourInput, runExample))
+#'
 #' @examples
-#' # Run easyPlot gui
+#' # Run easyPlot GUI
 #' if (interactive()) {
 #'   easyPlot::easyPlot()
 #' }
@@ -29,7 +41,7 @@ easyPlot <- function(data = NULL) {
 
   # Makes sure all dependencies are available
   dependencies <- c("ggplot2", "shinyWidgets", "shinyAce", "shinyBS",
-                    "shinyjs", "shinythemes", "colourpicker", "scales",
+                    "shinyjs", "colourpicker", "scales",
                     "Hmisc", "Cairo", "DT",  "data.table", "openxlsx")
 
   ind_missing_package <- !dependencies %in% utils::installed.packages()[ ,"Package"]
