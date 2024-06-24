@@ -1927,7 +1927,15 @@ shinyServer(function(input, output, session){
 
         brushed_pts_x <- brushedPoints(dataScatter, inS, xvar = X, yvar = Y)[ ,X]
         brushed_pts_y <- brushedPoints(dataScatter, inS, xvar = X, yvar = Y)[ ,Y]
-
+        
+        if (inherits(brushed_pts_x, "IDate")) {
+            class(brushed_pts_x) <- "Date"
+        }
+        
+        if (inherits(brushed_pts_y, "IDate")) {
+            class(brushed_pts_y) <- "Date"
+        }
+        
         N <- length(brushed_pts_x)
 
         if (is.numeric(var_x) | is_var_x_date | is_var_x_dt) {
