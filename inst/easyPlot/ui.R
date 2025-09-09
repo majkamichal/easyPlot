@@ -1236,8 +1236,6 @@ shinyUI(
 
 <ul>
 <li><p>For feedback, feature requests, and bug reports, please visit my <a href="https://github.com/majkamichal/easyPlot">GitHub repository</a>.</p></li>
-<li><p>Contact me at <a href="mailto:michalmajka@hotmail.com">michalmajka@hotmail.com</a>.</p></li>
-<li><p>Follow me on <a href="https://twitter.com/majkamichal">Twitter</a> and <a href="https://www.linkedin.com/in/michal-majka/">LinkedIn</a> for updates.</p></li>
 <li><p>If you find easyPlot valuable and would like to support my work, consider <a href="https://www.buymeacoffee.com/michalmajka">buy me a coffee</a>.</p></li>
 </ul>
 
